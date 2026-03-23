@@ -554,14 +554,17 @@ const levelLabels = {
 let currentLevel = "bezirk";
 let geoLayer = null;
 let selectedLayer = null;
+let selectedFeature = null;
 let berlinGeoJSON = null;
 
 const districtByNumber = new Map();
 const districtByName = new Map();
+const aghByAwk = new Map();
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
+const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
 
 // -----------------------------------------------------------------------
 // MAP INIT
@@ -585,6 +588,19 @@ proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +typ
 function normalizeBez(value) {
   if (value === null || value === undefined) return "";
   return String(value).padStart(2, "0");
+}
+
+function normalizeAwk(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).padStart(4, "0");
+}
+
+function normalizeParty(value) {
+  const raw = String(value || "").trim();
+  const upper = raw.toUpperCase();
+  if (upper === "GRÜNE" || upper === "GRUENE") return "Grüne";
+  if (upper === "DIE LINKE" || upper === "LINKE") return "Linke";
+  return raw;
 }
 
 function reprojectCoords(coords) {
@@ -631,6 +647,30 @@ function loadDistrictCSV() {
   });
 }
 
+function loadAghCSV() {
+  return new Promise((resolve, reject) => {
+    Papa.parse(aghCsvUrl, {
+      download: true,
+      header: true,
+      delimiter: ";",
+      skipEmptyLines: true,
+      complete: (result) => {
+        result.data.forEach(row => {
+          const awk = normalizeAwk(row.AWK);
+          if (!awk) return;
+          const name = (row.Gewaehlte || "").trim();
+          const party = normalizeParty(row.Partei);
+          const wahlkreis = (row.Wahlkreis || "").trim();
+          const percent = (row.Anteil || "").trim();
+          aghByAwk.set(awk, { name, party, wahlkreis, percent });
+        });
+        resolve();
+      },
+      error: (err) => reject(err)
+    });
+  });
+}
+
 async function loadWahlkreiseGeoJSON() {
   const source = await shapefile.open(wahlkreiseShpUrl, wahlkreiseDbfUrl);
   const features = [];
@@ -639,9 +679,11 @@ async function loadWahlkreiseGeoJSON() {
     if (result.done) break;
     const feature = result.value;
     const bez = normalizeBez(feature.properties?.BEZ);
+    const awk = normalizeAwk(feature.properties?.AWK);
     const meta = districtByNumber.get(bez);
     feature.properties = {
       ...feature.properties,
+      AWK: awk,
       BEZ: bez,
       name: meta?.name || `Bezirk ${bez}`,
       winner: meta?.winner || ""
@@ -652,9 +694,14 @@ async function loadWahlkreiseGeoJSON() {
   return { type: "FeatureCollection", features };
 }
 
-function getPartyForBezirk(name) {
+function getPartyForBezirk(name, feature) {
   const d = bezirkeData[name];
   if (!d) return "#444";
+  if (currentLevel === "abgeordnetenhaus") {
+    const awk = normalizeAwk(feature?.properties?.AWK);
+    const agh = awk ? aghByAwk.get(awk) : null;
+    if (agh?.party) return partyColors[agh.party] || "#888";
+  }
   if (currentLevel === "bundestag") {
     const meta = districtByName.get(name);
     if (meta?.winner) return partyColors[meta.winner] || "#888";
@@ -669,7 +716,7 @@ function getPartyForBezirk(name) {
 
 function styleFeature(feature) {
   const name = feature.properties.name;
-  const color = getPartyForBezirk(name);
+  const color = getPartyForBezirk(name, feature);
   return {
     fillColor: color,
     fillOpacity: 0.45,
@@ -697,6 +744,7 @@ function onFeatureClick(e) {
     selectedLayer.setStyle({ fillOpacity: 0.45, weight: 2, color: "#0d0f14" });
   }
   selectedLayer = e.target;
+  selectedFeature = e.target.feature;
   selectedLayer.setStyle({ fillOpacity: 0.8, weight: 3, color: "#c8a96e" });
   showDistrict(e.target.feature.properties.name);
 }
@@ -737,6 +785,8 @@ function setLevel(level) {
 function showDistrict(name) {
   const data = bezirkeData[name];
   if (!data) return;
+  const awk = normalizeAwk(selectedFeature?.properties?.AWK);
+  const agh = awk ? aghByAwk.get(awk) : null;
   let html = `
     <div class="district-name-banner">
       <div class="bezirk-nr">Bezirk ${data.nr}</div>
@@ -764,6 +814,17 @@ function showDistrict(name) {
         <span class="rep-party party-${bm.party}">${bm.party}</span>
         <div class="rep-role">${bm.role}</div>
       </div>`;
+    } else if (lvl === "abgeordnetenhaus") {
+      if (agh) {
+        const label = levelLabels[lvl];
+        const role = agh.wahlkreis ? `Direktmandat WK ${awk} – ${agh.wahlkreis}` : `Direktmandat WK ${awk}`;
+        html += `<div class="rep-card">
+          <div class="rep-level">${label}</div>
+          <div class="rep-name">${agh.name}</div>
+          <span class="rep-party party-${agh.party}">${agh.party}</span>
+          <div class="rep-role">${role}</div>
+        </div>`;
+      }
     } else {
       const reps = data[lvl];
       if (reps && reps.length > 0) {
@@ -794,7 +855,7 @@ function updateLegend() {
 
 async function initData() {
   try {
-    await loadDistrictCSV();
+    await Promise.all([loadDistrictCSV(), loadAghCSV()]);
     berlinGeoJSON = await loadWahlkreiseGeoJSON();
     initGeoLayer();
     updateLegend();
