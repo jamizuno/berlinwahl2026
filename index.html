@@ -281,6 +281,7 @@
     <button class="tab" onclick="setLevel('abgeordnetenhaus')">Abgeordnetenhaus</button>
     <button class="tab" onclick="setLevel('bundestag')">Bundestag</button>
     <button class="tab" onclick="setLevel('eu')">EU-Parlament</button>
+    <button class="tab" onclick="setLevel('alle')">Alle</button>
   </div>
 </header>
 
@@ -546,7 +547,8 @@ const levelLabels = {
   bezirk: "Bezirk (BVV)",
   abgeordnetenhaus: "Abgeordnetenhaus Berlin",
   bundestag: "Bundestag",
-  eu: "EU-Parlament"
+  eu: "EU-Parlament",
+  alle: "Alle Ebenen"
 };
 
 let currentLevel = "bezirk";
@@ -657,6 +659,7 @@ function getPartyForBezirk(name) {
     const meta = districtByName.get(name);
     if (meta?.winner) return partyColors[meta.winner] || "#888";
   }
+  if (currentLevel === "alle") return partyColors[d.bezirk.party] || "#888";
   if (currentLevel === "bezirk") return partyColors[d.bezirk.party] || "#888";
   const reps = d[currentLevel];
   if (!reps || reps.length === 0) return "#444";
@@ -746,7 +749,9 @@ function showDistrict(name) {
     ? ["abgeordnetenhaus"]
     : currentLevel === "bundestag"
     ? ["bundestag"]
-    : ["eu"];
+    : currentLevel === "eu"
+    ? ["eu"]
+    : ["bezirk","abgeordnetenhaus","bundestag","eu"];
 
   // Show only the selected level
   for (const lvl of levels) {
