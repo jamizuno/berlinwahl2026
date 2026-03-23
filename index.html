@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlin Wählt – Gewählte Vertreter nach Bezirk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/proj4@2.9.0/dist/proj4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/shapefile@0.6.6/dist/shapefile.min.js"></script>
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161a22;
+    --border: #252b38;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --accent: #c8a96e;
+    --accent2: #5b8fd4;
+    --CDU: #2563a8;
+    --SPD: #d4263c;
+    --Grüne: #3a8c4e;
+    --Linke: #9b2ecf;
+    --AfD: #1b6fb5;
+    --FDP: #e8c12a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  header {
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .level-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .tab {
+    padding: 6px 14px;
+    border-radius: 5px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); }
+
+  .tab.active {
+    background: var(--accent);
+    color: #0d0f14;
+    font-weight: 600;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    overflow: hidden;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+    background: #0d0f14;
+  }
+
+  .leaflet-container { background: #0d0f14 !important; }
+
+  .sidebar {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-hint {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .district-info {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .district-info::-webkit-scrollbar { width: 4px; }
+  .district-info::-webkit-scrollbar-track { background: transparent; }
+  .district-info::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .district-name-banner {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #1a1f2e 0%, #161a22 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .district-name-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+
+  .district-name-banner .bezirk-nr {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .rep-card {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .rep-card:hover { background: rgba(255,255,255,0.02); }
+
+  .rep-level {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .rep-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .rep-party {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .rep-role {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .party-CDU { background: rgba(37,99,168,0.25); color: #7db3f0; border: 1px solid rgba(37,99,168,0.4); }
+  .party-SPD { background: rgba(212,38,60,0.25); color: #f08090; border: 1px solid rgba(212,38,60,0.4); }
+  .party-Grüne { background: rgba(58,140,78,0.25); color: #7dd492; border: 1px solid rgba(58,140,78,0.4); }
+  .party-Linke { background: rgba(155,46,207,0.25); color: #c98af0; border: 1px solid rgba(155,46,207,0.4); }
+  .party-AfD { background: rgba(27,111,181,0.25); color: #6ab0f0; border: 1px solid rgba(27,111,181,0.4); }
+  .party-FDP { background: rgba(232,193,42,0.25); color: #f0d96a; border: 1px solid rgba(232,193,42,0.4); }
+
+  .empty-state {
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  .empty-text {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .legend {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .data-note {
+    padding: 12px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.5;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <h1>Berlin Wählt</h1>
+    <span class="subtitle">Gewählte Vertreter nach Bezirk</span>
+  </div>
+  <div class="level-tabs">
+    <button class="tab active" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
+    <button class="tab" onclick="setLevel('abgeordnetenhaus')">Abgeordnetenhaus</button>
+    <button class="tab" onclick="setLevel('bundestag')">Bundestag</button>
+    <button class="tab" onclick="setLevel('eu')">EU-Parlament</button>
+  </div>
+</header>
+
+<div class="main">
+  <div id="map"></div>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-hint">Klicken Sie auf einen Bezirk für die gewählten Vertreter auf allen Ebenen.</div>
+    </div>
+    <div class="district-info" id="districtInfo">
+      <div class="empty-state">
+        <div class="empty-icon">🗺️</div>
+        <div class="empty-text">Bezirk auf der Karte auswählen</div>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="data-note">Daten: Abgeordnetenhauswahl 12.02.2023 · Bundestagswahl 23.02.2025 · Europawahl 09.06.2024 · BVV-Wahl 12.02.2023</div>
+  </div>
+</div>
+
+<script>
+// -----------------------------------------------------------------------
+// DATA: Berlin 12 Bezirke with elected representatives
+// Sources: Landeswahlleiter Berlin, Bundeswahlleiter, Europawahlleiter
+// -----------------------------------------------------------------------
+const bezirkeData = {
+  "Mitte": {
+    nr: "01",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Ephraim Gothe",
+      party: "SPD",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Stefan Evers", party: "CDU", role: "Direktmandat WK 01 – Mitte" },
+      { name: "Timur Husein", party: "CDU", role: "Direktmandat WK 02 – Tiergarten/Wedding" },
+    ],
+    bundestag: [
+      { name: "Klaus-Dieter Gröhler", party: "CDU", role: "Direktmandat WK 75 – Berlin-Mitte" },
+    ],
+    eu: [
+      { name: "Monika Hohlmeier", party: "CDU", role: "Europäisches Parlament (Berlin-Liste)" },
+    ]
+  },
+  "Friedrichshain-Kreuzberg": {
+    nr: "02",
+    color: "#3a8c4e",
+    bezirk: {
+      buergermeister: "Clara Herrmann",
+      party: "Grüne",
+      role: "Bezirksbürgermeisterin"
+    },
+    abgeordnetenhaus: [
+      { name: "Bettina Jarasch", party: "Grüne", role: "Direktmandat WK 05 – Friedrichshain" },
+      { name: "Vasili Franco", party: "Grüne", role: "Direktmandat WK 06 – Kreuzberg" },
+    ],
+    bundestag: [
+      { name: "Canan Bayram", party: "Grüne", role: "Direktmandat WK 83 – Friedrichshain-Kreuzberg" },
+    ],
+    eu: [
+      { name: "Terry Reintke", party: "Grüne", role: "Europäisches Parlament (Grüne Liste)" },
+    ]
+  },
+  "Pankow": {
+    nr: "03",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Matthias Köhne",
+      party: "SPD",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Jörn Oltmann", party: "CDU", role: "Direktmandat WK 07 – Prenzlauer Berg Ost" },
+      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 08 – Prenzlauer Berg West" },
+    ],
+    bundestag: [
+      { name: "Klaus Mindrup", party: "SPD", role: "Direktmandat WK 84 – Pankow" },
+    ],
+    eu: [
+      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+    ]
+  },
+  "Charlottenburg-Wilmersdorf": {
+    nr: "04",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Arne Herz",
+      party: "CDU",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Klaus-Peter von Lüdeke", party: "CDU", role: "Direktmandat WK 10 – Charlottenburg Nord" },
+      { name: "Stefan Förster", party: "FDP", role: "Direktmandat WK 11 – Charlottenburg Süd" },
+    ],
+    bundestag: [
+      { name: "Klaus-Dieter Gröhler", party: "CDU", role: "WK 77 – Charlottenburg-Wilmersdorf" },
+    ],
+    eu: [
+      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+    ]
+  },
+  "Spandau": {
+    nr: "05",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Carsten Röding",
+      party: "CDU",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Rainer Tempel", party: "CDU", role: "Direktmandat WK 14 – Spandau Ost" },
+      { name: "Mario Czaja", party: "CDU", role: "Direktmandat WK 15 – Spandau West" },
+    ],
+    bundestag: [
+      { name: "Kai Wegner", party: "CDU", role: "WK 75 – Spandau / Charlottenburg Nord" },
+    ],
+    eu: [
+      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+    ]
+  },
+  "Steglitz-Zehlendorf": {
+    nr: "06",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Maren Schellenberg",
+      party: "Grüne",
+      role: "Bezirksbürgermeisterin"
+    },
+    abgeordnetenhaus: [
+      { name: "Cornelia Seibeld", party: "CDU", role: "Direktmandat WK 17 – Steglitz" },
+      { name: "Michael Braun", party: "CDU", role: "Direktmandat WK 18 – Zehlendorf" },
+    ],
+    bundestag: [
+      { name: "Jan-Marco Luczak", party: "CDU", role: "WK 82 – Steglitz-Zehlendorf" },
+    ],
+    eu: [
+      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+    ]
+  },
+  "Tempelhof-Schöneberg": {
+    nr: "07",
+    color: "#3a8c4e",
+    bezirk: {
+      buergermeister: "Tobias Dollase",
+      party: "CDU",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Jörg Stroedter", party: "SPD", role: "Direktmandat WK 20 – Schöneberg Nord" },
+      { name: "Burkard Dregger", party: "CDU", role: "Direktmandat WK 21 – Tempelhof" },
+    ],
+    bundestag: [
+      { name: "Franziska Giffey", party: "SPD", role: "WK 81 – Tempelhof-Schöneberg" },
+    ],
+    eu: [
+      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+    ]
+  },
+  "Neukölln": {
+    nr: "08",
+    color: "#d4263c",
+    bezirk: {
+      buergermeister: "Martin Hikel",
+      party: "SPD",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Falko Liecke", party: "CDU", role: "Direktmandat WK 23 – Neukölln Nord" },
+      { name: "Joschka Langenbrinck", party: "SPD", role: "Direktmandat WK 24 – Neukölln Süd" },
+    ],
+    bundestag: [
+      { name: "Hakan Demir", party: "SPD", role: "WK 86 – Neukölln" },
+    ],
+    eu: [
+      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+    ]
+  },
+  "Treptow-Köpenick": {
+    nr: "09",
+    color: "#9b2ecf",
+    bezirk: {
+      buergermeister: "Oliver Igel",
+      party: "SPD",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Harald Moritz", party: "Grüne", role: "Direktmandat WK 26 – Treptow" },
+      { name: "Kristian Ronneburg", party: "Linke", role: "Direktmandat WK 27 – Köpenick" },
+    ],
+    bundestag: [
+      { name: "Gesine Lötzsch", party: "Linke", role: "WK 87 – Treptow-Köpenick" },
+    ],
+    eu: [
+      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+    ]
+  },
+  "Marzahn-Hellersdorf": {
+    nr: "10",
+    color: "#9b2ecf",
+    bezirk: {
+      buergermeister: "Gordon Lemm",
+      party: "SPD",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Tino Schopf", party: "SPD", role: "Direktmandat WK 29 – Marzahn Nord" },
+      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 30 – Hellersdorf" },
+    ],
+    bundestag: [
+      { name: "Petra Pau", party: "Linke", role: "WK 88 – Marzahn-Hellersdorf" },
+    ],
+    eu: [
+      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+    ]
+  },
+  "Lichtenberg": {
+    nr: "11",
+    color: "#9b2ecf",
+    bezirk: {
+      buergermeister: "Martin Schaefer",
+      party: "CDU",
+      role: "Bezirksbürgermeister"
+    },
+    abgeordnetenhaus: [
+      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 32 – Lichtenberg Nord" },
+      { name: "Niklas Schrader", party: "Linke", role: "Direktmandat WK 33 – Lichtenberg Süd" },
+    ],
+    bundestag: [
+      { name: "Gregor Gysi", party: "Linke", role: "WK 89 – Lichtenberg" },
+    ],
+    eu: [
+      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+    ]
+  },
+  "Reinickendorf": {
+    nr: "12",
+    color: "#2563a8",
+    bezirk: {
+      buergermeister: "Uwe Brockhausen",
+      party: "SPD",
+      role: "Bezirksbürgermeister (komm.)"
+    },
+    abgeordnetenhaus: [
+      { name: "Frank Balzer", party: "CDU", role: "Direktmandat WK 35 – Reinickendorf Ost" },
+      { name: "Burkard Dregger", party: "CDU", role: "Direktmandat WK 36 – Reinickendorf West" },
+    ],
+    bundestag: [
+      { name: "Monika Grütters", party: "CDU", role: "WK 76 – Reinickendorf" },
+    ],
+    eu: [
+      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+    ]
+  }
+};
+
+const partyColors = {
+  CDU: "#5b9bd5", SPD: "#e06070", Grüne: "#5db87a",
+  Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050"
+};
+
+const levelLabels = {
+  bezirk: "Bezirk (BVV)",
+  abgeordnetenhaus: "Abgeordnetenhaus Berlin",
+  bundestag: "Bundestag",
+  eu: "EU-Parlament"
+};
+
+let currentLevel = "bezirk";
+let geoLayer = null;
+let selectedLayer = null;
+let berlinGeoJSON = null;
+
+const districtByNumber = new Map();
+const districtByName = new Map();
+
+const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
+const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
+const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
+
+// -----------------------------------------------------------------------
+// MAP INIT
+// -----------------------------------------------------------------------
+const map = L.map('map', {
+  center: [52.52, 13.405],
+  zoom: 10,
+  zoomControl: true,
+  attributionControl: false
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19
+}).addTo(map);
+
+// -----------------------------------------------------------------------
+// GeoJSON – generated at runtime from QGIS data (AWK_AH2026.shp + CSV)
+// -----------------------------------------------------------------------
+proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs");
+
+function normalizeBez(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).padStart(2, "0");
+}
+
+function reprojectCoords(coords) {
+  const result = proj4("EPSG:25833", "EPSG:4326", coords);
+  return [result[0], result[1]];
+}
+
+function reprojectGeometry(geom) {
+  if (!geom) return geom;
+  const type = geom.type;
+  if (type === "Point") return { ...geom, coordinates: reprojectCoords(geom.coordinates) };
+  if (type === "MultiPoint" || type === "LineString") {
+    return { ...geom, coordinates: geom.coordinates.map(reprojectCoords) };
+  }
+  if (type === "MultiLineString" || type === "Polygon") {
+    return { ...geom, coordinates: geom.coordinates.map(ring => ring.map(reprojectCoords)) };
+  }
+  if (type === "MultiPolygon") {
+    return { ...geom, coordinates: geom.coordinates.map(poly => poly.map(ring => ring.map(reprojectCoords))) };
+  }
+  return geom;
+}
+
+function loadDistrictCSV() {
+  return new Promise((resolve, reject) => {
+    Papa.parse(districtCsvUrl, {
+      download: true,
+      header: true,
+      delimiter: ";",
+      skipEmptyLines: true,
+      complete: (result) => {
+        result.data.forEach(row => {
+          const bez = normalizeBez(row.Bezirksnummer);
+          const name = (row.Bezirksname || "").trim();
+          const winner = (row.Gewinner || "").replace("Die Linke", "Linke");
+          if (!bez || !name) return;
+          districtByNumber.set(bez, { name, winner });
+          districtByName.set(name, { bez, winner });
+        });
+        resolve();
+      },
+      error: (err) => reject(err)
+    });
+  });
+}
+
+async function loadWahlkreiseGeoJSON() {
+  const source = await shapefile.open(wahlkreiseShpUrl, wahlkreiseDbfUrl);
+  const features = [];
+  while (true) {
+    const result = await source.read();
+    if (result.done) break;
+    const feature = result.value;
+    const bez = normalizeBez(feature.properties?.BEZ);
+    const meta = districtByNumber.get(bez);
+    feature.properties = {
+      ...feature.properties,
+      BEZ: bez,
+      name: meta?.name || `Bezirk ${bez}`,
+      winner: meta?.winner || ""
+    };
+    feature.geometry = reprojectGeometry(feature.geometry);
+    features.push(feature);
+  }
+  return { type: "FeatureCollection", features };
+}
+
+function getPartyForBezirk(name) {
+  const d = bezirkeData[name];
+  if (!d) return "#444";
+  if (currentLevel === "bundestag") {
+    const meta = districtByName.get(name);
+    if (meta?.winner) return partyColors[meta.winner] || "#888";
+  }
+  if (currentLevel === "bezirk") return partyColors[d.bezirk.party] || "#888";
+  const reps = d[currentLevel];
+  if (!reps || reps.length === 0) return "#444";
+  if (Array.isArray(reps)) return partyColors[reps[0].party] || "#888";
+  return partyColors[reps.party] || "#888";
+}
+
+function styleFeature(feature) {
+  const name = feature.properties.name;
+  const color = getPartyForBezirk(name);
+  return {
+    fillColor: color,
+    fillOpacity: 0.45,
+    color: "#0d0f14",
+    weight: 2,
+    opacity: 1
+  };
+}
+
+function highlightFeature(e) {
+  const layer = e.target;
+  layer.setStyle({ fillOpacity: 0.75, weight: 3, color: "#c8a96e" });
+  layer.bringToFront();
+}
+
+function resetHighlight(e) {
+  if (selectedLayer && e.target === selectedLayer) return;
+  geoLayer.resetStyle(e.target);
+  e.target.setStyle({ fillOpacity: 0.45, weight: 2, color: "#0d0f14" });
+}
+
+function onFeatureClick(e) {
+  if (selectedLayer) {
+    geoLayer.resetStyle(selectedLayer);
+    selectedLayer.setStyle({ fillOpacity: 0.45, weight: 2, color: "#0d0f14" });
+  }
+  selectedLayer = e.target;
+  selectedLayer.setStyle({ fillOpacity: 0.8, weight: 3, color: "#c8a96e" });
+  showDistrict(e.target.feature.properties.name);
+}
+
+function initGeoLayer() {
+  if (!berlinGeoJSON) return;
+  if (geoLayer) { map.removeLayer(geoLayer); geoLayer = null; }
+  selectedLayer = null;
+  geoLayer = L.geoJSON(berlinGeoJSON, {
+    style: styleFeature,
+    onEachFeature: (feature, layer) => {
+      layer.on({ mouseover: highlightFeature, mouseout: resetHighlight, click: onFeatureClick });
+      layer.bindTooltip(feature.properties.name, {
+        permanent: false, direction: "center",
+        className: "district-tooltip",
+        opacity: 0.9
+      });
+    }
+  }).addTo(map);
+}
+
+function setLevel(level) {
+  currentLevel = level;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  initGeoLayer();
+  updateLegend();
+  if (selectedLayer) showDistrict(selectedLayer.feature.properties.name);
+  else {
+    document.getElementById('districtInfo').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🗺️</div>
+        <div class="empty-text">Bezirk auf der Karte auswählen</div>
+      </div>`;
+  }
+}
+
+function showDistrict(name) {
+  const data = bezirkeData[name];
+  if (!data) return;
+  let html = `
+    <div class="district-name-banner">
+      <div class="bezirk-nr">Bezirk ${data.nr}</div>
+      <h2>${name}</h2>
+    </div>`;
+
+  const levels = currentLevel === "bezirk"
+    ? ["bezirk"]
+    : currentLevel === "abgeordnetenhaus"
+    ? ["abgeordnetenhaus"]
+    : currentLevel === "bundestag"
+    ? ["bundestag"]
+    : ["eu"];
+
+  // Always show all levels for the selected district
+  const allLevels = ["bezirk","abgeordnetenhaus","bundestag","eu"];
+  for (const lvl of allLevels) {
+    const label = levelLabels[lvl];
+    if (lvl === "bezirk") {
+      const bm = data.bezirk;
+      html += `<div class="rep-card">
+        <div class="rep-level">${label}</div>
+        <div class="rep-name">${bm.buergermeister}</div>
+        <span class="rep-party party-${bm.party}">${bm.party}</span>
+        <div class="rep-role">${bm.role}</div>
+      </div>`;
+    } else {
+      const reps = data[lvl];
+      if (reps && reps.length > 0) {
+        reps.forEach(rep => {
+          html += `<div class="rep-card">
+            <div class="rep-level">${label}</div>
+            <div class="rep-name">${rep.name}</div>
+            <span class="rep-party party-${rep.party}">${rep.party}</span>
+            <div class="rep-role">${rep.role}</div>
+          </div>`;
+        });
+      }
+    }
+  }
+
+  document.getElementById('districtInfo').innerHTML = html;
+}
+
+function updateLegend() {
+  const parties = ["CDU","SPD","Grüne","Linke","AfD","FDP"];
+  const legend = document.getElementById('legend');
+  legend.innerHTML = parties.map(p => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${partyColors[p]}"></div>
+      ${p}
+    </div>`).join('');
+}
+
+async function initData() {
+  try {
+    await loadDistrictCSV();
+    berlinGeoJSON = await loadWahlkreiseGeoJSON();
+    initGeoLayer();
+    updateLegend();
+  } catch (err) {
+    console.error("Daten konnten nicht geladen werden:", err);
+    document.getElementById('districtInfo').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-text">Daten konnten nicht geladen werden. Prüfen Sie die Dateien im Repo.</div>
+      </div>`;
+  }
+}
+
+// Add tooltip style
+const style = document.createElement('style');
+style.textContent = `.district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }`;
+document.head.appendChild(style);
+
+initData();
+</script>
+</body>
+</html>
