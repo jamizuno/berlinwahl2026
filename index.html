@@ -179,6 +179,16 @@
 
   .rep-card:hover { background: rgba(255,255,255,0.02); }
 
+  .rep-card.list-entry {
+    padding: 12px 24px;
+    opacity: 0.9;
+  }
+
+  .rep-card.list-entry .rep-level { font-size: 0.6rem; }
+  .rep-card.list-entry .rep-name { font-size: 0.9rem; }
+  .rep-card.list-entry .rep-party { font-size: 0.65rem; padding: 1px 6px; }
+  .rep-card.list-entry .rep-role { font-size: 0.7rem; }
+
   .rep-level {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.65rem;
@@ -662,7 +672,10 @@ function loadAghCSV() {
           const party = normalizeParty(row.Partei);
           const wahlkreis = (row.Wahlkreis || "").trim();
           const percent = (row.Anteil || "").trim();
-          aghByAwk.set(awk, { name, party, wahlkreis, percent });
+          const art = (row.Art || "Direkt").trim();
+          const note = (row.Hinweis || "").trim();
+          if (!aghByAwk.has(awk)) aghByAwk.set(awk, []);
+          aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note });
         });
         resolve();
       },
@@ -699,8 +712,9 @@ function getPartyForBezirk(name, feature) {
   if (!d) return "#444";
   if (currentLevel === "abgeordnetenhaus") {
     const awk = normalizeAwk(feature?.properties?.AWK);
-    const agh = awk ? aghByAwk.get(awk) : null;
-    if (agh?.party) return partyColors[agh.party] || "#888";
+    const entries = awk ? (aghByAwk.get(awk) || []) : [];
+    const direct = entries.find(e => e.art === "Direkt") || entries[0];
+    if (direct?.party) return partyColors[direct.party] || "#888";
   }
   if (currentLevel === "bundestag") {
     const meta = districtByName.get(name);
@@ -786,7 +800,7 @@ function showDistrict(name) {
   const data = bezirkeData[name];
   if (!data) return;
   const awk = normalizeAwk(selectedFeature?.properties?.AWK);
-  const agh = awk ? aghByAwk.get(awk) : null;
+  const aghEntries = awk ? (aghByAwk.get(awk) || []) : [];
   let html = `
     <div class="district-name-banner">
       <div class="bezirk-nr">Bezirk ${data.nr}</div>
@@ -815,15 +829,23 @@ function showDistrict(name) {
         <div class="rep-role">${bm.role}</div>
       </div>`;
     } else if (lvl === "abgeordnetenhaus") {
-      if (agh) {
-        const label = levelLabels[lvl];
-        const role = agh.wahlkreis ? `Direktmandat WK ${awk} – ${agh.wahlkreis}` : `Direktmandat WK ${awk}`;
-        html += `<div class="rep-card">
-          <div class="rep-level">${label}</div>
-          <div class="rep-name">${agh.name}</div>
-          <span class="rep-party party-${agh.party}">${agh.party}</span>
-          <div class="rep-role">${role}</div>
-        </div>`;
+      if (aghEntries.length > 0) {
+        const direct = aghEntries.filter(e => e.art === "Direkt");
+        const lists = aghEntries.filter(e => e.art !== "Direkt");
+        const ordered = direct.concat(lists);
+        ordered.forEach(entry => {
+          const isList = entry.art !== "Direkt";
+          const label = isList ? "Bezirksliste" : levelLabels[lvl];
+          const role = isList
+            ? (entry.note ? `Bezirksliste · ${entry.note}` : "Bezirksliste")
+            : (entry.wahlkreis ? `Direktmandat WK ${awk} – ${entry.wahlkreis}` : `Direktmandat WK ${awk}`);
+          html += `<div class="rep-card${isList ? " list-entry" : ""}">
+            <div class="rep-level">${label}</div>
+            <div class="rep-name">${entry.name}</div>
+            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <div class="rep-role">${role}</div>
+          </div>`;
+        });
       }
     } else {
       const reps = data[lvl];
