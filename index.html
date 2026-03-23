@@ -748,9 +748,8 @@ function showDistrict(name) {
     ? ["bundestag"]
     : ["eu"];
 
-  // Always show all levels for the selected district
-  const allLevels = ["bezirk","abgeordnetenhaus","bundestag","eu"];
-  for (const lvl of allLevels) {
+  // Show only the selected level
+  for (const lvl of levels) {
     const label = levelLabels[lvl];
     if (lvl === "bezirk") {
       const bm = data.bezirk;
