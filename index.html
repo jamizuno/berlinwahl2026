@@ -227,6 +227,7 @@
   .party-Linke { background: rgba(155,46,207,0.25); color: #c98af0; border: 1px solid rgba(155,46,207,0.4); }
   .party-AfD { background: rgba(27,111,181,0.25); color: #6ab0f0; border: 1px solid rgba(27,111,181,0.4); }
   .party-FDP { background: rgba(232,193,42,0.25); color: #f0d96a; border: 1px solid rgba(232,193,42,0.4); }
+  .party-fraktionslos { background: rgba(156,163,175,0.25); color: #c4c8d2; border: 1px solid rgba(156,163,175,0.4); }
 
   .empty-state {
     padding: 32px 24px;
@@ -564,7 +565,8 @@ const euCitywide = (() => {
 
 const partyColors = {
   CDU: "#5b9bd5", SPD: "#e06070", Grüne: "#5db87a",
-  Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050"
+  Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050",
+  fraktionslos: "#9ca3af"
 };
 
 const levelLabels = {
@@ -592,6 +594,7 @@ const aghByBez = new Map();
 const btgByWkr = new Map();
 let btgCitywide = [];
 const bvvByBezirk = new Map();
+const bezirkByArkis = new Map();
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
@@ -599,6 +602,7 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
 const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
 const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
 const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
+const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
 
 const wfsLayers = [
   {
@@ -692,6 +696,17 @@ const layerLevelMap = {
   eu: ["eu"]
 };
 
+const overlayOrder = [
+  "eu",
+  "agh",
+  "bezirke",
+  "ortsteile",
+  "postleitzahlen",
+  "einschulbereiche",
+  "kieze",
+  "btg"
+];
+
 // -----------------------------------------------------------------------
 // MAP INIT
 // -----------------------------------------------------------------------
@@ -771,6 +786,43 @@ function pickTooltipText(feature, props) {
   return null;
 }
 
+function getBezirkNameFromFeature(feature) {
+  const rawName = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname", "bezirk_name", "gen"]);
+  if (rawName) {
+    const trimmed = String(rawName).trim();
+    if (trimmed && !/^\d+$/.test(trimmed)) return trimmed;
+    const codeFromName = normalizeArkis(trimmed);
+    const mapped = bezirkByArkis.get(codeFromName);
+    if (mapped) return mapped;
+  }
+  const code = pickProp(feature, ["ars", "arkis", "rsb", "rs", "schluessel", "bezirksschluessel", "gkz", "ags"]);
+  const normalized = normalizeArkis(code);
+  if (normalized) {
+    const mapped = bezirkByArkis.get(normalized);
+    if (mapped) return mapped;
+  }
+  return rawName ? String(rawName).trim() : null;
+}
+
+function rebuildOverlayControl() {
+  if (!map) return;
+  if (overlayControl) {
+    map.removeControl(overlayControl);
+  }
+  overlayControl = L.control.layers(null, {}, { collapsed: false }).addTo(map);
+
+  const labelById = new Map();
+  wfsLayers.forEach(layer => labelById.set(layer.id, layer.label));
+  labelById.set("agh", "AGH Wahlbezirke");
+
+  overlayOrder.forEach(id => {
+    const layer = id === "agh" ? aghOverlay : wfsOverlayLayers.get(id);
+    if (!layer) return;
+    const label = labelById.get(id) || id;
+    overlayControl.addOverlay(layer, label);
+  });
+}
+
 async function addWfsOverlayLayer(layerConfig) {
   const {
     id,
@@ -798,11 +850,14 @@ async function addWfsOverlayLayer(layerConfig) {
       const altRes = await fetch(altUrl);
       data = await altRes.json();
     }
+    const baseStyle = style || {};
     const layer = L.geoJSON(data, {
       pane,
-      style,
+      style: baseStyle,
       onEachFeature: (feature, lyr) => {
-        const tooltip = pickTooltipText(feature, tooltipProps);
+        const tooltip = id === "bezirke"
+          ? getBezirkNameFromFeature(feature)
+          : pickTooltipText(feature, tooltipProps);
         if (tooltip) {
           lyr.bindTooltip(tooltip, {
             permanent: false,
@@ -811,11 +866,22 @@ async function addWfsOverlayLayer(layerConfig) {
             opacity: 0.9
           });
         }
+        if (id !== "eu") {
+          lyr.on("mouseover", () => {
+            const hoverStyle = {
+              ...baseStyle,
+              weight: (baseStyle.weight || 1) + 1,
+              fillOpacity: Math.min(0.25, (baseStyle.fillOpacity ?? 0) + 0.15)
+            };
+            lyr.setStyle(hoverStyle);
+            lyr.bringToFront();
+          });
+          lyr.on("mouseout", () => lyr.setStyle(baseStyle));
+        }
         lyr.on("click", () => handleLayerClick(id, feature));
       }
     });
     wfsOverlayLayers.set(id, layer);
-    overlayControl.addOverlay(layer, label);
     if (defaultOn) layer.addTo(map);
   } catch (err) {
     console.warn(`WFS layer failed: ${label}`, err);
@@ -824,6 +890,7 @@ async function addWfsOverlayLayer(layerConfig) {
 
 async function initOverlayLayers() {
   await Promise.all(wfsLayers.map(addWfsOverlayLayer));
+  rebuildOverlayControl();
 }
 
 // -----------------------------------------------------------------------
@@ -844,12 +911,22 @@ function normalizeAwk(value) {
 function normalizeParty(value) {
   const raw = String(value || "").trim();
   const upper = raw.toUpperCase();
-  if (upper.includes("BÜNDNIS 90") || upper === "GRÜNE" || upper === "GRUENE") return "Grüne";
+  if (upper.includes("BÜNDNIS 90") || upper === "GRÜNE" || upper === "GRUENE" || upper === "BÜ 90/GRÜNE" || upper === "BU 90/GRUENE") return "Grüne";
   if (upper === "DIE LINKE" || upper === "LINKE") return "Linke";
   if (upper === "CDU" || upper.includes("CHRISTLICH DEMOKRATISCHE UNION")) return "CDU";
   if (upper === "SPD" || upper.includes("SOZIALDEMOKRATISCHE")) return "SPD";
   if (upper === "FDP" || upper.includes("FREIE DEMOKRATISCHE")) return "FDP";
   if (upper === "AFD" || upper.includes("ALTERNATIVE FÜR DEUTSCHLAND")) return "AfD";
+  if (upper === "FRAKTIONSLOS") return "fraktionslos";
+  return raw;
+}
+
+function normalizeArkis(value) {
+  if (value === null || value === undefined) return "";
+  const raw = String(value).trim();
+  if (!raw) return "";
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length >= 8) return digits.slice(-8);
   return raw;
 }
 
@@ -1123,6 +1200,29 @@ async function loadBvvLists() {
   }));
 }
 
+function loadBezirkArkis() {
+  return new Promise((resolve) => {
+    Papa.parse(bezirkArkisCsvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        (result.data || []).forEach(row => {
+          const name = (row.Bezirk || row.bezirk || row.Name || "").trim();
+          const code = normalizeArkis(row["ARKIS-Code"] || row.ARKIS || row.arkis || row.Code);
+          if (!name || !code) return;
+          bezirkByArkis.set(code, name);
+        });
+        resolve();
+      },
+      error: (err) => {
+        console.warn("Bezirk/ARKIS mapping could not be loaded.", err);
+        resolve();
+      }
+    });
+  });
+}
+
 async function loadWahlkreiseGeoJSON() {
   const source = await shapefile.open(wahlkreiseShpUrl, wahlkreiseDbfUrl);
   const features = [];
@@ -1230,12 +1330,9 @@ function initGeoLayer() {
     }
   }).addTo(map);
 
-  if (overlayControl) {
-    if (aghOverlay) overlayControl.removeLayer(aghOverlay);
-    aghOverlay = geoLayer;
-    overlayControl.addOverlay(aghOverlay, "AGH Wahlbezirke (gefüllt)");
-    if (!wasVisible) map.removeLayer(aghOverlay);
-  }
+  aghOverlay = geoLayer;
+  if (!wasVisible) map.removeLayer(aghOverlay);
+  rebuildOverlayControl();
 }
 
 function getAllowedLevels(layerId) {
@@ -1275,7 +1372,9 @@ function buildContextFromFeature(layerId, feature) {
     return context;
   }
 
-  const name = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname"]);
+  const name = layerId === "bezirke"
+    ? getBezirkNameFromFeature(feature)
+    : pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname"]);
   if (name) {
     context.bezirkName = name;
     const meta = districtByName.get(name);
@@ -1431,12 +1530,12 @@ function setLevel(level) {
 
 
 function updateLegend() {
-  const parties = ["CDU","SPD","Grüne","Linke","AfD","FDP"];
+  const parties = ["CDU","SPD","Grüne","Linke","AfD","FDP","fraktionslos"];
   const legend = document.getElementById('legend');
   legend.innerHTML = parties.map(p => `
     <div class="legend-item">
       <div class="legend-dot" style="background:${partyColors[p]}"></div>
-      ${p}
+      ${p === "fraktionslos" ? "frakt/" : p}
     </div>`).join('');
 }
 
@@ -1446,7 +1545,8 @@ async function initData() {
       loadDistrictCSV(),
       loadAghCSV(),
       loadBtgCSV(),
-      loadBvvLists()
+      loadBvvLists(),
+      loadBezirkArkis()
     ]);
     if (results[0].status === "rejected" || results[1].status === "rejected") {
       throw new Error("Pflichtdaten konnten nicht geladen werden.");
@@ -1471,8 +1571,7 @@ const style = document.createElement('style');
 style.textContent = `.district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }`;
 document.head.appendChild(style);
 
-initOverlayLayers();
-initData();
+initData().then(initOverlayLayers);
 </script>
 </body>
 </html>
