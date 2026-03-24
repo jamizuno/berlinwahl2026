@@ -1,320 +1,320 @@
 AWK;Wahlkreis;Gewaehlte;Partei;Anteil;Art;Hinweis
 0101;Mitte 1;Gebel, Silke;GRÜNE;33,5;Direkt;
-0101;Mitte 1;Lasić, Dr. Maja;SPD;;MdA;
-0101;Mitte 1;Schulz, Mathias;SPD;;MdA;
+0101;Mitte 1;Lasić, Dr. Maja;SPD;;Landesliste;
+0101;Mitte 1;Schulz, Mathias;SPD;;Landesliste;
 0102;Mitte 2;Schaal, Lucas;CDU;24,9;Direkt;
-0102;Mitte 2;Lasić, Dr. Maja;SPD;;MdA;
-0102;Mitte 2;Schulz, Mathias;SPD;;MdA;
+0102;Mitte 2;Lasić, Dr. Maja;SPD;;Landesliste;
+0102;Mitte 2;Schulz, Mathias;SPD;;Landesliste;
 0103;Mitte 3;Omar, Jian;GRÜNE;33,0;Direkt;
-0103;Mitte 3;Lasić, Dr. Maja;SPD;;MdA;
-0103;Mitte 3;Schulz, Mathias;SPD;;MdA;
+0103;Mitte 3;Lasić, Dr. Maja;SPD;;Landesliste;
+0103;Mitte 3;Schulz, Mathias;SPD;;Landesliste;
 0104;Mitte 4;Kurt, Taylan;GRÜNE;40,1;Direkt;
-0104;Mitte 4;Lasić, Dr. Maja;SPD;;MdA;
-0104;Mitte 4;Schulz, Mathias;SPD;;MdA;
+0104;Mitte 4;Lasić, Dr. Maja;SPD;;Landesliste;
+0104;Mitte 4;Schulz, Mathias;SPD;;Landesliste;
 0105;Mitte 5;Rissmann, Sven Nico;CDU;24,4;Direkt;
-0105;Mitte 5;Lasić, Dr. Maja;SPD;;MdA;
-0105;Mitte 5;Schulz, Mathias;SPD;;MdA;
+0105;Mitte 5;Lasić, Dr. Maja;SPD;;Landesliste;
+0105;Mitte 5;Schulz, Mathias;SPD;;Landesliste;
 0106;Mitte 6;Bozkurt, Tuba;GRÜNE;32,0;Direkt;
-0106;Mitte 6;Lasić, Dr. Maja;SPD;;MdA;
-0106;Mitte 6;Schulz, Mathias;SPD;;MdA;
+0106;Mitte 6;Lasić, Dr. Maja;SPD;;Landesliste;
+0106;Mitte 6;Schulz, Mathias;SPD;;Landesliste;
 0107;Mitte 7;Neugebauer, Laura;GRÜNE;30,1;Direkt;
-0107;Mitte 7;Lasić, Dr. Maja;SPD;;MdA;
-0107;Mitte 7;Schulz, Mathias;SPD;;MdA;
+0107;Mitte 7;Lasić, Dr. Maja;SPD;;Landesliste;
+0107;Mitte 7;Schulz, Mathias;SPD;;Landesliste;
 0201;Friedrichshain-Kreuzberg 1;Schmidberger, Katrin;GRÜNE;40,3;Direkt;
-0201;Friedrichshain-Kreuzberg 1;Aydin, Sevim;SPD;;MdA;
-0201;Friedrichshain-Kreuzberg 1;Heinemann, Sven;SPD;;MdA;
-0201;Friedrichshain-Kreuzberg 1;Husein, Dr. Timur;CDU;;MdA;
-0201;Friedrichshain-Kreuzberg 1;Wansner, Kurt;CDU;;MdA;
+0201;Friedrichshain-Kreuzberg 1;Aydin, Sevim;SPD;;Landesliste;
+0201;Friedrichshain-Kreuzberg 1;Heinemann, Sven;SPD;;Landesliste;
+0201;Friedrichshain-Kreuzberg 1;Husein, Dr. Timur;CDU;;Landesliste;
+0201;Friedrichshain-Kreuzberg 1;Wansner, Kurt;CDU;;Landesliste;
 0202;Friedrichshain-Kreuzberg 2;Burkert-Eulitz, Marianne;GRÜNE;37,9;Direkt;
-0202;Friedrichshain-Kreuzberg 2;Aydin, Sevim;SPD;;MdA;
-0202;Friedrichshain-Kreuzberg 2;Heinemann, Sven;SPD;;MdA;
-0202;Friedrichshain-Kreuzberg 2;Husein, Dr. Timur;CDU;;MdA;
-0202;Friedrichshain-Kreuzberg 2;Wansner, Kurt;CDU;;MdA;
+0202;Friedrichshain-Kreuzberg 2;Aydin, Sevim;SPD;;Landesliste;
+0202;Friedrichshain-Kreuzberg 2;Heinemann, Sven;SPD;;Landesliste;
+0202;Friedrichshain-Kreuzberg 2;Husein, Dr. Timur;CDU;;Landesliste;
+0202;Friedrichshain-Kreuzberg 2;Wansner, Kurt;CDU;;Landesliste;
 0203;Friedrichshain-Kreuzberg 3;Dr. Altuğ, Turgut;GRÜNE;35,1;Direkt;
-0203;Friedrichshain-Kreuzberg 3;Aydin, Sevim;SPD;;MdA;
-0203;Friedrichshain-Kreuzberg 3;Heinemann, Sven;SPD;;MdA;
-0203;Friedrichshain-Kreuzberg 3;Husein, Dr. Timur;CDU;;MdA;
-0203;Friedrichshain-Kreuzberg 3;Wansner, Kurt;CDU;;MdA;
+0203;Friedrichshain-Kreuzberg 3;Aydin, Sevim;SPD;;Landesliste;
+0203;Friedrichshain-Kreuzberg 3;Heinemann, Sven;SPD;;Landesliste;
+0203;Friedrichshain-Kreuzberg 3;Husein, Dr. Timur;CDU;;Landesliste;
+0203;Friedrichshain-Kreuzberg 3;Wansner, Kurt;CDU;;Landesliste;
 0204;Friedrichshain-Kreuzberg 4;Valgolio, Damiano;DIE LINKE;24,7;Direkt;
-0204;Friedrichshain-Kreuzberg 4;Aydin, Sevim;SPD;;MdA;
-0204;Friedrichshain-Kreuzberg 4;Heinemann, Sven;SPD;;MdA;
-0204;Friedrichshain-Kreuzberg 4;Husein, Dr. Timur;CDU;;MdA;
-0204;Friedrichshain-Kreuzberg 4;Wansner, Kurt;CDU;;MdA;
+0204;Friedrichshain-Kreuzberg 4;Aydin, Sevim;SPD;;Landesliste;
+0204;Friedrichshain-Kreuzberg 4;Heinemann, Sven;SPD;;Landesliste;
+0204;Friedrichshain-Kreuzberg 4;Husein, Dr. Timur;CDU;;Landesliste;
+0204;Friedrichshain-Kreuzberg 4;Wansner, Kurt;CDU;;Landesliste;
 0205;Friedrichshain-Kreuzberg 5;Franco, Vasili;GRÜNE;36,1;Direkt;
-0205;Friedrichshain-Kreuzberg 5;Aydin, Sevim;SPD;;MdA;
-0205;Friedrichshain-Kreuzberg 5;Heinemann, Sven;SPD;;MdA;
-0205;Friedrichshain-Kreuzberg 5;Husein, Dr. Timur;CDU;;MdA;
-0205;Friedrichshain-Kreuzberg 5;Wansner, Kurt;CDU;;MdA;
+0205;Friedrichshain-Kreuzberg 5;Aydin, Sevim;SPD;;Landesliste;
+0205;Friedrichshain-Kreuzberg 5;Heinemann, Sven;SPD;;Landesliste;
+0205;Friedrichshain-Kreuzberg 5;Husein, Dr. Timur;CDU;;Landesliste;
+0205;Friedrichshain-Kreuzberg 5;Wansner, Kurt;CDU;;Landesliste;
 0206;Friedrichshain-Kreuzberg 6;Schwarze, Julian;GRÜNE;39,5;Direkt;
-0206;Friedrichshain-Kreuzberg 6;Aydin, Sevim;SPD;;MdA;
-0206;Friedrichshain-Kreuzberg 6;Heinemann, Sven;SPD;;MdA;
-0206;Friedrichshain-Kreuzberg 6;Husein, Dr. Timur;CDU;;MdA;
-0206;Friedrichshain-Kreuzberg 6;Wansner, Kurt;CDU;;MdA;
+0206;Friedrichshain-Kreuzberg 6;Aydin, Sevim;SPD;;Landesliste;
+0206;Friedrichshain-Kreuzberg 6;Heinemann, Sven;SPD;;Landesliste;
+0206;Friedrichshain-Kreuzberg 6;Husein, Dr. Timur;CDU;;Landesliste;
+0206;Friedrichshain-Kreuzberg 6;Wansner, Kurt;CDU;;Landesliste;
 0301;Pankow 1;Kraft, Johannes;CDU;41,6;Direkt;
-0301;Pankow 1;Buchner, Dennis;SPD;;MdA;
-0301;Pankow 1;Lenz, Stephan;CDU;;MdA;
-0301;Pankow 1;Schneider, Torsten;SPD;;MdA;
-0301;Pankow 1;Vierecke, Linda;SPD;;MdA;
+0301;Pankow 1;Buchner, Dennis;SPD;;Landesliste;
+0301;Pankow 1;Lenz, Stephan;CDU;;Landesliste;
+0301;Pankow 1;Schneider, Torsten;SPD;;Landesliste;
+0301;Pankow 1;Vierecke, Linda;SPD;;Landesliste;
 0302;Pankow 2;Bocian, Lars;CDU;31,4;Direkt;
-0302;Pankow 2;Buchner, Dennis;SPD;;MdA;
-0302;Pankow 2;Lenz, Stephan;CDU;;MdA;
-0302;Pankow 2;Schneider, Torsten;SPD;;MdA;
-0302;Pankow 2;Vierecke, Linda;SPD;;MdA;
+0302;Pankow 2;Buchner, Dennis;SPD;;Landesliste;
+0302;Pankow 2;Lenz, Stephan;CDU;;Landesliste;
+0302;Pankow 2;Schneider, Torsten;SPD;;Landesliste;
+0302;Pankow 2;Vierecke, Linda;SPD;;Landesliste;
 0303;Pankow 3;Hassepaß, Oda;GRÜNE;24,8;Direkt;
-0303;Pankow 3;Buchner, Dennis;SPD;;MdA;
-0303;Pankow 3;Lenz, Stephan;CDU;;MdA;
-0303;Pankow 3;Schneider, Torsten;SPD;;MdA;
-0303;Pankow 3;Vierecke, Linda;SPD;;MdA;
+0303;Pankow 3;Buchner, Dennis;SPD;;Landesliste;
+0303;Pankow 3;Lenz, Stephan;CDU;;Landesliste;
+0303;Pankow 3;Schneider, Torsten;SPD;;Landesliste;
+0303;Pankow 3;Vierecke, Linda;SPD;;Landesliste;
 0304;Pankow 4;Stettner, Dirk;CDU;30,2;Direkt;
-0304;Pankow 4;Buchner, Dennis;SPD;;MdA;
-0304;Pankow 4;Lenz, Stephan;CDU;;MdA;
-0304;Pankow 4;Schneider, Torsten;SPD;;MdA;
-0304;Pankow 4;Vierecke, Linda;SPD;;MdA;
+0304;Pankow 4;Buchner, Dennis;SPD;;Landesliste;
+0304;Pankow 4;Lenz, Stephan;CDU;;Landesliste;
+0304;Pankow 4;Schneider, Torsten;SPD;;Landesliste;
+0304;Pankow 4;Vierecke, Linda;SPD;;Landesliste;
 0305;Pankow 5;Krüger, Louis;GRÜNE;22,1;Direkt;
-0305;Pankow 5;Buchner, Dennis;SPD;;MdA;
-0305;Pankow 5;Lenz, Stephan;CDU;;MdA;
-0305;Pankow 5;Schneider, Torsten;SPD;;MdA;
-0305;Pankow 5;Vierecke, Linda;SPD;;MdA;
+0305;Pankow 5;Buchner, Dennis;SPD;;Landesliste;
+0305;Pankow 5;Lenz, Stephan;CDU;;Landesliste;
+0305;Pankow 5;Schneider, Torsten;SPD;;Landesliste;
+0305;Pankow 5;Vierecke, Linda;SPD;;Landesliste;
 0306;Pankow 6;Otto, Andreas;GRÜNE;41,6;Direkt;
-0306;Pankow 6;Buchner, Dennis;SPD;;MdA;
-0306;Pankow 6;Lenz, Stephan;CDU;;MdA;
-0306;Pankow 6;Schneider, Torsten;SPD;;MdA;
-0306;Pankow 6;Vierecke, Linda;SPD;;MdA;
+0306;Pankow 6;Buchner, Dennis;SPD;;Landesliste;
+0306;Pankow 6;Lenz, Stephan;CDU;;Landesliste;
+0306;Pankow 6;Schneider, Torsten;SPD;;Landesliste;
+0306;Pankow 6;Vierecke, Linda;SPD;;Landesliste;
 0307;Pankow 7;Schneider, Julia;GRÜNE;30,9;Direkt;
-0307;Pankow 7;Buchner, Dennis;SPD;;MdA;
-0307;Pankow 7;Lenz, Stephan;CDU;;MdA;
-0307;Pankow 7;Schneider, Torsten;SPD;;MdA;
-0307;Pankow 7;Vierecke, Linda;SPD;;MdA;
+0307;Pankow 7;Buchner, Dennis;SPD;;Landesliste;
+0307;Pankow 7;Lenz, Stephan;CDU;;Landesliste;
+0307;Pankow 7;Schneider, Torsten;SPD;;Landesliste;
+0307;Pankow 7;Vierecke, Linda;SPD;;Landesliste;
 0308;Pankow 8;Billig, Daniela;GRÜNE;37,2;Direkt;
-0308;Pankow 8;Buchner, Dennis;SPD;;MdA;
-0308;Pankow 8;Lenz, Stephan;CDU;;MdA;
-0308;Pankow 8;Schneider, Torsten;SPD;;MdA;
-0308;Pankow 8;Vierecke, Linda;SPD;;MdA;
+0308;Pankow 8;Buchner, Dennis;SPD;;Landesliste;
+0308;Pankow 8;Lenz, Stephan;CDU;;Landesliste;
+0308;Pankow 8;Schneider, Torsten;SPD;;Landesliste;
+0308;Pankow 8;Vierecke, Linda;SPD;;Landesliste;
 0309;Pankow 9;Schopf, Tino;SPD;25,6;Direkt;
-0309;Pankow 9;Buchner, Dennis;SPD;;MdA;
-0309;Pankow 9;Lenz, Stephan;CDU;;MdA;
-0309;Pankow 9;Schneider, Torsten;SPD;;MdA;
-0309;Pankow 9;Vierecke, Linda;SPD;;MdA;
+0309;Pankow 9;Buchner, Dennis;SPD;;Landesliste;
+0309;Pankow 9;Lenz, Stephan;CDU;;Landesliste;
+0309;Pankow 9;Schneider, Torsten;SPD;;Landesliste;
+0309;Pankow 9;Vierecke, Linda;SPD;;Landesliste;
 0401;Charlottenburg-Wilmersdorf 1;Häntsch, Stefan;CDU;28,3;Direkt;
-0401;Charlottenburg-Wilmersdorf 1;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0401;Charlottenburg-Wilmersdorf 1;Naumann, Reinhard;SPD;;MdA;
-0401;Charlottenburg-Wilmersdorf 1;Radziwill, Ülker;SPD;;MdA;
+0401;Charlottenburg-Wilmersdorf 1;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0401;Charlottenburg-Wilmersdorf 1;Naumann, Reinhard;SPD;;Landesliste;
+0401;Charlottenburg-Wilmersdorf 1;Radziwill, Ülker;SPD;;Landesliste;
 0402;Charlottenburg-Wilmersdorf 2;Hack, Ariturel;CDU;38,7;Direkt;
-0402;Charlottenburg-Wilmersdorf 2;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0402;Charlottenburg-Wilmersdorf 2;Naumann, Reinhard;SPD;;MdA;
-0402;Charlottenburg-Wilmersdorf 2;Radziwill, Ülker;SPD;;MdA;
+0402;Charlottenburg-Wilmersdorf 2;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0402;Charlottenburg-Wilmersdorf 2;Naumann, Reinhard;SPD;;Landesliste;
+0402;Charlottenburg-Wilmersdorf 2;Radziwill, Ülker;SPD;;Landesliste;
 0403;Charlottenburg-Wilmersdorf 3;Dr. Vandrey, Petra;GRÜNE;29,2;Direkt;
-0403;Charlottenburg-Wilmersdorf 3;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0403;Charlottenburg-Wilmersdorf 3;Naumann, Reinhard;SPD;;MdA;
-0403;Charlottenburg-Wilmersdorf 3;Radziwill, Ülker;SPD;;MdA;
+0403;Charlottenburg-Wilmersdorf 3;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0403;Charlottenburg-Wilmersdorf 3;Naumann, Reinhard;SPD;;Landesliste;
+0403;Charlottenburg-Wilmersdorf 3;Radziwill, Ülker;SPD;;Landesliste;
 0404;Charlottenburg-Wilmersdorf 4;Niemczyk, Aldona Maria;CDU;28,6;Direkt;
-0404;Charlottenburg-Wilmersdorf 4;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0404;Charlottenburg-Wilmersdorf 4;Naumann, Reinhard;SPD;;MdA;
-0404;Charlottenburg-Wilmersdorf 4;Radziwill, Ülker;SPD;;MdA;
+0404;Charlottenburg-Wilmersdorf 4;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0404;Charlottenburg-Wilmersdorf 4;Naumann, Reinhard;SPD;;Landesliste;
+0404;Charlottenburg-Wilmersdorf 4;Radziwill, Ülker;SPD;;Landesliste;
 0405;Charlottenburg-Wilmersdorf 5;Khalatbari, Sandra;CDU;42,3;Direkt;
-0405;Charlottenburg-Wilmersdorf 5;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0405;Charlottenburg-Wilmersdorf 5;Naumann, Reinhard;SPD;;MdA;
-0405;Charlottenburg-Wilmersdorf 5;Radziwill, Ülker;SPD;;MdA;
+0405;Charlottenburg-Wilmersdorf 5;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0405;Charlottenburg-Wilmersdorf 5;Naumann, Reinhard;SPD;;Landesliste;
+0405;Charlottenburg-Wilmersdorf 5;Radziwill, Ülker;SPD;;Landesliste;
 0406;Charlottenburg-Wilmersdorf 6;Mock-Stümer, Peer;CDU;29,2;Direkt;
-0406;Charlottenburg-Wilmersdorf 6;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0406;Charlottenburg-Wilmersdorf 6;Naumann, Reinhard;SPD;;MdA;
-0406;Charlottenburg-Wilmersdorf 6;Radziwill, Ülker;SPD;;MdA;
+0406;Charlottenburg-Wilmersdorf 6;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0406;Charlottenburg-Wilmersdorf 6;Naumann, Reinhard;SPD;;Landesliste;
+0406;Charlottenburg-Wilmersdorf 6;Radziwill, Ülker;SPD;;Landesliste;
 0407;Charlottenburg-Wilmersdorf 7;Bung, Stefanie;CDU;34,2;Direkt;
-0407;Charlottenburg-Wilmersdorf 7;Dörstelmann, Florian;SPD;;MdA;Nachgerückt
-0407;Charlottenburg-Wilmersdorf 7;Naumann, Reinhard;SPD;;MdA;
-0407;Charlottenburg-Wilmersdorf 7;Radziwill, Ülker;SPD;;MdA;
+0407;Charlottenburg-Wilmersdorf 7;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
+0407;Charlottenburg-Wilmersdorf 7;Naumann, Reinhard;SPD;;Landesliste;
+0407;Charlottenburg-Wilmersdorf 7;Radziwill, Ülker;SPD;;Landesliste;
 0501;Spandau 1;Meißner, Bettina;CDU;37,3;Direkt;
-0501;Spandau 1;Atli, Sebahat;SPD;;MdA;
-0501;Spandau 1;Saleh, Raed;SPD;;MdA;
+0501;Spandau 1;Atli, Sebahat;SPD;;Landesliste;
+0501;Spandau 1;Saleh, Raed;SPD;;Landesliste;
 0502;Spandau 2;Dr. Nas, Ersin;CDU;33,2;Direkt;
-0502;Spandau 2;Atli, Sebahat;SPD;;MdA;
-0502;Spandau 2;Saleh, Raed;SPD;;MdA;
+0502;Spandau 2;Atli, Sebahat;SPD;;Landesliste;
+0502;Spandau 2;Saleh, Raed;SPD;;Landesliste;
 0503;Spandau 3;Brauner, Kerstin;CDU;34,4;Direkt;
-0503;Spandau 3;Atli, Sebahat;SPD;;MdA;
-0503;Spandau 3;Saleh, Raed;SPD;;MdA;
+0503;Spandau 3;Atli, Sebahat;SPD;;Landesliste;
+0503;Spandau 3;Saleh, Raed;SPD;;Landesliste;
 0504;Spandau 4;Melzer, Heiko;CDU;45,3;Direkt;
-0504;Spandau 4;Atli, Sebahat;SPD;;MdA;
-0504;Spandau 4;Saleh, Raed;SPD;;MdA;
+0504;Spandau 4;Atli, Sebahat;SPD;;Landesliste;
+0504;Spandau 4;Saleh, Raed;SPD;;Landesliste;
 0505;Spandau 5;Wegner, Kai;CDU;46,9;Direkt;
-0505;Spandau 5;Atli, Sebahat;SPD;;MdA;
-0505;Spandau 5;Saleh, Raed;SPD;;MdA;
+0505;Spandau 5;Atli, Sebahat;SPD;;Landesliste;
+0505;Spandau 5;Saleh, Raed;SPD;;Landesliste;
 0601;Steglitz-Zehlendorf 1;Dr. Wein, Claudia;CDU;30,2;Direkt;
-0601;Steglitz-Zehlendorf 1;Czyborra, Dr. Ina;SPD;;MdA;
-0601;Steglitz-Zehlendorf 1;Gertig, Iris;CDU;;MdA;Nachgerückt
-0601;Steglitz-Zehlendorf 1;Golm, Mirjam;SPD;;MdA;
-0601;Steglitz-Zehlendorf 1;Kollatz, Dr. Matthias;SPD;;MdA;
-0601;Steglitz-Zehlendorf 1;Matz, Martin;SPD;;MdA;
+0601;Steglitz-Zehlendorf 1;Czyborra, Dr. Ina;SPD;;Landesliste;
+0601;Steglitz-Zehlendorf 1;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0601;Steglitz-Zehlendorf 1;Golm, Mirjam;SPD;;Landesliste;
+0601;Steglitz-Zehlendorf 1;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0601;Steglitz-Zehlendorf 1;Matz, Martin;SPD;;Landesliste;
 0602;Steglitz-Zehlendorf 2;Cywinski, Tom Jan Filip;CDU;31,3;Direkt;
-0602;Steglitz-Zehlendorf 2;Czyborra, Dr. Ina;SPD;;MdA;
-0602;Steglitz-Zehlendorf 2;Gertig, Iris;CDU;;MdA;Nachgerückt
-0602;Steglitz-Zehlendorf 2;Golm, Mirjam;SPD;;MdA;
-0602;Steglitz-Zehlendorf 2;Kollatz, Dr. Matthias;SPD;;MdA;
-0602;Steglitz-Zehlendorf 2;Matz, Martin;SPD;;MdA;
+0602;Steglitz-Zehlendorf 2;Czyborra, Dr. Ina;SPD;;Landesliste;
+0602;Steglitz-Zehlendorf 2;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0602;Steglitz-Zehlendorf 2;Golm, Mirjam;SPD;;Landesliste;
+0602;Steglitz-Zehlendorf 2;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0602;Steglitz-Zehlendorf 2;Matz, Martin;SPD;;Landesliste;
 0603;Steglitz-Zehlendorf 3;Goiny, Christian;CDU;40,5;Direkt;
-0603;Steglitz-Zehlendorf 3;Czyborra, Dr. Ina;SPD;;MdA;
-0603;Steglitz-Zehlendorf 3;Gertig, Iris;CDU;;MdA;Nachgerückt
-0603;Steglitz-Zehlendorf 3;Golm, Mirjam;SPD;;MdA;
-0603;Steglitz-Zehlendorf 3;Kollatz, Dr. Matthias;SPD;;MdA;
-0603;Steglitz-Zehlendorf 3;Matz, Martin;SPD;;MdA;
+0603;Steglitz-Zehlendorf 3;Czyborra, Dr. Ina;SPD;;Landesliste;
+0603;Steglitz-Zehlendorf 3;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0603;Steglitz-Zehlendorf 3;Golm, Mirjam;SPD;;Landesliste;
+0603;Steglitz-Zehlendorf 3;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0603;Steglitz-Zehlendorf 3;Matz, Martin;SPD;;Landesliste;
 0604;Steglitz-Zehlendorf 4;Seibeld, Cornelia Simone Michaela;CDU;41,8;Direkt;
-0604;Steglitz-Zehlendorf 4;Czyborra, Dr. Ina;SPD;;MdA;
-0604;Steglitz-Zehlendorf 4;Gertig, Iris;CDU;;MdA;Nachgerückt
-0604;Steglitz-Zehlendorf 4;Golm, Mirjam;SPD;;MdA;
-0604;Steglitz-Zehlendorf 4;Kollatz, Dr. Matthias;SPD;;MdA;
-0604;Steglitz-Zehlendorf 4;Matz, Martin;SPD;;MdA;
+0604;Steglitz-Zehlendorf 4;Czyborra, Dr. Ina;SPD;;Landesliste;
+0604;Steglitz-Zehlendorf 4;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0604;Steglitz-Zehlendorf 4;Golm, Mirjam;SPD;;Landesliste;
+0604;Steglitz-Zehlendorf 4;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0604;Steglitz-Zehlendorf 4;Matz, Martin;SPD;;Landesliste;
 0605;Steglitz-Zehlendorf 5;Friederici, Oliver;CDU;41,2;Direkt;
-0605;Steglitz-Zehlendorf 5;Czyborra, Dr. Ina;SPD;;MdA;
-0605;Steglitz-Zehlendorf 5;Gertig, Iris;CDU;;MdA;Nachgerückt
-0605;Steglitz-Zehlendorf 5;Golm, Mirjam;SPD;;MdA;
-0605;Steglitz-Zehlendorf 5;Kollatz, Dr. Matthias;SPD;;MdA;
-0605;Steglitz-Zehlendorf 5;Matz, Martin;SPD;;MdA;
+0605;Steglitz-Zehlendorf 5;Czyborra, Dr. Ina;SPD;;Landesliste;
+0605;Steglitz-Zehlendorf 5;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0605;Steglitz-Zehlendorf 5;Golm, Mirjam;SPD;;Landesliste;
+0605;Steglitz-Zehlendorf 5;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0605;Steglitz-Zehlendorf 5;Matz, Martin;SPD;;Landesliste;
 0606;Steglitz-Zehlendorf 6;Grasse, Adrian;CDU;40,0;Direkt;
-0606;Steglitz-Zehlendorf 6;Czyborra, Dr. Ina;SPD;;MdA;
-0606;Steglitz-Zehlendorf 6;Gertig, Iris;CDU;;MdA;Nachgerückt
-0606;Steglitz-Zehlendorf 6;Golm, Mirjam;SPD;;MdA;
-0606;Steglitz-Zehlendorf 6;Kollatz, Dr. Matthias;SPD;;MdA;
-0606;Steglitz-Zehlendorf 6;Matz, Martin;SPD;;MdA;
+0606;Steglitz-Zehlendorf 6;Czyborra, Dr. Ina;SPD;;Landesliste;
+0606;Steglitz-Zehlendorf 6;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0606;Steglitz-Zehlendorf 6;Golm, Mirjam;SPD;;Landesliste;
+0606;Steglitz-Zehlendorf 6;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0606;Steglitz-Zehlendorf 6;Matz, Martin;SPD;;Landesliste;
 0607;Steglitz-Zehlendorf 7;Standfuß, Stephan Carsten Günter;CDU;40,1;Direkt;
-0607;Steglitz-Zehlendorf 7;Czyborra, Dr. Ina;SPD;;MdA;
-0607;Steglitz-Zehlendorf 7;Gertig, Iris;CDU;;MdA;Nachgerückt
-0607;Steglitz-Zehlendorf 7;Golm, Mirjam;SPD;;MdA;
-0607;Steglitz-Zehlendorf 7;Kollatz, Dr. Matthias;SPD;;MdA;
-0607;Steglitz-Zehlendorf 7;Matz, Martin;SPD;;MdA;
+0607;Steglitz-Zehlendorf 7;Czyborra, Dr. Ina;SPD;;Landesliste;
+0607;Steglitz-Zehlendorf 7;Gertig, Iris;CDU;;Landesliste;Nachgerückt
+0607;Steglitz-Zehlendorf 7;Golm, Mirjam;SPD;;Landesliste;
+0607;Steglitz-Zehlendorf 7;Kollatz, Dr. Matthias;SPD;;Landesliste;
+0607;Steglitz-Zehlendorf 7;Matz, Martin;SPD;;Landesliste;
 0701;Tempelhof-Schöneberg 1;Walter, Sebastian;GRÜNE;34,4;Direkt;
-0701;Tempelhof-Schöneberg 1;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0701;Tempelhof-Schöneberg 1;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0701;Tempelhof-Schöneberg 1;Rauchfuß, Lars;SPD;;MdA;
-0701;Tempelhof-Schöneberg 1;Senge, Katharina;CDU;;MdA;
+0701;Tempelhof-Schöneberg 1;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0701;Tempelhof-Schöneberg 1;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0701;Tempelhof-Schöneberg 1;Rauchfuß, Lars;SPD;;Landesliste;
+0701;Tempelhof-Schöneberg 1;Senge, Katharina;CDU;;Landesliste;
 0702;Tempelhof-Schöneberg 2;Pieroth-Manelli, Catherina;GRÜNE;36,9;Direkt;
-0702;Tempelhof-Schöneberg 2;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0702;Tempelhof-Schöneberg 2;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0702;Tempelhof-Schöneberg 2;Rauchfuß, Lars;SPD;;MdA;
-0702;Tempelhof-Schöneberg 2;Senge, Katharina;CDU;;MdA;
+0702;Tempelhof-Schöneberg 2;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0702;Tempelhof-Schöneberg 2;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0702;Tempelhof-Schöneberg 2;Rauchfuß, Lars;SPD;;Landesliste;
+0702;Tempelhof-Schöneberg 2;Senge, Katharina;CDU;;Landesliste;
 0703;Tempelhof-Schöneberg 3;Özdemir, Orkan;SPD;32,1;Direkt;
-0703;Tempelhof-Schöneberg 3;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0703;Tempelhof-Schöneberg 3;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0703;Tempelhof-Schöneberg 3;Rauchfuß, Lars;SPD;;MdA;
-0703;Tempelhof-Schöneberg 3;Senge, Katharina;CDU;;MdA;
+0703;Tempelhof-Schöneberg 3;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0703;Tempelhof-Schöneberg 3;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0703;Tempelhof-Schöneberg 3;Rauchfuß, Lars;SPD;;Landesliste;
+0703;Tempelhof-Schöneberg 3;Senge, Katharina;CDU;;Landesliste;
 0704;Tempelhof-Schöneberg 4;Luhmann, Frank;CDU;28,5;Direkt;
-0704;Tempelhof-Schöneberg 4;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0704;Tempelhof-Schöneberg 4;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0704;Tempelhof-Schöneberg 4;Rauchfuß, Lars;SPD;;MdA;
-0704;Tempelhof-Schöneberg 4;Senge, Katharina;CDU;;MdA;
+0704;Tempelhof-Schöneberg 4;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0704;Tempelhof-Schöneberg 4;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0704;Tempelhof-Schöneberg 4;Rauchfuß, Lars;SPD;;Landesliste;
+0704;Tempelhof-Schöneberg 4;Senge, Katharina;CDU;;Landesliste;
 0705;Tempelhof-Schöneberg 5;Simon, Roman;CDU;40,3;Direkt;
-0705;Tempelhof-Schöneberg 5;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0705;Tempelhof-Schöneberg 5;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0705;Tempelhof-Schöneberg 5;Rauchfuß, Lars;SPD;;MdA;
-0705;Tempelhof-Schöneberg 5;Senge, Katharina;CDU;;MdA;
+0705;Tempelhof-Schöneberg 5;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0705;Tempelhof-Schöneberg 5;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0705;Tempelhof-Schöneberg 5;Rauchfuß, Lars;SPD;;Landesliste;
+0705;Tempelhof-Schöneberg 5;Senge, Katharina;CDU;;Landesliste;
 0706;Tempelhof-Schöneberg 6;Körber, Scott;CDU;47,4;Direkt;
-0706;Tempelhof-Schöneberg 6;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0706;Tempelhof-Schöneberg 6;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0706;Tempelhof-Schöneberg 6;Rauchfuß, Lars;SPD;;MdA;
-0706;Tempelhof-Schöneberg 6;Senge, Katharina;CDU;;MdA;
+0706;Tempelhof-Schöneberg 6;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0706;Tempelhof-Schöneberg 6;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0706;Tempelhof-Schöneberg 6;Rauchfuß, Lars;SPD;;Landesliste;
+0706;Tempelhof-Schöneberg 6;Senge, Katharina;CDU;;Landesliste;
 0707;Tempelhof-Schöneberg 7;Zander, Christian;CDU;49,6;Direkt;
-0707;Tempelhof-Schöneberg 7;Kühnemann-Grunow, Melanie;SPD;;MdA;
-0707;Tempelhof-Schöneberg 7;Neumann, Wiebke;SPD;;MdA;Nachgerückt
-0707;Tempelhof-Schöneberg 7;Rauchfuß, Lars;SPD;;MdA;
-0707;Tempelhof-Schöneberg 7;Senge, Katharina;CDU;;MdA;
+0707;Tempelhof-Schöneberg 7;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
+0707;Tempelhof-Schöneberg 7;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
+0707;Tempelhof-Schöneberg 7;Rauchfuß, Lars;SPD;;Landesliste;
+0707;Tempelhof-Schöneberg 7;Senge, Katharina;CDU;;Landesliste;
 0801;Neukölln 1;Schulze, André;GRÜNE;35,1;Direkt;
-0801;Neukölln 1;Giffey, Franziska;SPD;;MdA;
-0801;Neukölln 1;Hopp, Marcel;SPD;;MdA;
+0801;Neukölln 1;Giffey, Franziska;SPD;;Landesliste;
+0801;Neukölln 1;Hopp, Marcel;SPD;;Landesliste;
 0802;Neukölln 2;Dr. Kahlefeld, Susanna Maria;GRÜNE;34,5;Direkt;
-0802;Neukölln 2;Giffey, Franziska;SPD;;MdA;
-0802;Neukölln 2;Hopp, Marcel;SPD;;MdA;
+0802;Neukölln 2;Giffey, Franziska;SPD;;Landesliste;
+0802;Neukölln 2;Hopp, Marcel;SPD;;Landesliste;
 0803;Neukölln 3;Çağlar, Derya;SPD;23,4;Direkt;
-0803;Neukölln 3;Giffey, Franziska;SPD;;MdA;
-0803;Neukölln 3;Hopp, Marcel;SPD;;MdA;
+0803;Neukölln 3;Giffey, Franziska;SPD;;Landesliste;
+0803;Neukölln 3;Hopp, Marcel;SPD;;Landesliste;
 0804;Neukölln 4;Förster, Christopher;CDU;43,0;Direkt;
-0804;Neukölln 4;Giffey, Franziska;SPD;;MdA;
-0804;Neukölln 4;Hopp, Marcel;SPD;;MdA;
+0804;Neukölln 4;Giffey, Franziska;SPD;;Landesliste;
+0804;Neukölln 4;Hopp, Marcel;SPD;;Landesliste;
 0805;Neukölln 5;Dr. Juhnke, Robbin;CDU;43,1;Direkt;
-0805;Neukölln 5;Giffey, Franziska;SPD;;MdA;
-0805;Neukölln 5;Hopp, Marcel;SPD;;MdA;
+0805;Neukölln 5;Giffey, Franziska;SPD;;Landesliste;
+0805;Neukölln 5;Hopp, Marcel;SPD;;Landesliste;
 0806;Neukölln 6;Schenk, Olaf;CDU;45,3;Direkt;
-0806;Neukölln 6;Giffey, Franziska;SPD;;MdA;
-0806;Neukölln 6;Hopp, Marcel;SPD;;MdA;
+0806;Neukölln 6;Giffey, Franziska;SPD;;Landesliste;
+0806;Neukölln 6;Hopp, Marcel;SPD;;Landesliste;
 0901;Treptow-Köpenick 1;Gennburg, Katalin;DIE LINKE;25,9;Direkt;
-0901;Treptow-Köpenick 1;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0901;Treptow-Köpenick 1;Wolff, Dunja;SPD;;MdA;
+0901;Treptow-Köpenick 1;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0901;Treptow-Köpenick 1;Wolff, Dunja;SPD;;Landesliste;
 0902;Treptow-Köpenick 2;Düsterhöft, Lars;SPD;29,2;Direkt;
-0902;Treptow-Köpenick 2;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0902;Treptow-Köpenick 2;Wolff, Dunja;SPD;;MdA;
+0902;Treptow-Köpenick 2;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0902;Treptow-Köpenick 2;Wolff, Dunja;SPD;;Landesliste;
 0903;Treptow-Köpenick 3;Evers, Stefan;CDU;32,7;Direkt;
-0903;Treptow-Köpenick 3;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0903;Treptow-Köpenick 3;Wolff, Dunja;SPD;;MdA;
+0903;Treptow-Köpenick 3;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0903;Treptow-Köpenick 3;Wolff, Dunja;SPD;;Landesliste;
 0904;Treptow-Köpenick 4;Knack, Lisa-Bettina;CDU;27,2;Direkt;
-0904;Treptow-Köpenick 4;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0904;Treptow-Köpenick 4;Wolff, Dunja;SPD;;MdA;
+0904;Treptow-Köpenick 4;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0904;Treptow-Köpenick 4;Wolff, Dunja;SPD;;Landesliste;
 0905;Treptow-Köpenick 5;Dr. Sattelkau, Martin;CDU;27,7;Direkt;
-0905;Treptow-Köpenick 5;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0905;Treptow-Köpenick 5;Wolff, Dunja;SPD;;MdA;
+0905;Treptow-Köpenick 5;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0905;Treptow-Köpenick 5;Wolff, Dunja;SPD;;Landesliste;
 0906;Treptow-Köpenick 6;Penn, Maik;CDU;31,6;Direkt;
-0906;Treptow-Köpenick 6;Freier-Winterwerb, Alexander;SPD;;MdA;Nachgerückt
-0906;Treptow-Köpenick 6;Wolff, Dunja;SPD;;MdA;
+0906;Treptow-Köpenick 6;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
+0906;Treptow-Köpenick 6;Wolff, Dunja;SPD;;Landesliste;
 1001;Marzahn-Hellersdorf 1;Lindemann, Gunnar Norbert;AfD;28,8;Direkt;
-1001;Marzahn-Hellersdorf 1;Lehmann, Jan;SPD;;MdA;
-1001;Marzahn-Hellersdorf 1;Spranger, Iris;SPD;;MdA;
+1001;Marzahn-Hellersdorf 1;Lehmann, Jan;SPD;;Landesliste;
+1001;Marzahn-Hellersdorf 1;Spranger, Iris;SPD;;Landesliste;
 1002;Marzahn-Hellersdorf 2;Gauks, Olga;CDU;25,5;Direkt;
-1002;Marzahn-Hellersdorf 2;Lehmann, Jan;SPD;;MdA;
-1002;Marzahn-Hellersdorf 2;Spranger, Iris;SPD;;MdA;
+1002;Marzahn-Hellersdorf 2;Lehmann, Jan;SPD;;Landesliste;
+1002;Marzahn-Hellersdorf 2;Spranger, Iris;SPD;;Landesliste;
 1003;Marzahn-Hellersdorf 3;Auricht, Jeannette;AfD;25,9;Direkt;
-1003;Marzahn-Hellersdorf 3;Lehmann, Jan;SPD;;MdA;
-1003;Marzahn-Hellersdorf 3;Spranger, Iris;SPD;;MdA;
+1003;Marzahn-Hellersdorf 3;Lehmann, Jan;SPD;;Landesliste;
+1003;Marzahn-Hellersdorf 3;Spranger, Iris;SPD;;Landesliste;
 1004;Marzahn-Hellersdorf 4;Gräff, Christian;CDU;42,9;Direkt;
-1004;Marzahn-Hellersdorf 4;Lehmann, Jan;SPD;;MdA;
-1004;Marzahn-Hellersdorf 4;Spranger, Iris;SPD;;MdA;
+1004;Marzahn-Hellersdorf 4;Lehmann, Jan;SPD;;Landesliste;
+1004;Marzahn-Hellersdorf 4;Spranger, Iris;SPD;;Landesliste;
 1005;Marzahn-Hellersdorf 5;Günther-Wünsch, Katharina;CDU;45,0;Direkt;
-1005;Marzahn-Hellersdorf 5;Lehmann, Jan;SPD;;MdA;
-1005;Marzahn-Hellersdorf 5;Spranger, Iris;SPD;;MdA;
+1005;Marzahn-Hellersdorf 5;Lehmann, Jan;SPD;;Landesliste;
+1005;Marzahn-Hellersdorf 5;Spranger, Iris;SPD;;Landesliste;
 1006;Marzahn-Hellersdorf 6;Herrmann, Alexander;CDU;37,8;Direkt;
-1006;Marzahn-Hellersdorf 6;Lehmann, Jan;SPD;;MdA;
-1006;Marzahn-Hellersdorf 6;Spranger, Iris;SPD;;MdA;
+1006;Marzahn-Hellersdorf 6;Lehmann, Jan;SPD;;Landesliste;
+1006;Marzahn-Hellersdorf 6;Spranger, Iris;SPD;;Landesliste;
 1101;Lichtenberg 1;Freymark, Danny;CDU;40,8;Direkt;
-1101;Lichtenberg 1;Geisel, Andreas;SPD;;MdA;
-1101;Lichtenberg 1;Lüdke, Tamara;SPD;;MdA;
+1101;Lichtenberg 1;Geisel, Andreas;SPD;;Landesliste;
+1101;Lichtenberg 1;Lüdke, Tamara;SPD;;Landesliste;
 1102;Lichtenberg 2;Dr. Pätzold, Martin;CDU;39,5;Direkt;
-1102;Lichtenberg 2;Geisel, Andreas;SPD;;MdA;
-1102;Lichtenberg 2;Lüdke, Tamara;SPD;;MdA;
+1102;Lichtenberg 2;Geisel, Andreas;SPD;;Landesliste;
+1102;Lichtenberg 2;Lüdke, Tamara;SPD;;Landesliste;
 1103;Lichtenberg 3;Haustein, Dennis;CDU;23,4;Direkt;
-1103;Lichtenberg 3;Geisel, Andreas;SPD;;MdA;
-1103;Lichtenberg 3;Lüdke, Tamara;SPD;;MdA;
+1103;Lichtenberg 3;Geisel, Andreas;SPD;;Landesliste;
+1103;Lichtenberg 3;Lüdke, Tamara;SPD;;Landesliste;
 1104;Lichtenberg 4;Schlüsselburg, Sebastian;DIE LINKE;27,2;Direkt;
-1104;Lichtenberg 4;Geisel, Andreas;SPD;;MdA;
-1104;Lichtenberg 4;Lüdke, Tamara;SPD;;MdA;
+1104;Lichtenberg 4;Geisel, Andreas;SPD;;Landesliste;
+1104;Lichtenberg 4;Lüdke, Tamara;SPD;;Landesliste;
 1105;Lichtenberg 5;Klein, Hendrikje;DIE LINKE;25,0;Direkt;
-1105;Lichtenberg 5;Geisel, Andreas;SPD;;MdA;
-1105;Lichtenberg 5;Lüdke, Tamara;SPD;;MdA;
+1105;Lichtenberg 5;Geisel, Andreas;SPD;;Landesliste;
+1105;Lichtenberg 5;Lüdke, Tamara;SPD;;Landesliste;
 1106;Lichtenberg 6;Usik, Lilia;CDU;22,4;Direkt;
-1106;Lichtenberg 6;Geisel, Andreas;SPD;;MdA;
-1106;Lichtenberg 6;Lüdke, Tamara;SPD;;MdA;
+1106;Lichtenberg 6;Geisel, Andreas;SPD;;Landesliste;
+1106;Lichtenberg 6;Lüdke, Tamara;SPD;;Landesliste;
 1201;Reinickendorf 1;Dregger, Burkard;CDU;37,2;Direkt;
-1201;Reinickendorf 1;Graßelt, Niklas;CDU;;MdA;
-1201;Reinickendorf 1;König, Bettina;SPD;;MdA;
-1201;Reinickendorf 1;Meyer, Sven;SPD;;MdA;
-1201;Reinickendorf 1;Stroedter, Jörg;SPD;;MdA;
+1201;Reinickendorf 1;Graßelt, Niklas;CDU;;Landesliste;
+1201;Reinickendorf 1;König, Bettina;SPD;;Landesliste;
+1201;Reinickendorf 1;Meyer, Sven;SPD;;Landesliste;
+1201;Reinickendorf 1;Stroedter, Jörg;SPD;;Landesliste;
 1202;Reinickendorf 2;Demirbüken-Wegner, Emine;CDU;38,9;Direkt;
-1202;Reinickendorf 2;Graßelt, Niklas;CDU;;MdA;
-1202;Reinickendorf 2;König, Bettina;SPD;;MdA;
-1202;Reinickendorf 2;Meyer, Sven;SPD;;MdA;
-1202;Reinickendorf 2;Stroedter, Jörg;SPD;;MdA;
+1202;Reinickendorf 2;Graßelt, Niklas;CDU;;Landesliste;
+1202;Reinickendorf 2;König, Bettina;SPD;;Landesliste;
+1202;Reinickendorf 2;Meyer, Sven;SPD;;Landesliste;
+1202;Reinickendorf 2;Stroedter, Jörg;SPD;;Landesliste;
 1203;Reinickendorf 3;Schmidt, Stephan;CDU;44,1;Direkt;
-1203;Reinickendorf 3;Graßelt, Niklas;CDU;;MdA;
-1203;Reinickendorf 3;König, Bettina;SPD;;MdA;
-1203;Reinickendorf 3;Meyer, Sven;SPD;;MdA;
-1203;Reinickendorf 3;Stroedter, Jörg;SPD;;MdA;
+1203;Reinickendorf 3;Graßelt, Niklas;CDU;;Landesliste;
+1203;Reinickendorf 3;König, Bettina;SPD;;Landesliste;
+1203;Reinickendorf 3;Meyer, Sven;SPD;;Landesliste;
+1203;Reinickendorf 3;Stroedter, Jörg;SPD;;Landesliste;
 1204;Reinickendorf 4;Wohlert, Björn;CDU;41,3;Direkt;
-1204;Reinickendorf 4;Graßelt, Niklas;CDU;;MdA;
-1204;Reinickendorf 4;König, Bettina;SPD;;MdA;
-1204;Reinickendorf 4;Meyer, Sven;SPD;;MdA;
-1204;Reinickendorf 4;Stroedter, Jörg;SPD;;MdA;
+1204;Reinickendorf 4;Graßelt, Niklas;CDU;;Landesliste;
+1204;Reinickendorf 4;König, Bettina;SPD;;Landesliste;
+1204;Reinickendorf 4;Meyer, Sven;SPD;;Landesliste;
+1204;Reinickendorf 4;Stroedter, Jörg;SPD;;Landesliste;
 1205;Reinickendorf 5;Dietmann, Michael;CDU;43,8;Direkt;
-1205;Reinickendorf 5;Graßelt, Niklas;CDU;;MdA;
-1205;Reinickendorf 5;König, Bettina;SPD;;MdA;
-1205;Reinickendorf 5;Meyer, Sven;SPD;;MdA;
-1205;Reinickendorf 5;Stroedter, Jörg;SPD;;MdA;
+1205;Reinickendorf 5;Graßelt, Niklas;CDU;;Landesliste;
+1205;Reinickendorf 5;König, Bettina;SPD;;Landesliste;
+1205;Reinickendorf 5;Meyer, Sven;SPD;;Landesliste;
+1205;Reinickendorf 5;Stroedter, Jörg;SPD;;Landesliste;
 1206;Reinickendorf 6;Balzer, Frank;CDU;45,7;Direkt;
-1206;Reinickendorf 6;Graßelt, Niklas;CDU;;MdA;
-1206;Reinickendorf 6;König, Bettina;SPD;;MdA;
-1206;Reinickendorf 6;Meyer, Sven;SPD;;MdA;
-1206;Reinickendorf 6;Stroedter, Jörg;SPD;;MdA;
+1206;Reinickendorf 6;Graßelt, Niklas;CDU;;Landesliste;
+1206;Reinickendorf 6;König, Bettina;SPD;;Landesliste;
+1206;Reinickendorf 6;Meyer, Sven;SPD;;Landesliste;
+1206;Reinickendorf 6;Stroedter, Jörg;SPD;;Landesliste;
 

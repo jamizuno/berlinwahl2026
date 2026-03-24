@@ -1693,7 +1693,11 @@ function renderPanel(context) {
               if (awkLabel) parts.push(awkLabel);
               return parts.join(" · ");
             })()
-            : (entry.wahlkreis ? `Direktmandat ${awkLabel} – ${entry.wahlkreis}` : `Direktmandat ${awkLabel}`.trim());
+            : (() => {
+              const parts = ["Landtagsabgeordnete/r (MdA)", "Direktmandat"];
+              if (awkLabel) parts.push(awkLabel);
+              return parts.join(" · ");
+            })();
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name">${entry.name}</div>
