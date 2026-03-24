@@ -1685,9 +1685,14 @@ function renderPanel(context) {
         ordered.forEach(entry => {
           const isList = entry.art !== "Direkt";
           const awkLabel = entry.awk ? `WK ${entry.awk}` : "";
-          const labelText = isList ? "Abgeordnetenhaus (Bezirksliste)" : label;
+          const labelText = label;
           const role = isList
-            ? (entry.note ? `Abgeordnetenhaus (Bezirksliste) · ${entry.note}${awkLabel ? ` · ${awkLabel}` : ""}` : `Abgeordnetenhaus (Bezirksliste)${awkLabel ? ` · ${awkLabel}` : ""}`)
+            ? (() => {
+              const parts = ["Landtagsabgeordnete/r (MdA)", "Listenmandat"];
+              if (entry.note) parts.push(entry.note);
+              if (awkLabel) parts.push(awkLabel);
+              return parts.join(" · ");
+            })()
             : (entry.wahlkreis ? `Direktmandat ${awkLabel} – ${entry.wahlkreis}` : `Direktmandat ${awkLabel}`.trim());
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>
