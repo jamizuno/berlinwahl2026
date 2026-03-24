@@ -918,6 +918,9 @@ function selectOverlayLayer(layer, baseStyle) {
   selectedOverlayLayer = layer;
   selectedOverlayBaseStyle = baseStyle;
   layer.setStyle(getHighlightStyle(baseStyle));
+  if (typeof layer.bringToFront === "function") {
+    layer.bringToFront();
+  }
 }
 
 function buildOverlayLayer(data, layerConfig, baseStyle) {
@@ -1749,17 +1752,8 @@ function collectBundestagEntries(context) {
 }
 
 function renderPanel(context) {
-  const scopeList = mapScopeByLevel[currentLevel] || [];
-  const scopeHtml = scopeList.length
-    ? `<div class="rep-card">
-        <div class="rep-level">Kartebenen</div>
-        <div class="rep-role">${scopeList.join(" · ")}</div>
-      </div>`
-    : "";
-
   if (!context) {
     document.getElementById('districtInfo').innerHTML = `
-      ${scopeHtml}
       <div class="empty-state">
         <div class="empty-icon">🗺️</div>
         <div class="empty-text">Bezirk auf der Karte auswählen</div>
@@ -1778,7 +1772,7 @@ function renderPanel(context) {
       ${headerNr ? `<div class="bezirk-nr">Bezirk ${headerNr}</div>` : `<div class="bezirk-nr">Stadtgebiet</div>`}
       <h2>${headerName}</h2>
     </div>
-    ${scopeHtml}`;
+    `;
 
   for (const lvl of levels) {
     const label = levelLabels[lvl];
