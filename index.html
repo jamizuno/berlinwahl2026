@@ -601,11 +601,11 @@ const mapScopeByLevel = {
 };
 
 const mapSelectionByLevelIds = {
-  bezirk: ["kieze", "einschulbereiche", "postleitzahlen", "ortsteile", "bezirke"],
-  abgeordnetenhaus: ["agh", "ortsteile", "bezirke"],
+  bezirk: ["kieze", "ortsteile", "bezirke"],
+  abgeordnetenhaus: ["agh", "bezirke"],
   bundestag: ["btg", "eu"],
   eu: ["eu"],
-  alle: ["eu", "btg", "agh", "bezirke", "ortsteile", "postleitzahlen", "einschulbereiche", "kieze"]
+  alle: ["eu", "bezirke", "kieze"]
 };
 
 let currentLevel = "alle";
@@ -675,27 +675,27 @@ const wfsLayers = [
     style: { color: "#9b6df0", weight: 1, fillOpacity: 0 },
     tooltipProps: ["plz", "postleitzahl", "name"]
   },
-  {
-    id: "ortsteile",
-    label: "Ortsteile",
-    url: "https://gdi.berlin.de/services/wfs/alkis_ortsteile",
-    preferredTypeNames: ["alkis_ortsteile:ortsteile"],
-    pane: "pane-ortsteile",
-    zIndex: 435,
-    style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
-    tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
-  },
-  {
-    id: "bezirke",
-    label: "Bezirke",
-    url: "https://gdi.berlin.de/services/wfs/alkis_bezirke",
-    preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
-    pane: "pane-bezirke",
-    zIndex: 440,
-    style: { color: "#7dd492", weight: 2.4, fillOpacity: 0 },
-    tooltipProps: ["name", "bezirk", "bezeichnung"],
-    defaultOn: true
-  },
+    {
+      id: "ortsteile",
+      label: "Ortsteile",
+      url: "https://gdi.berlin.de/services/wfs/alkis_ortsteile",
+      preferredTypeNames: ["alkis_ortsteile:ortsteile"],
+      pane: "pane-ortsteile",
+      zIndex: 441,
+      style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
+      tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
+    },
+    {
+      id: "bezirke",
+      label: "Bezirke",
+      url: "https://gdi.berlin.de/services/wfs/alkis_bezirke",
+      preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
+      pane: "pane-bezirke",
+      zIndex: 436,
+      style: { color: "#7dd492", weight: 2.4, fillOpacity: 0 },
+      tooltipProps: ["name", "bezirk", "bezeichnung"],
+      defaultOn: true
+    },
     {
       id: "btg",
       label: "Bundestag WK",
@@ -731,14 +731,14 @@ const layerLevelMap = {
 };
 
 const overlayOrder = [
-  "eu",
-  "btg",
+  "kieze",
+  "einschulbereiche",
+  "postleitzahlen",
+  "ortsteile",
   "agh",
   "bezirke",
-  "ortsteile",
-  "postleitzahlen",
-  "einschulbereiche",
-  "kieze"
+  "btg",
+  "eu"
 ];
 
 // -----------------------------------------------------------------------
@@ -855,19 +855,31 @@ function buildOverlayLayer(data, layerConfig, baseStyle) {
           : id === "btg"
           ? getBtgTooltip(feature)
           : id === "bezirke"
-          ? getBezirkNameFromFeature(feature)
+          ? null
           : id === "ortsteile"
           ? getOrtsteilTooltip(feature, tooltipProps)
           : pickTooltipText(feature, tooltipProps);
-      if (tooltip) {
-        lyr.bindTooltip(tooltip, {
-          permanent: false,
-          direction: "center",
-          className: "district-tooltip",
-          opacity: 0.9
-        });
-      }
-      lyr.on("click", () => handleLayerClick(id, feature));
+        if (tooltip) {
+          lyr.bindTooltip(tooltip, {
+            permanent: false,
+            direction: "center",
+            className: "district-tooltip",
+            opacity: 0.9
+          });
+        }
+        if (id === "bezirke") {
+          const label = getBezirkNameFromFeature(feature);
+          if (label) {
+            lyr.bindTooltip(label, {
+              permanent: true,
+              direction: "center",
+              className: "bezirk-label",
+              opacity: 0.9,
+              interactive: false
+            });
+          }
+        }
+        lyr.on("click", () => handleLayerClick(id, feature));
     }
   });
 }
@@ -1831,7 +1843,10 @@ async function initData() {
 
 // Add tooltip style
 const style = document.createElement('style');
-style.textContent = `.district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }`;
+style.textContent = `
+  .district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .bezirk-label { background: transparent; border: none; box-shadow: none; color: #7dd492; font-weight: 700; font-size: 0.8rem; text-shadow: 0 0 6px rgba(10,12,18,0.9); pointer-events: none; }
+`;
 document.head.appendChild(style);
 
 initData().then(initOverlayLayers);
