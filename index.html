@@ -548,6 +548,20 @@ const bezirkeData = {
   }
 };
 
+const euCitywide = (() => {
+  const seen = new Set();
+  const list = [];
+  Object.values(bezirkeData).forEach(entry => {
+    (entry.eu || []).forEach(rep => {
+      const key = `${rep.name}|${rep.party}|${rep.role}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      list.push(rep);
+    });
+  });
+  return list;
+})();
+
 const partyColors = {
   CDU: "#5b9bd5", SPD: "#e06070", Grüne: "#5db87a",
   Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050"
@@ -566,15 +580,117 @@ let geoLayer = null;
 let selectedLayer = null;
 let selectedFeature = null;
 let berlinGeoJSON = null;
+let overlayControl = null;
+let aghOverlay = null;
+const wfsOverlayLayers = new Map();
+let activeContext = null;
 
 const districtByNumber = new Map();
 const districtByName = new Map();
 const aghByAwk = new Map();
+const aghByBez = new Map();
+const btgByWkr = new Map();
+let btgCitywide = [];
+const bvvByBezirk = new Map();
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
 const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
+const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
+const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
+
+const wfsLayers = [
+  {
+    id: "kieze",
+    label: "Kieze (LOR 2021)",
+    url: "https://gdi.berlin.de/services/wfs/lor_2021",
+    preferredTypeNames: [
+      "lor_2021:a_lor_plr_2021",
+      "lor_2021:a_lor_plr",
+      "lor_2021:plr_2021",
+      "lor_2021:kieze",
+      "lor_2021:kiez"
+    ],
+    pane: "pane-kieze",
+    zIndex: 420,
+    style: { color: "#4f8bd6", weight: 1, fillOpacity: 0 },
+    tooltipProps: ["plr_name", "name", "bezeichnung", "kiez"]
+  },
+  {
+    id: "einschulbereiche",
+    label: "Einschulbereiche",
+    url: "https://gdi.berlin.de/services/wfs/esb",
+    preferredTypeNames: ["esb:esb_2026", "esb:esb_2025", "esb:esb"],
+    pane: "pane-einschul",
+    zIndex: 425,
+    style: { color: "#f0b44a", weight: 1, fillOpacity: 0 },
+    tooltipProps: ["esb_text", "esb", "name", "bezeichnung"]
+  },
+  {
+    id: "postleitzahlen",
+    label: "Postleitzahlen",
+    url: "https://gdi.berlin.de/services/wfs/postleitzahlen",
+    preferredTypeNames: ["postleitzahlen:postleitzahlen", "postleitzahlen:plz"],
+    pane: "pane-plz",
+    zIndex: 430,
+    style: { color: "#9b6df0", weight: 1, fillOpacity: 0 },
+    tooltipProps: ["plz", "postleitzahl", "name"]
+  },
+  {
+    id: "ortsteile",
+    label: "Ortsteile",
+    url: "https://gdi.berlin.de/services/wfs/alkis_ortsteile",
+    preferredTypeNames: ["alkis_ortsteile:ortsteile"],
+    pane: "pane-ortsteile",
+    zIndex: 435,
+    style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
+    tooltipProps: ["name", "ortsteil", "bezeichnung"]
+  },
+  {
+    id: "bezirke",
+    label: "Bezirke",
+    url: "https://gdi.berlin.de/services/wfs/alkis_bezirke",
+    preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
+    pane: "pane-bezirke",
+    zIndex: 440,
+    style: { color: "#f2e38b", weight: 2, fillOpacity: 0 },
+    tooltipProps: ["name", "bezirk", "bezeichnung"],
+    defaultOn: true
+  },
+  {
+    id: "btg",
+    label: "BTG Wahlbezirke",
+    url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map",
+    preferredTypeNames: ["ms:Wahlkreise"],
+    pane: "pane-btg",
+    zIndex: 445,
+    style: { color: "#58c0c7", weight: 1.5, fillOpacity: 0 },
+    tooltipProps: ["WKR_NAME", "WKR_NR", "name"]
+  },
+  {
+    id: "eu",
+    label: "Berlin Stadtgebiet (Land)",
+    url: "https://gdi.berlin.de/services/wfs/alkis_land",
+    preferredTypeNames: ["alkis_land:land"],
+    pane: "pane-land",
+    zIndex: 415,
+    style: { color: "#c8a96e", weight: 2.5, fillOpacity: 0 },
+    tooltipProps: ["name", "bezeichnung"],
+    defaultOn: true
+  }
+];
+
+const layerLevelMap = {
+  kieze: ["bezirk"],
+  einschulbereiche: ["bezirk"],
+  postleitzahlen: ["bezirk", "abgeordnetenhaus"],
+  ortsteile: ["bezirk", "abgeordnetenhaus"],
+  bezirke: ["abgeordnetenhaus", "bezirk"],
+  agh: ["abgeordnetenhaus"],
+  btg: ["bundestag"],
+  eu: ["eu"]
+};
 
 // -----------------------------------------------------------------------
 // MAP INIT
@@ -589,6 +705,126 @@ const map = L.map('map', {
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
   maxZoom: 19
 }).addTo(map);
+
+overlayControl = L.control.layers(null, {}, { collapsed: false }).addTo(map);
+
+const wfsDefaults = {
+  version: "2.0.0",
+  outputFormat: "application/json",
+  srsName: "EPSG:4326"
+};
+
+function ensurePane(name, zIndex) {
+  if (map.getPane(name)) return;
+  map.createPane(name);
+  map.getPane(name).style.zIndex = zIndex;
+}
+
+function buildWfsCapsUrl(baseUrl) {
+  const params = new URLSearchParams({
+    service: "WFS",
+    request: "GetCapabilities"
+  });
+  return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${params.toString()}`;
+}
+
+function buildWfsGetFeatureUrl(baseUrl, typeName, outputFormat = wfsDefaults.outputFormat) {
+  const params = new URLSearchParams({
+    service: "WFS",
+    request: "GetFeature",
+    version: wfsDefaults.version,
+    typeNames: typeName,
+    outputFormat,
+    srsName: wfsDefaults.srsName
+  });
+  return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${params.toString()}`;
+}
+
+async function fetchWfsTypeNames(baseUrl) {
+  const capsUrl = buildWfsCapsUrl(baseUrl);
+  const res = await fetch(capsUrl);
+  const text = await res.text();
+  const xml = new DOMParser().parseFromString(text, "text/xml");
+  const featureTypes = Array.from(xml.getElementsByTagNameNS("*", "FeatureType"));
+  return featureTypes
+    .map(ft => ft.getElementsByTagNameNS("*", "Name")[0]?.textContent)
+    .filter(Boolean);
+}
+
+async function resolveTypeName(baseUrl, preferredTypeNames = []) {
+  const names = await fetchWfsTypeNames(baseUrl);
+  if (!names || names.length === 0) return null;
+  for (const pref of preferredTypeNames) {
+    if (names.includes(pref)) return pref;
+  }
+  return names[0];
+}
+
+function pickTooltipText(feature, props) {
+  if (!feature?.properties) return null;
+  for (const key of props || []) {
+    const value = feature.properties[key];
+    if (value !== null && value !== undefined && String(value).trim() !== "") {
+      return String(value).trim();
+    }
+  }
+  return null;
+}
+
+async function addWfsOverlayLayer(layerConfig) {
+  const {
+    id,
+    label,
+    url,
+    preferredTypeNames,
+    pane,
+    zIndex,
+    style,
+    tooltipProps,
+    defaultOn
+  } = layerConfig;
+
+  try {
+    ensurePane(pane, zIndex);
+    const typeName = await resolveTypeName(url, preferredTypeNames);
+    if (!typeName) throw new Error(`No WFS typename found for ${label}`);
+    const featureUrl = buildWfsGetFeatureUrl(url, typeName);
+    let data = null;
+    try {
+      const res = await fetch(featureUrl);
+      data = await res.json();
+    } catch (err) {
+      const altUrl = buildWfsGetFeatureUrl(url, typeName, "application/json; subtype=geojson");
+      const altRes = await fetch(altUrl);
+      data = await altRes.json();
+    }
+    const layer = L.geoJSON(data, {
+      pane,
+      style,
+      onEachFeature: (feature, lyr) => {
+        const tooltip = pickTooltipText(feature, tooltipProps);
+        if (tooltip) {
+          lyr.bindTooltip(tooltip, {
+            permanent: false,
+            direction: "center",
+            className: "district-tooltip",
+            opacity: 0.9
+          });
+        }
+        lyr.on("click", () => handleLayerClick(id, feature));
+      }
+    });
+    wfsOverlayLayers.set(id, layer);
+    overlayControl.addOverlay(layer, label);
+    if (defaultOn) layer.addTo(map);
+  } catch (err) {
+    console.warn(`WFS layer failed: ${label}`, err);
+  }
+}
+
+async function initOverlayLayers() {
+  await Promise.all(wfsLayers.map(addWfsOverlayLayer));
+}
 
 // -----------------------------------------------------------------------
 // GeoJSON – generated at runtime from QGIS data (AWK_AH2026.shp + CSV)
@@ -608,8 +844,12 @@ function normalizeAwk(value) {
 function normalizeParty(value) {
   const raw = String(value || "").trim();
   const upper = raw.toUpperCase();
-  if (upper === "GRÜNE" || upper === "GRUENE") return "Grüne";
+  if (upper.includes("BÜNDNIS 90") || upper === "GRÜNE" || upper === "GRUENE") return "Grüne";
   if (upper === "DIE LINKE" || upper === "LINKE") return "Linke";
+  if (upper === "CDU" || upper.includes("CHRISTLICH DEMOKRATISCHE UNION")) return "CDU";
+  if (upper === "SPD" || upper.includes("SOZIALDEMOKRATISCHE")) return "SPD";
+  if (upper === "FDP" || upper.includes("FREIE DEMOKRATISCHE")) return "FDP";
+  if (upper === "AFD" || upper.includes("ALTERNATIVE FÜR DEUTSCHLAND")) return "AfD";
   return raw;
 }
 
@@ -632,6 +872,83 @@ function reprojectGeometry(geom) {
     return { ...geom, coordinates: geom.coordinates.map(poly => poly.map(ring => ring.map(reprojectCoords))) };
   }
   return geom;
+}
+
+function pickProp(feature, keys) {
+  if (!feature?.properties) return null;
+  for (const key of keys) {
+    const value = feature.properties[key];
+    if (value !== null && value !== undefined && String(value).trim() !== "") {
+      return value;
+    }
+  }
+  return null;
+}
+
+function getGeometryBounds(geom) {
+  if (!geom) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  const visit = (coords) => {
+    if (typeof coords[0] === "number") {
+      const x = coords[0], y = coords[1];
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+      return;
+    }
+    coords.forEach(visit);
+  };
+  visit(geom.coordinates);
+  if (!Number.isFinite(minX)) return null;
+  return { minX, minY, maxX, maxY };
+}
+
+function getFeatureCentroid(feature) {
+  const geom = feature?.geometry;
+  if (!geom) return null;
+  if (geom.type === "Point") return geom.coordinates;
+  const bounds = getGeometryBounds(geom);
+  if (!bounds) return null;
+  return [(bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2];
+}
+
+function pointInRing(point, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0], yi = ring[i][1];
+    const xj = ring[j][0], yj = ring[j][1];
+    const intersect = ((yi > point[1]) !== (yj > point[1])) &&
+      (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi + 0.0) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygon(point, polygon) {
+  if (!pointInRing(point, polygon[0])) return false;
+  for (let i = 1; i < polygon.length; i++) {
+    if (pointInRing(point, polygon[i])) return false;
+  }
+  return true;
+}
+
+function featureContainsPoint(feature, point) {
+  const geom = feature?.geometry;
+  if (!geom || !point) return false;
+  if (geom.type === "Polygon") return pointInPolygon(point, geom.coordinates);
+  if (geom.type === "MultiPolygon") {
+    return geom.coordinates.some(poly => pointInPolygon(point, poly));
+  }
+  return false;
+}
+
+function findContainingAghFeature(point) {
+  if (!berlinGeoJSON?.features) return null;
+  for (const feature of berlinGeoJSON.features) {
+    if (featureContainsPoint(feature, point)) return feature;
+  }
+  return null;
 }
 
 function loadDistrictCSV() {
@@ -675,13 +992,128 @@ function loadAghCSV() {
           const art = (row.Art || "Direkt").trim();
           const note = (row.Hinweis || "").trim();
           if (!aghByAwk.has(awk)) aghByAwk.set(awk, []);
-          aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note });
+          aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note, awk });
         });
         resolve();
       },
       error: (err) => reject(err)
     });
   });
+}
+
+function normalizeWkr(value) {
+  if (value === null || value === undefined) return "";
+  const raw = String(value).trim();
+  if (!raw) return "";
+  const num = Number.parseInt(raw, 10);
+  return Number.isNaN(num) ? raw : String(num);
+}
+
+function buildFullName(row) {
+  const parts = [
+    row.Titel,
+    row.Vornamen,
+    row.Namenszusatz,
+    row.Nachname
+  ].map(v => (v || "").trim()).filter(Boolean);
+  return parts.join(" ");
+}
+
+function pushUnique(list, entry) {
+  const key = `${entry.name}|${entry.party}|${entry.role || entry.wahlkreis || entry.awk || entry.art || ""}`;
+  if (!list._keys) list._keys = new Set();
+  if (list._keys.has(key)) return;
+  list._keys.add(key);
+  list.push(entry);
+}
+
+function loadBtgCSV() {
+  return new Promise((resolve, reject) => {
+    Papa.parse(btgCsvUrl, {
+      download: true,
+      header: false,
+      delimiter: ";",
+      skipEmptyLines: true,
+      complete: (result) => {
+        const rows = result.data || [];
+        const headerIndex = rows.findIndex(r => (r && r[0]) === "Wahlart");
+        if (headerIndex === -1) return resolve();
+        const headers = rows[headerIndex];
+        const citywide = [];
+        for (let i = headerIndex + 1; i < rows.length; i++) {
+          const rowArr = rows[i];
+          if (!rowArr || rowArr.length === 0) continue;
+          const row = {};
+          headers.forEach((h, idx) => { row[h] = rowArr[idx]; });
+          if ((row.Wahlart || "").trim() !== "BT") continue;
+          if ((row.GebietLandAbk || "").trim() !== "BE") continue;
+
+          const name = buildFullName(row);
+          if (!name) continue;
+          const party = normalizeParty(row.Gruppenname || row.GruppennameLang);
+          const gebietsart = (row.Gebietsart || "").trim();
+          const gebietsnummer = normalizeWkr(row.Gebietsnummer);
+          const gebietsname = (row.Gebietsname || "").trim();
+          const listenplatz = (row.Listenplatz || "").trim();
+
+          if (gebietsart === "Wahlkreis" && gebietsnummer) {
+            const role = gebietsname
+              ? `Direktmandat WK ${gebietsnummer} – ${gebietsname}`
+              : `Direktmandat WK ${gebietsnummer}`;
+            const entry = { name, party, role, art: "Direkt", wkr: gebietsnummer };
+            if (!btgByWkr.has(gebietsnummer)) btgByWkr.set(gebietsnummer, []);
+            pushUnique(btgByWkr.get(gebietsnummer), entry);
+          } else if (gebietsart === "Land") {
+            const role = listenplatz
+              ? `Landesliste Berlin (Listenplatz ${listenplatz})`
+              : "Landesliste Berlin";
+            const entry = { name, party, role, art: "Liste" };
+            pushUnique(citywide, entry);
+          }
+        }
+        btgCitywide = citywide;
+        resolve();
+      },
+      error: (err) => reject(err)
+    });
+  });
+}
+
+function parseBvvFile(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trimEnd()).filter(l => l.trim() !== "");
+  if (lines.length <= 1) return [];
+  const dataLines = lines.slice(1);
+  const entries = [];
+  for (let i = 0; i < dataLines.length; i += 4) {
+    const name = (dataLines[i] || "").split("\t")[0]?.trim();
+    const role = (dataLines[i + 1] || "").split("\t")[0]?.trim();
+    const partyRaw = (dataLines[i + 2] || "").split("\t")[0]?.trim();
+    const since = (dataLines[i + 3] || "").split("\t")[0]?.trim();
+    if (!name) continue;
+    entries.push({
+      name,
+      party: normalizeParty(partyRaw),
+      role: role || "BVV",
+      since
+    });
+  }
+  return entries;
+}
+
+async function loadBvvLists() {
+  const bezirke = Object.keys(bezirkeData);
+  await Promise.all(bezirke.map(async (bezirk) => {
+    const fileName = `BVV-${bezirk}.txt`;
+    const fileUrl = encodeURI(`${bvvBasePath}/${fileName}`);
+    try {
+      const res = await fetch(fileUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      bvvByBezirk.set(bezirk, parseBvvFile(text));
+    } catch (err) {
+      console.warn(`BVV list not found for ${bezirk}: ${fileName}`, err);
+    }
+  }));
 }
 
 async function loadWahlkreiseGeoJSON() {
@@ -705,6 +1137,17 @@ async function loadWahlkreiseGeoJSON() {
     features.push(feature);
   }
   return { type: "FeatureCollection", features };
+}
+
+function indexAghByBezirk(geojson) {
+  aghByBez.clear();
+  geojson?.features?.forEach(feature => {
+    const bez = normalizeBez(feature.properties?.BEZ);
+    const awk = normalizeAwk(feature.properties?.AWK);
+    if (!bez || !awk) return;
+    if (!aghByBez.has(bez)) aghByBez.set(bez, new Set());
+    aghByBez.get(bez).add(awk);
+  });
 }
 
 function getPartyForBezirk(name, feature) {
@@ -760,11 +1203,12 @@ function onFeatureClick(e) {
   selectedLayer = e.target;
   selectedFeature = e.target.feature;
   selectedLayer.setStyle({ fillOpacity: 0.8, weight: 3, color: "#c8a96e" });
-  showDistrict(e.target.feature.properties.name);
+  handleLayerClick("agh", e.target.feature);
 }
 
 function initGeoLayer() {
   if (!berlinGeoJSON) return;
+  const wasVisible = geoLayer ? map.hasLayer(geoLayer) : true;
   if (geoLayer) { map.removeLayer(geoLayer); geoLayer = null; }
   selectedLayer = null;
   geoLayer = L.geoJSON(berlinGeoJSON, {
@@ -778,6 +1222,195 @@ function initGeoLayer() {
       });
     }
   }).addTo(map);
+
+  if (overlayControl) {
+    if (aghOverlay) overlayControl.removeLayer(aghOverlay);
+    aghOverlay = geoLayer;
+    overlayControl.addOverlay(aghOverlay, "AGH Wahlbezirke (gefüllt)");
+    if (!wasVisible) map.removeLayer(aghOverlay);
+  }
+}
+
+function getAllowedLevels(layerId) {
+  return layerLevelMap[layerId] || [];
+}
+
+function getEffectiveLevels(allowed) {
+  if (!allowed || allowed.length === 0) return [];
+  if (currentLevel === "alle") return allowed;
+  if (allowed.includes(currentLevel)) return [currentLevel];
+  return allowed;
+}
+
+function buildContextFromFeature(layerId, feature) {
+  const context = {
+    layerId,
+    feature,
+    allowedLevels: getAllowedLevels(layerId)
+  };
+
+  if (layerId === "agh") {
+    context.awk = normalizeAwk(feature.properties?.AWK);
+    context.bez = normalizeBez(feature.properties?.BEZ);
+    context.bezirkName = feature.properties?.name;
+    return context;
+  }
+
+  if (layerId === "btg") {
+    const wkr = pickProp(feature, ["WKR_NR", "wkr_nr", "wkr", "Wahlkreis", "wahlkreis"]);
+    context.btgWkr = normalizeWkr(wkr);
+    context.btgName = pickProp(feature, ["WKR_NAME", "wkr_name", "name"]);
+    return context;
+  }
+
+  if (layerId === "eu") {
+    context.citywide = true;
+    return context;
+  }
+
+  const name = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname"]);
+  if (name) {
+    context.bezirkName = name;
+    const meta = districtByName.get(name);
+    if (meta?.bez) context.bez = meta.bez;
+  }
+
+  const centroid = getFeatureCentroid(feature);
+  const aghFeature = centroid ? findContainingAghFeature(centroid) : null;
+  if (aghFeature) {
+    const bez = normalizeBez(aghFeature.properties?.BEZ);
+    const awk = normalizeAwk(aghFeature.properties?.AWK);
+    const bezName = aghFeature.properties?.name;
+    if (!context.bez) context.bez = bez;
+    if (!context.bezirkName && bezName) context.bezirkName = bezName;
+    if (layerId !== "bezirke") context.awk = awk;
+  }
+
+  return context;
+}
+
+function handleLayerClick(layerId, feature) {
+  activeContext = buildContextFromFeature(layerId, feature);
+  renderPanel(activeContext);
+}
+
+function collectAghEntries(context) {
+  if (context?.awk) return aghByAwk.get(context.awk) || [];
+  if (context?.bez) {
+    const entries = [];
+    const awks = aghByBez.get(context.bez);
+    if (awks) {
+      awks.forEach(awk => {
+        const list = aghByAwk.get(awk) || [];
+        list.forEach(entry => pushUnique(entries, entry));
+      });
+    }
+    return entries;
+  }
+  return [];
+}
+
+function collectBundestagEntries(context) {
+  const entries = [];
+  if (context?.btgWkr) {
+    const list = btgByWkr.get(context.btgWkr) || [];
+    list.forEach(entry => pushUnique(entries, entry));
+  }
+  btgCitywide.forEach(entry => pushUnique(entries, entry));
+  return entries;
+}
+
+function renderPanel(context) {
+  if (!context) {
+    document.getElementById('districtInfo').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🗺️</div>
+        <div class="empty-text">Bezirk auf der Karte auswählen</div>
+      </div>`;
+    return;
+  }
+
+  const allowed = context.allowedLevels || getAllowedLevels(context.layerId);
+  const levels = getEffectiveLevels(allowed);
+  const bezData = context.bezirkName ? bezirkeData[context.bezirkName] : null;
+  const headerName = context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin");
+  const headerNr = context.bez || bezData?.nr;
+
+  let html = `
+    <div class="district-name-banner">
+      ${headerNr ? `<div class="bezirk-nr">Bezirk ${headerNr}</div>` : `<div class="bezirk-nr">Stadtgebiet</div>`}
+      <h2>${headerName}</h2>
+    </div>`;
+
+  for (const lvl of levels) {
+    const label = levelLabels[lvl];
+    if (lvl === "bezirk") {
+      const entries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
+      if (entries.length > 0) {
+        entries.forEach(entry => {
+          const sinceText = entry.since ? ` · seit ${entry.since}` : "";
+          html += `<div class="rep-card">
+            <div class="rep-level">${label}</div>
+            <div class="rep-name">${entry.name}</div>
+            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <div class="rep-role">${entry.role}${sinceText}</div>
+          </div>`;
+        });
+      }
+    } else if (lvl === "abgeordnetenhaus") {
+      const entries = collectAghEntries(context);
+      if (entries.length > 0) {
+        const direct = entries.filter(e => e.art === "Direkt");
+        const lists = entries.filter(e => e.art !== "Direkt");
+        const ordered = direct.concat(lists);
+        ordered.forEach(entry => {
+          const isList = entry.art !== "Direkt";
+          const awkLabel = entry.awk ? `WK ${entry.awk}` : "";
+          const labelText = isList ? "Bezirksliste" : label;
+          const role = isList
+            ? (entry.note ? `Bezirksliste · ${entry.note}${awkLabel ? ` · ${awkLabel}` : ""}` : `Bezirksliste${awkLabel ? ` · ${awkLabel}` : ""}`)
+            : (entry.wahlkreis ? `Direktmandat ${awkLabel} – ${entry.wahlkreis}` : `Direktmandat ${awkLabel}`.trim());
+          html += `<div class="rep-card${isList ? " list-entry" : ""}">
+            <div class="rep-level">${labelText}</div>
+            <div class="rep-name">${entry.name}</div>
+            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <div class="rep-role">${role}</div>
+          </div>`;
+        });
+      }
+    } else if (lvl === "bundestag") {
+      const entries = collectBundestagEntries(context);
+      if (entries.length > 0) {
+        entries.forEach(entry => {
+          const isList = entry.art !== "Direkt";
+          html += `<div class="rep-card${isList ? " list-entry" : ""}">
+            <div class="rep-level">${label}</div>
+            <div class="rep-name">${entry.name}</div>
+            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <div class="rep-role">${entry.role}</div>
+          </div>`;
+        });
+      }
+    } else if (lvl === "eu") {
+      const entries = euCitywide;
+      if (entries.length > 0) {
+        entries.forEach(entry => {
+          html += `<div class="rep-card">
+            <div class="rep-level">${label}</div>
+            <div class="rep-name">${entry.name}</div>
+            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <div class="rep-role">${entry.role}</div>
+          </div>`;
+        });
+      }
+    }
+  }
+
+  if (!levels.length) {
+    html += `<div class="rep-card"><div class="rep-role">Keine passenden Ebenen für diese Ebene.</div></div>`;
+  }
+
+  document.getElementById('districtInfo').innerHTML = html;
 }
 
 function setLevel(level) {
@@ -786,84 +1419,9 @@ function setLevel(level) {
   event.target.classList.add('active');
   initGeoLayer();
   updateLegend();
-  if (selectedLayer) showDistrict(selectedLayer.feature.properties.name);
-  else {
-    document.getElementById('districtInfo').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🗺️</div>
-        <div class="empty-text">Bezirk auf der Karte auswählen</div>
-      </div>`;
-  }
+  renderPanel(activeContext);
 }
 
-function showDistrict(name) {
-  const data = bezirkeData[name];
-  if (!data) return;
-  const awk = normalizeAwk(selectedFeature?.properties?.AWK);
-  const aghEntries = awk ? (aghByAwk.get(awk) || []) : [];
-  let html = `
-    <div class="district-name-banner">
-      <div class="bezirk-nr">Bezirk ${data.nr}</div>
-      <h2>${name}</h2>
-    </div>`;
-
-  const levels = currentLevel === "bezirk"
-    ? ["bezirk"]
-    : currentLevel === "abgeordnetenhaus"
-    ? ["abgeordnetenhaus"]
-    : currentLevel === "bundestag"
-    ? ["bundestag"]
-    : currentLevel === "eu"
-    ? ["eu"]
-    : ["bezirk","abgeordnetenhaus","bundestag","eu"];
-
-  // Show only the selected level
-  for (const lvl of levels) {
-    const label = levelLabels[lvl];
-    if (lvl === "bezirk") {
-      const bm = data.bezirk;
-      html += `<div class="rep-card">
-        <div class="rep-level">${label}</div>
-        <div class="rep-name">${bm.buergermeister}</div>
-        <span class="rep-party party-${bm.party}">${bm.party}</span>
-        <div class="rep-role">${bm.role}</div>
-      </div>`;
-    } else if (lvl === "abgeordnetenhaus") {
-      if (aghEntries.length > 0) {
-        const direct = aghEntries.filter(e => e.art === "Direkt");
-        const lists = aghEntries.filter(e => e.art !== "Direkt");
-        const ordered = direct.concat(lists);
-        ordered.forEach(entry => {
-          const isList = entry.art !== "Direkt";
-          const label = isList ? "Bezirksliste" : levelLabels[lvl];
-          const role = isList
-            ? (entry.note ? `Bezirksliste · ${entry.note}` : "Bezirksliste")
-            : (entry.wahlkreis ? `Direktmandat WK ${awk} – ${entry.wahlkreis}` : `Direktmandat WK ${awk}`);
-          html += `<div class="rep-card${isList ? " list-entry" : ""}">
-            <div class="rep-level">${label}</div>
-            <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${entry.party}">${entry.party}</span>
-            <div class="rep-role">${role}</div>
-          </div>`;
-        });
-      }
-    } else {
-      const reps = data[lvl];
-      if (reps && reps.length > 0) {
-        reps.forEach(rep => {
-          html += `<div class="rep-card">
-            <div class="rep-level">${label}</div>
-            <div class="rep-name">${rep.name}</div>
-            <span class="rep-party party-${rep.party}">${rep.party}</span>
-            <div class="rep-role">${rep.role}</div>
-          </div>`;
-        });
-      }
-    }
-  }
-
-  document.getElementById('districtInfo').innerHTML = html;
-}
 
 function updateLegend() {
   const parties = ["CDU","SPD","Grüne","Linke","AfD","FDP"];
@@ -877,10 +1435,12 @@ function updateLegend() {
 
 async function initData() {
   try {
-    await Promise.all([loadDistrictCSV(), loadAghCSV()]);
+    await Promise.all([loadDistrictCSV(), loadAghCSV(), loadBtgCSV(), loadBvvLists()]);
     berlinGeoJSON = await loadWahlkreiseGeoJSON();
+    indexAghByBezirk(berlinGeoJSON);
     initGeoLayer();
     updateLegend();
+    renderPanel(activeContext);
   } catch (err) {
     console.error("Daten konnten nicht geladen werden:", err);
     document.getElementById('districtInfo').innerHTML = `
@@ -896,6 +1456,7 @@ const style = document.createElement('style');
 style.textContent = `.district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }`;
 document.head.appendChild(style);
 
+initOverlayLayers();
 initData();
 </script>
 </body>
