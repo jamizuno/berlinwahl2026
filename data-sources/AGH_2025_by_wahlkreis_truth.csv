@@ -1,218 +1,160 @@
-AWK;Wahlkreis;MdA_2025;party_short_name;politician_id;mandate_id;mandate_type;info
-1004;Marzahn-Hellersdorf 4;Regina Kittler;Die Linke;117538;69065;moved_up;Regina Kittler ist am 02.12.2025 für Katrin Seidel in das Berliner Abgeordnetenhaus nachgerückt.
-0704;Tempelhof-Schöneberg 4;Philipp Bertram;Die Linke;122856;69057;moved_up;Philipp Bertram ist am 30.10.2025 für Sebastian Scheel in das Berliner Abgeordnetenhaus nachgerückt.
-;;Johannes Martin;CDU;184333;69053;moved_up;Johannes Martin ist am 27.09.2025 für Christian Gräff in das Berliner Abgeordnetenhaus nachgerückt.
-;;Marco Hahnfeld;CDU;184330;69039;moved_up;Marco Hahnfeld ist am 02.05.2025 für Adrian Grasse in das Berliner Abgeordnetenhaus nachgerückt.
-0406;Charlottenburg-Wilmersdorf 6;Michael Efler;Die Linke;122819;69038;moved_up;Michael Efler ist am 09.05.2025 für Katalin Gennburg in das Berliner Abgeordnetenhaus nachgerückt.
-0201;Friedrichshain-Kreuzberg 1;Frank Scheermesser;AfD;122987;69010;moved_up;Frank Scheermesser ist am 27.03.2025 für Ronald Gläser in das Berliner Abgeordnetenhaus nachgerückt.
-;;Niklas Graßelt;CDU;179810;58600;list;Mit der Wiederholungswahl ins Abgeordnetenhaus Berlin eingezogen.
-0105;Mitte 5;Ario Ebrahimpour Mirzaie;BÜNDNIS 90/­DIE GRÜNEN;176565;58599;list;Mit der Wiederholungswahl 2023 ins Abgeordnetenhaus Berlin eingezogen.
-0901;Treptow-Köpenick 1;Alexander Freier-Winterwerb;SPD;122933;58510;moved_up;Nachgerückt für Ellen Haußdörfer am 09.05.2023.
-0701;Tempelhof-Schöneberg 1;Wiebke Neumann;SPD;176509;58509;moved_up;Am 04.05.2023 für Michael Biel nachgerückt.
-0605;Steglitz-Zehlendorf 5;Iris Gertig;CDU;179809;58508;moved_up;
-1202;Reinickendorf 2;Rolf Wiedenhaupt;AfD;176619;58164;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0602;Steglitz-Zehlendorf 2;Tonka Wojahn;BÜNDNIS 90/­DIE GRÜNEN;122807;58163;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0601;Steglitz-Zehlendorf 1;Claudia Wein;CDU;176467;58162;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0306;Pankow 6;Linda Vierecke;SPD;176497;58161;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-1106;Lichtenberg 6;Lilia Usik;CDU;176484;58160;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-1205;Reinickendorf 5;Carsten Ubbelohde;AfD;122981;58159;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-1001;Marzahn-Hellersdorf 1;June Tomiak;BÜNDNIS 90/­DIE GRÜNEN;141112;58158;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0701;Tempelhof-Schöneberg 1;Katharina Senge;CDU;176469;58157;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0806;Neukölln 6;Olaf Schenk;CDU;176476;58156;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0102;Mitte 2;Lucas Schaal;CDU;176450;58155;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0905;Treptow-Köpenick 5;Martin Sattelkau;CDU;117681;58154;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0403;Charlottenburg-Wilmersdorf 3;Ülker Radziwill;SPD;117564;58152;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0404;Charlottenburg-Wilmersdorf 4;Aldona Niemczyk;CDU;176464;58151;constituency;
-0404;Charlottenburg-Wilmersdorf 4;Reinhard Naumann;SPD;176501;58150;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0502;Spandau 2;Ersin Nas;CDU;123286;58149;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0406;Charlottenburg-Wilmersdorf 6;Peer Mock-Stümer;CDU;177308;58148;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0501;Spandau 1;Bettina Meißner;CDU;117612;58147;constituency;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-0605;Steglitz-Zehlendorf 5;Martin Matz;SPD;132706;58146;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0704;Tempelhof-Schöneberg 4;Frank Luhmann;CDU;176472;58145;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0306;Pankow 6;Stephan Lenz;CDU;117551;58144;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0107;Mitte 7;Maja Lasić;SPD;122913;58143;list;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-0904;Treptow-Köpenick 4;Lisa Knack;CDU;176477;58142;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0201;Friedrichshain-Kreuzberg 1;Timur Husein;CDU;118004;58141;list;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-1103;Lichtenberg 3;Dennis Haustein;CDU;176481;58140;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0401;Charlottenburg-Wilmersdorf 1;Stefan Häntsch;CDU;176462;58139;constituency;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-1002;Marzahn-Hellersdorf 2;Olga Gauks;CDU;177264;58138;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0804;Neukölln 4;Robert Eschricht;AfD;177632;58136;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-1201;Reinickendorf 1;Burkard Dregger;CDU;117430;58135;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0602;Steglitz-Zehlendorf 2;Tom Cywinski;CDU;176468;58133;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0503;Spandau 3;Kerstin Brauner;CDU;176466;58132;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0302;Pankow 2;Lars Bocian;CDU;176457;58131;constituency;"Am 12.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0902;Treptow-Köpenick 2;Alexander Bertram;AfD;123051;58129;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
-
-"
-0501;Spandau 1;Franziska Leschewitz;Die Linke;122846;57241;moved_up;Franziska Leschewitz ist am 01.12.2022 für Stefanie Fuchs nachgerückt und am 16.03.2023 ausgeschieden. Am 06.05.2025 ist sie erneut für Ferat Koçak in das Berliner Abgeordnetenhaus nachgerückt.
-0901;Treptow-Köpenick 1;Catrin Wahlen;BÜNDNIS 90/­DIE GRÜNEN;176593;54425;list;
-0303;Pankow 3;Torsten Schneider;SPD;117562;54424;list;
-0707;Tempelhof-Schöneberg 7;Alexander King;BSW;146081;54423;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
-Am 01.06.2023 für Sandra Brunner ins Berliner Abgeordnetenhaus nachgerückt. "
-0705;Tempelhof-Schöneberg 5;Antonin Brousek;parteilos;177616;54286;list;am 28.08.2023 aus AfD-Fraktion ausgetreten
-0105;Mitte 5;Sven Rissmann;CDU;117555;54285;constituency;
-1204;Reinickendorf 4;Sven Meyer;SPD;176528;54282;list;
-1104;Lichtenberg 4;Tamara Lüdke;SPD;176526;54280;list;
-1002;Marzahn-Hellersdorf 2;Iris Spranger;SPD;117488;54277;list;
-1006;Marzahn-Hellersdorf 6;Jan Lehmann;SPD;176523;54276;list;
-0906;Treptow-Köpenick 6;Maik Penn;CDU;117823;54274;constituency;
-0903;Treptow-Köpenick 3;Stefan Evers;CDU;28882;54273;constituency;
-0805;Neukölln 5;Robbin Juhnke;CDU;117455;54271;constituency;
-0804;Neukölln 4;Christopher Förster;CDU;122769;54270;constituency;
-0606;Steglitz-Zehlendorf 6;Ina Czyborra;SPD;117451;54269;list;
-0605;Steglitz-Zehlendorf 5;Mirjam Golm;SPD;176507;54268;list;
-0407;Charlottenburg-Wilmersdorf 7;Stefanie Bung;CDU;132788;54264;constituency;
-0304;Pankow 4;Dirk Stettner;CDU;117449;54262;constituency;
-0203;Friedrichshain-Kreuzberg 3;Sevim Aydin;SPD;122905;54260;list;
-0206;Friedrichshain-Kreuzberg 6;Sven Heinemann;SPD;117553;54259;list;
-0203;Friedrichshain-Kreuzberg 3;Kurt Wansner;CDU;117505;54258;list;
-0705;Tempelhof-Schöneberg 5;Roman Simon;CDU;117541;54255;constituency;
-0707;Tempelhof-Schöneberg 7;Melanie Kühnemann-Grunow;SPD;122932;54254;list;
-1101;Lichtenberg 1;Karsten Ludwig Woldeit;AfD;122995;54253;list;
-1201;Reinickendorf 1;Thorsten Weiß;AfD;123026;54252;list;
-0401;Charlottenburg-Wilmersdorf 1;Marc Vallendar;AfD;122982;54251;list;
-0905;Treptow-Köpenick 5;Martin Trefzer;AfD;123054;54250;list;
-0502;Spandau 2;Tommy Tabor;AfD;123033;54249;list;
-0407;Charlottenburg-Wilmersdorf 7;Harald Laatsch;AfD;141104;54248;list;
-0702;Tempelhof-Schöneberg 2;Frank-Christian Hansel;AfD;123047;54247;list;
-0402;Charlottenburg-Wilmersdorf 2;Hugh Theodore Bronson;AfD;122984;54245;list;
-0601;Steglitz-Zehlendorf 1;Kristin Brinker;AfD;141106;54244;list;
-0205;Friedrichshain-Kreuzberg 5;Steffen Zillich;Die Linke;117550;54243;list;
-0107;Mitte 7;Tobias Schulze;Die Linke;118005;54241;list;
-1205;Reinickendorf 5;Katina Schubert;Die Linke;176655;54240;list;
-0806;Neukölln 6;Niklas Schrader;Die Linke;141114;54239;list;
-0403;Charlottenburg-Wilmersdorf 3;Niklas Schenker;Die Linke;176635;54237;list;
-0906;Treptow-Köpenick 6;Carsten Schatz;parteilos;117433;54235;list;
-1006;Marzahn-Hellersdorf 6;Kristian Ronneburg;Die Linke;122828;54234;list;
-0303;Pankow 3;Klaus Lederer;parteilos;117504;54233;list;
-0103;Mitte 3;Anne Helm;Die Linke;29180;54232;list;
-0202;Friedrichshain-Kreuzberg 2;Elif Eralp;Die Linke;176626;54230;list;
-0602;Steglitz-Zehlendorf 2;Franziska Brychcy;Die Linke;117710;54229;list;
-0301;Pankow 1;Elke Breitenbach;parteilos;117461;54227;list;
-1005;Marzahn-Hellersdorf 5;Stefan Ziller;BÜNDNIS 90/­DIE GRÜNEN;117983;54226;list;
-;;Daniel Wesener;BÜNDNIS 90/­DIE GRÜNEN;122793;54225;list;MdA bis 21.12.2021 und erneut ab 16.03.2023. Im genannten Zeitraum Berliner Senator für Finanzen.
-1105;Lichtenberg 5;Stefan Taschner;BÜNDNIS 90/­DIE GRÜNEN;123587;54224;list;
-1206;Reinickendorf 6;Klara Schedlich;BÜNDNIS 90/­DIE GRÜNEN;176606;54223;list;
-0309;Pankow 9;Antje Kapek;BÜNDNIS 90/­DIE GRÜNEN;117422;54222;list;
-;;Bettina Jarasch;BÜNDNIS 90/­DIE GRÜNEN;122797;54221;list;Mitglied des Berliner AGH bis zum 31.12.2021 und erneut seit 16.03.2023. Zwischenzeitlich Senatorin für Umwelt, Mobilität, Verbraucher- und Klimaschutz, demzufolge kein Mandat im Berliner AGH.
-0804;Neukölln 4;Bahar Haghanipour;BÜNDNIS 90/­DIE GRÜNEN;176590;54220;list;
-;;Werner Graf;BÜNDNIS 90/­DIE GRÜNEN;178141;54219;list;
-0503;Spandau 3;Gollaleh Ahmadi;BÜNDNIS 90/­DIE GRÜNEN;122803;54218;list;
-1206;Reinickendorf 6;Frank Balzer;CDU;176486;54217;constituency;
-1205;Reinickendorf 5;Michael Dietmann;CDU;117447;54216;constituency;
-1204;Reinickendorf 4;Björn Wohlert;CDU;176485;54215;constituency;
-1203;Reinickendorf 3;Stephan Schmidt;CDU;123283;54214;constituency;
-1202;Reinickendorf 2;Jörg Stroedter;SPD;117493;54213;list;
-1201;Reinickendorf 1;Bettina König;SPD;117611;54212;list;
-1106;Lichtenberg 6;Andreas Geisel;SPD;119641;54211;list;
-1105;Lichtenberg 5;Hendrikje Klein;Die Linke;122826;54210;constituency;
-1104;Lichtenberg 4;Sebastian Schlüsselburg;SPD;117957;54209;constituency;
-1103;Lichtenberg 3;Claudia Engelmann;Die Linke;176649;54208;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
-Am 01.03.2026 für Ines Schmidt nachgerückt."
-1102;Lichtenberg 2;Martin Pätzold;CDU;79092;54207;constituency;
-1101;Lichtenberg 1;Danny Freymark;CDU;117444;54206;constituency;
-1006;Marzahn-Hellersdorf 6;Alexander J. Herrmann;CDU;117411;54205;constituency;
-1005;Marzahn-Hellersdorf 5;Katharina Günther-Wünsch;CDU;176480;54204;constituency;
-1003;Marzahn-Hellersdorf 3;Jeannette Auricht;AfD;123001;54202;constituency;
-1002;Marzahn-Hellersdorf 2;Manuela Schmidt;Die Linke;117508;54201;list;
-1001;Marzahn-Hellersdorf 1;Gunnar N. Lindemann;AfD;122997;54200;constituency;
-0906;Treptow-Köpenick 6;Dunja Wolff;SPD;176520;54199;list;
-0902;Treptow-Köpenick 2;Lars Düsterhöft;SPD;122934;54197;constituency;
-0806;Neukölln 6;Franziska Giffey;SPD;176519;54195;list;
-0804;Neukölln 4;Marcel Hopp;SPD;176517;54193;list;Fabian Fischer hat auf sein Mandat verzichtet, damit Marcel Hopp sein Mandat weiterhin ausüben kann.
-0803;Neukölln 3;Derya Çağlar;SPD;122916;54192;constituency;
-0802;Neukölln 2;Susanna Kahlefeld;BÜNDNIS 90/­DIE GRÜNEN;117456;54191;constituency;
-0801;Neukölln 1;André Schulze;BÜNDNIS 90/­DIE GRÜNEN;117579;54190;constituency;
-0707;Tempelhof-Schöneberg 7;Christian Zander;CDU;117627;54189;constituency;
-0706;Tempelhof-Schöneberg 6;Scott Körber;CDU;132775;54188;constituency;
-0705;Tempelhof-Schöneberg 5;Lars Rauchfuß;SPD;176513;54187;list;
-0703;Tempelhof-Schöneberg 3;Orkan Özdemir;SPD;176511;54185;constituency;
-0701;Tempelhof-Schöneberg 1;Sebastian Walter;BÜNDNIS 90/­DIE GRÜNEN;141111;54184;constituency;
-0607;Steglitz-Zehlendorf 7;Stephan Standfuß;CDU;123290;54183;constituency;
-0604;Steglitz-Zehlendorf 4;Cornelia Seibeld;CDU;117442;54180;constituency;
-0603;Steglitz-Zehlendorf 3;Christian Goiny;CDU;117435;54179;constituency;
-0602;Steglitz-Zehlendorf 2;Matthias Kollatz;SPD;122926;54178;list;
-0601;Steglitz-Zehlendorf 1;Benedikt Lux;BÜNDNIS 90/­DIE GRÜNEN;117423;54177;moved_up;Benedikt Lux ist am 14.05.2025 für Julia Schneider in das Berliner Abgerodnetenhaus nachgerückt. Zuvor war er am 16.03.2023 aufgrund der Wahlwiederholung ausgeschieden.
-0505;Spandau 5;Kai Wegner;CDU;78928;54176;constituency;
-0504;Spandau 4;Heiko Melzer;CDU;117483;54175;constituency;
-0502;Spandau 2;Raed Saleh;SPD;117534;54173;list;
-0501;Spandau 1;Sebahat Atli;SPD;176503;54172;list;
-0407;Charlottenburg-Wilmersdorf 7;Florian Dörstelmann;SPD;122904;54171;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
-
-Florian Dörstelmann ist am 07.11.2023 für Franziska Becker in das Abgeordnetenhaus von Berlin nachgerückt."
-0405;Charlottenburg-Wilmersdorf 5;Sandra Khalatbari;CDU;176465;54169;constituency;
-0404;Charlottenburg-Wilmersdorf 4;Christoph Wapler;BÜNDNIS 90/­DIE GRÜNEN;122776;54168;list;
-0403;Charlottenburg-Wilmersdorf 3;Petra Vandrey;BÜNDNIS 90/­DIE GRÜNEN;122775;54167;constituency;
-0402;Charlottenburg-Wilmersdorf 2;Ariturel Hack;CDU;176463;54166;constituency;
-0309;Pankow 9;Tino Schopf;SPD;122921;54164;constituency;Staatssekretär Energie & Betriebe vom 23.12.2021 bis 16.03.2023, daher kein Mandat als Abgeordneter im genannten Zeitraum.
-0305;Pankow 5;Louis Krüger;BÜNDNIS 90/­DIE GRÜNEN;176575;54162;constituency;
-0304;Pankow 4;Dennis Buchner;SPD;117445;54161;list;
-0303;Pankow 3;Oda Hassepaß;BÜNDNIS 90/­DIE GRÜNEN;176573;54160;constituency;
-0301;Pankow 1;Johannes Kraft;CDU;117785;54158;constituency;
-0206;Friedrichshain-Kreuzberg 6;Julian Schwarze;BÜNDNIS 90/­DIE GRÜNEN;176570;54157;constituency;
-0205;Friedrichshain-Kreuzberg 5;Vasili Franco;BÜNDNIS 90/­DIE GRÜNEN;176569;54156;constituency;
-0204;Friedrichshain-Kreuzberg 4;Damiano Valgolio;Die Linke;117637;54155;constituency;
-0203;Friedrichshain-Kreuzberg 3;Turgut Altuğ;SPD;117458;54154;constituency;
-0201;Friedrichshain-Kreuzberg 1;Katrin Schmidberger;BÜNDNIS 90/­DIE GRÜNEN;117501;54153;constituency;
-0107;Mitte 7;Laura Neugebauer;BÜNDNIS 90/­DIE GRÜNEN;176567;54152;constituency;
-0105;Mitte 5;Mathias Schulz;SPD;176489;54151;list;
-0104;Mitte 4;Taylan Kurt;BÜNDNIS 90/­DIE GRÜNEN;176564;54150;constituency;
-0101;Mitte 1;Silke Gebel;BÜNDNIS 90/­DIE GRÜNEN;117544;54148;constituency;
-0702;Tempelhof-Schöneberg 2;Catherina Pieroth-Manelli;BÜNDNIS 90/­DIE GRÜNEN;122809;54144;constituency;
-0308;Pankow 8;Daniela Billig;BÜNDNIS 90/­DIE GRÜNEN;117643;54143;constituency;
-0306;Pankow 6;Andreas Otto;BÜNDNIS 90/­DIE GRÜNEN;117417;54142;constituency;
-0202;Friedrichshain-Kreuzberg 2;Marianne Burkert-Eulitz;BÜNDNIS 90/­DIE GRÜNEN;117509;54141;constituency;
-0106;Mitte 6;Tuba Bozkurt;BÜNDNIS 90/­DIE GRÜNEN;176566;54140;constituency;
-0103;Mitte 3;Jian Omar;BÜNDNIS 90/­DIE GRÜNEN;176563;54139;constituency;
+AWK;Wahlkreis;MdA_2025;party_short_name;politician_id;mandate_id;mandate_type;committees;spokesperson_role;constituency_office_address;email_address;sm_facebook;sm_instagram;sm_tiktok;sm_x;sm_bluesky;sm_youtube;sm_twitch;sm_discord;sm_telegram;sm_rss;sm_newsletter
+1004;Marzahn-Hellersdorf 4;Regina Kittler;Die Linke;117538;69065;moved_up;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Sport | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+0704;Tempelhof-Schöneberg 4;Philipp Bertram;Die Linke;122856;69057;moved_up;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+;;Johannes Martin;CDU;184333;69053;moved_up;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+;;Marco Hahnfeld;CDU;184330;69039;moved_up;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Gesundheit und Pflege | Ausschuss für Wirtschaft, Energie und Betriebe | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;;
+0406;Charlottenburg-Wilmersdorf 6;Michael Efler;Die Linke;122819;69038;moved_up;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Umwelt- und Klimaschutz;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;
+0201;Friedrichshain-Kreuzberg 1;Frank Scheermesser;AfD;122987;69010;moved_up;Ausschuss für Arbeit und Soziales | Ausschuss für Sport;Ausschuss für Sport;;;;;;;;;;;;;
+;;Niklas Graßelt;CDU;179810;58600;list;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Sport | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;;;;;;;;;;;;;;
+0105;Mitte 5;Ario Ebrahimpour Mirzaie;BÜNDNIS 90/­DIE GRÜNEN;176565;58599;list;Ausschuss für Arbeit und Soziales | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz;Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+0901;Treptow-Köpenick 1;Alexander Freier-Winterwerb;SPD;122933;58510;moved_up;Ausschuss für Bildung, Jugend und Familie | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0701;Tempelhof-Schöneberg 1;Wiebke Neumann;SPD;176509;58509;moved_up;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Umwelt- und Klimaschutz";"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung";;;;;;;;;;;;;
+0605;Steglitz-Zehlendorf 5;Iris Gertig;CDU;179809;58508;moved_up;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Sport | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+1202;Reinickendorf 2;Rolf Wiedenhaupt;AfD;176619;58164;list;Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Mobilität und Verkehr;;;;;;;;;;;;;
+0602;Steglitz-Zehlendorf 2;Tonka Wojahn;BÜNDNIS 90/­DIE GRÜNEN;122807;58163;list;Ausschuss für Bildung, Jugend und Familie | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Hauptausschuss;;;;;;;;;;;;;
+0601;Steglitz-Zehlendorf 1;Claudia Wein;CDU;176467;58162;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Gesundheit und Pflege | Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Haushaltskontrolle;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0306;Pankow 6;Linda Vierecke;SPD;176497;58161;list;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Mobilität und Verkehr | Ausschuss für Umwelt- und Klimaschutz;Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;
+1106;Lichtenberg 6;Lilia Usik;CDU;176484;58160;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+1205;Reinickendorf 5;Carsten Ubbelohde;AfD;122981;58159;list;Ausschuss für Gesundheit und Pflege;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+1001;Marzahn-Hellersdorf 1;June Tomiak;BÜNDNIS 90/­DIE GRÜNEN;141112;58158;list;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungsschutz;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungsschutz;;;;;;;;;;;;;
+0701;Tempelhof-Schöneberg 1;Katharina Senge;CDU;176469;58157;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen";Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0806;Neukölln 6;Olaf Schenk;CDU;176476;58156;constituency;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe | Hauptausschuss;;;;;;;;;;;;;;
+0102;Mitte 2;Lucas Schaal;CDU;176450;58155;constituency;Ausschuss für Mobilität und Verkehr | Ausschuss für Wirtschaft, Energie und Betriebe | Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0905;Treptow-Köpenick 5;Martin Sattelkau;CDU;117681;58154;constituency;Ausschuss für Gesundheit und Pflege | Ausschuss für Wirtschaft, Energie und Betriebe | Petitionsausschuss;;;;;;;;;;;;;;
+0403;Charlottenburg-Wilmersdorf 3;Ülker Radziwill;SPD;117564;58152;list;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Kultur, Engagement und Demokratieförderung;Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+0404;Charlottenburg-Wilmersdorf 4;Aldona Niemczyk;CDU;176464;58151;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Mobilität und Verkehr | Petitionsausschuss;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0404;Charlottenburg-Wilmersdorf 4;Reinhard Naumann;SPD;176501;58150;list;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Sport;Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+0502;Spandau 2;Ersin Nas;CDU;123286;58149;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+0406;Charlottenburg-Wilmersdorf 6;Peer Mock-Stümer;CDU;177308;58148;constituency;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wissenschaft und Forschung";;;;;;;;;;;;;;
+0501;Spandau 1;Bettina Meißner;CDU;117612;58147;constituency;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;;
+0605;Steglitz-Zehlendorf 5;Martin Matz;SPD;132706;58146;list;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+0704;Tempelhof-Schöneberg 4;Frank Luhmann;CDU;176472;58145;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Gesundheit und Pflege | Ausschuss für Mobilität und Verkehr | Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;;
+0306;Pankow 6;Stephan Lenz;CDU;117551;58144;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz";"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Verfassungsschutz";;;;;;;;;;;;;
+0107;Mitte 7;Maja Lasić;SPD;122913;58143;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wissenschaft und Forschung;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+0904;Treptow-Köpenick 4;Lisa Knack;CDU;176477;58142;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Bildung, Jugend und Familie | Ausschuss für Gesundheit und Pflege | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;;;;;;;;;;;;;;
+0201;Friedrichshain-Kreuzberg 1;Timur Husein;CDU;118004;58141;list;Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Verfassungsschutz;;;;;;;;;;;;;;
+1103;Lichtenberg 3;Dennis Haustein;CDU;176481;58140;constituency;Ausschuss für Kultur, Engagement und Demokratieförderung | Hauptausschuss | Unterausschuss Vermögensverwaltung;Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+0401;Charlottenburg-Wilmersdorf 1;Stefan Häntsch;CDU;176462;58139;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Bundes- und Europaangelegenheiten, Medien;;;;;;;;;;;;;
+1002;Marzahn-Hellersdorf 2;Olga Gauks;CDU;177264;58138;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Bildung, Jugend und Familie | Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;;
+0804;Neukölln 4;Robert Eschricht;AfD;177632;58136;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+1201;Reinickendorf 1;Burkard Dregger;CDU;117430;58135;constituency;Ausschuss für Inneres, Sicherheit und Ordnung;Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+0602;Steglitz-Zehlendorf 2;Tom Cywinski;CDU;176468;58133;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Sport | Ausschuss für Wissenschaft und Forschung;Ausschuss für Bundes- und Europaangelegenheiten, Medien;;;;;;;;;;;;;
+0503;Spandau 3;Kerstin Brauner;CDU;176466;58132;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Wissenschaft und Forschung;Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+0302;Pankow 2;Lars Bocian;CDU;176457;58131;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Mobilität und Verkehr | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0902;Treptow-Köpenick 2;Alexander Bertram;AfD;123051;58129;list;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+0501;Spandau 1;Franziska Leschewitz;Die Linke;122846;57241;moved_up;Ausschuss für Umwelt- und Klimaschutz;Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;
+0901;Treptow-Köpenick 1;Catrin Wahlen;BÜNDNIS 90/­DIE GRÜNEN;176593;54425;list;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege | Petitionsausschuss;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0303;Pankow 3;Torsten Schneider;SPD;117562;54424;list;Hauptausschuss;Hauptausschuss;;;;;;;;;;;;;
+0707;Tempelhof-Schöneberg 7;Alexander King;BSW;146081;54423;moved_up;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Bundes- und Europaangelegenheiten, Medien;;;;;;;;;;;;;
+0705;Tempelhof-Schöneberg 5;Antonin Brousek;parteilos;177616;54286;list;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Unterausschuss Beteiligungsmanagement und -controlling;;;;;;;;;;;;;;
+0105;Mitte 5;Sven Rissmann;CDU;117555;54285;constituency;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;;
+1204;Reinickendorf 4;Sven Meyer;SPD;176528;54282;list;Ausschuss für Arbeit und Soziales | Ausschuss für Bildung, Jugend und Familie | Ausschuss für Bundes- und Europaangelegenheiten, Medien;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;
+1104;Lichtenberg 4;Tamara Lüdke;SPD;176526;54280;list;Ausschuss für Gesundheit und Pflege | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Gesundheit und Pflege | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+1002;Marzahn-Hellersdorf 2;Iris Spranger;SPD;117488;54277;list;;;;;;;;;;;;;;;
+1006;Marzahn-Hellersdorf 6;Jan Lehmann;SPD;176523;54276;list;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Verfassungsschutz;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Verfassungsschutz;;;;;;;;;;;;;
+0906;Treptow-Köpenick 6;Maik Penn;CDU;117823;54274;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Inneres, Sicherheit und Ordnung | Petitionsausschuss;;;;;;;;;;;;;;
+0903;Treptow-Köpenick 3;Stefan Evers;CDU;28882;54273;constituency;;;;;;;;;;;;;;;
+0805;Neukölln 5;Robbin Juhnke;CDU;117455;54271;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+0804;Neukölln 4;Christopher Förster;CDU;122769;54270;constituency;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Mobilität und Verkehr;Ausschuss für Digitalisierung und Datenschutz;;;;;;;;;;;;;
+0606;Steglitz-Zehlendorf 6;Ina Czyborra;SPD;117451;54269;list;;;;;;;;;;;;;;;
+0605;Steglitz-Zehlendorf 5;Mirjam Golm;SPD;176507;54268;list;Ausschuss für Gesundheit und Pflege | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0407;Charlottenburg-Wilmersdorf 7;Stefanie Bung;CDU;132788;54264;constituency;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;;
+0304;Pankow 4;Dirk Stettner;CDU;117449;54262;constituency;;;;;;;;;;;;;;;
+0203;Friedrichshain-Kreuzberg 3;Sevim Aydin;SPD;122905;54260;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0206;Friedrichshain-Kreuzberg 6;Sven Heinemann;SPD;117553;54259;list;Hauptausschuss | Unterausschuss Vermögensverwaltung;Unterausschuss Vermögensverwaltung;;;;;;;;;;;;;
+0203;Friedrichshain-Kreuzberg 3;Kurt Wansner;CDU;117505;54258;list;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz;;;;;;;;;;;;;;
+0705;Tempelhof-Schöneberg 5;Roman Simon;CDU;117541;54255;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0707;Tempelhof-Schöneberg 7;Melanie Kühnemann-Grunow;SPD;122932;54254;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung";Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+1101;Lichtenberg 1;Karsten Ludwig Woldeit;AfD;122995;54253;list;"1. Untersuchungsausschuss (""Neukölln II"")";"1. Untersuchungsausschuss (""Neukölln II"")";;;;;;;;;;;;;
+1201;Reinickendorf 1;Thorsten Weiß;AfD;123026;54252;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Inneres, Sicherheit und Ordnung;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+0401;Charlottenburg-Wilmersdorf 1;Marc Vallendar;AfD;122982;54251;list;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+0905;Treptow-Köpenick 5;Martin Trefzer;AfD;123054;54250;list;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Wirtschaft, Energie und Betriebe | Ausschuss für Wissenschaft und Forschung;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+0502;Spandau 2;Tommy Tabor;AfD;123033;54249;list;Ausschuss für Bildung, Jugend und Familie;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0407;Charlottenburg-Wilmersdorf 7;Harald Laatsch;AfD;141104;54248;list;Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;;
+0702;Tempelhof-Schöneberg 2;Frank-Christian Hansel;AfD;123047;54247;list;Ausschuss für Gesundheit und Pflege | Ausschuss für Sport | Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0402;Charlottenburg-Wilmersdorf 2;Hugh Theodore Bronson;AfD;122984;54245;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Hauptausschuss | Petitionsausschuss;Ausschuss für Bundes- und Europaangelegenheiten, Medien;;;;;;;;;;;;;
+0601;Steglitz-Zehlendorf 1;Kristin Brinker;AfD;141106;54244;list;Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;;;;;;;;;;;;;
+0205;Friedrichshain-Kreuzberg 5;Steffen Zillich;Die Linke;117550;54243;list;Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Vermögensverwaltung;Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Vermögensverwaltung;;;;;;;;;;;;;
+0107;Mitte 7;Tobias Schulze;Die Linke;118005;54241;list;Ausschuss für Wissenschaft und Forschung;Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+1205;Reinickendorf 5;Katina Schubert;Die Linke;176655;54240;list;Ausschuss für Arbeit und Soziales;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;
+0806;Neukölln 6;Niklas Schrader;Die Linke;141114;54239;list;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz";"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungsschutz";;;;;;;;;;;;;
+0403;Charlottenburg-Wilmersdorf 3;Niklas Schenker;Die Linke;176635;54237;list;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0906;Treptow-Köpenick 6;Carsten Schatz;parteilos;117433;54235;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Gesundheit und Pflege;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+1006;Marzahn-Hellersdorf 6;Kristian Ronneburg;Die Linke;122828;54234;list;Ausschuss für Mobilität und Verkehr | Ausschuss für Sport | Hauptausschuss | Petitionsausschuss;Ausschuss für Mobilität und Verkehr;;;;;;;;;;;;;
+0303;Pankow 3;Klaus Lederer;parteilos;117504;54233;list;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;;
+0103;Mitte 3;Anne Helm;Die Linke;29180;54232;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Inneres, Sicherheit und Ordnung;Ausschuss für Bundes- und Europaangelegenheiten, Medien;;;;;;;;;;;;;
+0202;Friedrichshain-Kreuzberg 2;Elif Eralp;Die Linke;176626;54230;list;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0602;Steglitz-Zehlendorf 2;Franziska Brychcy;Die Linke;117710;54229;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Wissenschaft und Forschung | Hauptausschuss;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0301;Pankow 1;Elke Breitenbach;parteilos;117461;54227;list;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Gesundheit und Pflege | Ausschuss für Kultur, Engagement und Demokratieförderung;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Gesundheit und Pflege | Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+1005;Marzahn-Hellersdorf 5;Stefan Ziller;BÜNDNIS 90/­DIE GRÜNEN;117983;54226;list;Ausschuss für Digitalisierung und Datenschutz | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Digitalisierung und Datenschutz | Hauptausschuss;;;;;;;;;;;;;
+;;Daniel Wesener;BÜNDNIS 90/­DIE GRÜNEN;122793;54225;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Mobilität und Verkehr";"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Kultur, Engagement und Demokratieförderung";;;;;;;;;;;;;
+1105;Lichtenberg 5;Stefan Taschner;BÜNDNIS 90/­DIE GRÜNEN;123587;54224;list;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+1206;Reinickendorf 6;Klara Schedlich;BÜNDNIS 90/­DIE GRÜNEN;176606;54223;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Sport;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Sport;;;;;;;;;;;;;
+0309;Pankow 9;Antje Kapek;BÜNDNIS 90/­DIE GRÜNEN;117422;54222;list;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Mobilität und Verkehr | Ausschuss für Sport;Ausschuss für Mobilität und Verkehr;;;;;;;;;;;;;
+;;Bettina Jarasch;BÜNDNIS 90/­DIE GRÜNEN;122797;54221;list;Petitionsausschuss;;;;;;;;;;;;;;
+0804;Neukölln 4;Bahar Haghanipour;BÜNDNIS 90/­DIE GRÜNEN;176590;54220;list;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Unterausschuss Haushaltskontrolle;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+;;Werner Graf;BÜNDNIS 90/­DIE GRÜNEN;178141;54219;list;Ausschuss für Mobilität und Verkehr | Ausschuss für Sport;;;;;;;;;;;;;;
+0503;Spandau 3;Gollaleh Ahmadi;BÜNDNIS 90/­DIE GRÜNEN;122803;54218;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Inneres, Sicherheit und Ordnung;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+1206;Reinickendorf 6;Frank Balzer;CDU;176486;54217;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Sport | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;;;;;;;;;;;;;
+1205;Reinickendorf 5;Michael Dietmann;CDU;117447;54216;constituency;Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling;Unterausschuss Beteiligungsmanagement und -controlling;;;;;;;;;;;;;
+1204;Reinickendorf 4;Björn Wohlert;CDU;176485;54215;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Bundes- und Europaangelegenheiten, Medien | Hauptausschuss | Unterausschuss Vermögensverwaltung;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;
+1203;Reinickendorf 3;Stephan Schmidt;CDU;123283;54214;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft | Unterausschuss Haushaltskontrolle;Hauptausschuss;;;;;;;;;;;;;
+1202;Reinickendorf 2;Jörg Stroedter;SPD;117493;54213;list;Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling;;;;;;;;;;;;;
+1201;Reinickendorf 1;Bettina König;SPD;117611;54212;list;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+1106;Lichtenberg 6;Andreas Geisel;SPD;119641;54211;list;Ausschuss für Kultur, Engagement und Demokratieförderung | Hauptausschuss | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+1105;Lichtenberg 5;Hendrikje Klein;Die Linke;122826;54210;constituency;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;;;;;;;;;;;;;
+1104;Lichtenberg 4;Sebastian Schlüsselburg;SPD;117957;54209;constituency;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Unterausschuss Beteiligungsmanagement und -controlling";;;;;;;;;;;;;;
+1103;Lichtenberg 3;Claudia Engelmann;Die Linke;176649;54208;moved_up;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;;
+1102;Lichtenberg 2;Martin Pätzold;CDU;79092;54207;constituency;Ausschuss für Arbeit und Soziales | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;
+1101;Lichtenberg 1;Danny Freymark;CDU;117444;54206;constituency;Ausschuss für Umwelt- und Klimaschutz | Petitionsausschuss;Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;
+1006;Marzahn-Hellersdorf 6;Alexander J. Herrmann;CDU;117411;54205;constituency;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+1005;Marzahn-Hellersdorf 5;Katharina Günther-Wünsch;CDU;176480;54204;constituency;;;;;;;;;;;;;;;
+1003;Marzahn-Hellersdorf 3;Jeannette Auricht;AfD;123001;54202;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Arbeit und Soziales | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+1002;Marzahn-Hellersdorf 2;Manuela Schmidt;Die Linke;117508;54201;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Kultur, Engagement und Demokratieförderung | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft | Unterausschuss Haushaltskontrolle";"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Kultur, Engagement und Demokratieförderung | Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft | Unterausschuss Haushaltskontrolle";;;;;;;;;;;;;
+1001;Marzahn-Hellersdorf 1;Gunnar N. Lindemann;AfD;122997;54200;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0906;Treptow-Köpenick 6;Dunja Wolff;SPD;176520;54199;list;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Sport | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0902;Treptow-Köpenick 2;Lars Düsterhöft;SPD;122934;54197;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege | Petitionsausschuss;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0806;Neukölln 6;Franziska Giffey;SPD;176519;54195;list;;;;;;;;;;;;;;;
+0804;Neukölln 4;Marcel Hopp;SPD;176517;54193;list;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wissenschaft und Forschung;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+0803;Neukölln 3;Derya Çağlar;SPD;122916;54192;constituency;Hauptausschuss | Petitionsausschuss | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;Unterausschuss Haushaltskontrolle;;;;;;;;;;;;;
+0802;Neukölln 2;Susanna Kahlefeld;BÜNDNIS 90/­DIE GRÜNEN;117456;54191;constituency;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Unterausschuss Haushaltskontrolle";Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Kultur, Engagement und Demokratieförderung;;;;;;;;;;;;;
+0801;Neukölln 1;André Schulze;BÜNDNIS 90/­DIE GRÜNEN;117579;54190;constituency;"1. Untersuchungsausschuss (""Neukölln II"") | Hauptausschuss | Unterausschuss Vermögensverwaltung";"1. Untersuchungsausschuss (""Neukölln II"") | Hauptausschuss";;;;;;;;;;;;;
+0707;Tempelhof-Schöneberg 7;Christian Zander;CDU;117627;54189;constituency;Ausschuss für Gesundheit und Pflege | Ausschuss für Mobilität und Verkehr | Ausschuss für Umwelt- und Klimaschutz;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0706;Tempelhof-Schöneberg 6;Scott Körber;CDU;132775;54188;constituency;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Gesundheit und Pflege | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Sport";;;;;;;;;;;;;;
+0705;Tempelhof-Schöneberg 5;Lars Rauchfuß;SPD;176513;54187;list;Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft | Unterausschuss Haushaltskontrolle;Hauptausschuss | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;;;;;;;;;;;;;
+0703;Tempelhof-Schöneberg 3;Orkan Özdemir;SPD;176511;54185;constituency;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
+0701;Tempelhof-Schöneberg 1;Sebastian Walter;BÜNDNIS 90/­DIE GRÜNEN;141111;54184;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Hauptausschuss | Unterausschuss Vermögensverwaltung;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Hauptausschuss;;;;;;;;;;;;;
+0607;Steglitz-Zehlendorf 7;Stephan Standfuß;CDU;123290;54183;constituency;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Sport | Ausschuss für Verfassungsschutz";"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Sport";;;;;;;;;;;;;
+0604;Steglitz-Zehlendorf 4;Cornelia Seibeld;CDU;117442;54180;constituency;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;;
+0603;Steglitz-Zehlendorf 3;Christian Goiny;CDU;117435;54179;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Hauptausschuss | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Hauptausschuss | Unterausschuss Haushaltskontrolle;;;;;;;;;;;;;
+0602;Steglitz-Zehlendorf 2;Matthias Kollatz;SPD;122926;54178;list;"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen";"2. Untersuchungsausschuss (""Fördergeld"") | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen";;;;;;;;;;;;;
+0601;Steglitz-Zehlendorf 1;Benedikt Lux;BÜNDNIS 90/­DIE GRÜNEN;117423;54177;moved_up;Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Umwelt- und Klimaschutz;;;;;;;;;;;;;
+0505;Spandau 5;Kai Wegner;CDU;78928;54176;constituency;;;;;;;;;;;;;;;
+0504;Spandau 4;Heiko Melzer;CDU;117483;54175;constituency;Hauptausschuss | Unterausschuss Haushaltskontrolle | Unterausschuss Vermögensverwaltung;Hauptausschuss | Unterausschuss Vermögensverwaltung;;;;;;;;;;;;;
+0502;Spandau 2;Raed Saleh;SPD;117534;54173;list;;;;;;;;;;;;;;;
+0501;Spandau 1;Sebahat Atli;SPD;176503;54172;list;Ausschuss für Arbeit und Soziales | Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Gesundheit und Pflege;Ausschuss für Arbeit und Soziales | Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0407;Charlottenburg-Wilmersdorf 7;Florian Dörstelmann;SPD;122904;54171;moved_up;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0405;Charlottenburg-Wilmersdorf 5;Sandra Khalatbari;CDU;176465;54169;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Gesundheit und Pflege | Hauptausschuss;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0404;Charlottenburg-Wilmersdorf 4;Christoph Wapler;BÜNDNIS 90/­DIE GRÜNEN;122776;54168;list;Ausschuss für Arbeit und Soziales | Ausschuss für Wirtschaft, Energie und Betriebe | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft;Ausschuss für Arbeit und Soziales | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0403;Charlottenburg-Wilmersdorf 3;Petra Vandrey;BÜNDNIS 90/­DIE GRÜNEN;122775;54167;constituency;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;;;;;;;;;;;;;
+0402;Charlottenburg-Wilmersdorf 2;Ariturel Hack;CDU;176463;54166;constituency;Ausschuss für Sport | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Sport;;;;;;;;;;;;;
+0309;Pankow 9;Tino Schopf;SPD;122921;54164;constituency;Ausschuss für Mobilität und Verkehr | Ausschuss für Umwelt- und Klimaschutz | Petitionsausschuss;Ausschuss für Mobilität und Verkehr;;;;;;;;;;;;;
+0305;Pankow 5;Louis Krüger;BÜNDNIS 90/­DIE GRÜNEN;176575;54162;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Kultur, Engagement und Demokratieförderung;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0304;Pankow 4;Dennis Buchner;SPD;117445;54161;list;Ausschuss für Sport;Ausschuss für Sport;;;;;;;;;;;;;
+0303;Pankow 3;Oda Hassepaß;BÜNDNIS 90/­DIE GRÜNEN;176573;54160;constituency;Ausschuss für Mobilität und Verkehr | Hauptausschuss | Unterausschuss Haushaltskontrolle;Ausschuss für Mobilität und Verkehr | Hauptausschuss | Unterausschuss Haushaltskontrolle;;;;;;;;;;;;;
+0301;Pankow 1;Johannes Kraft;CDU;117785;54158;constituency;Ausschuss für Digitalisierung und Datenschutz | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Mobilität und Verkehr;;;;;;;;;;;;;
+0206;Friedrichshain-Kreuzberg 6;Julian Schwarze;BÜNDNIS 90/­DIE GRÜNEN;176570;54157;constituency;Ausschuss für Sport | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0205;Friedrichshain-Kreuzberg 5;Vasili Franco;BÜNDNIS 90/­DIE GRÜNEN;176569;54156;constituency;"1. Untersuchungsausschuss (""Neukölln II"") | Ausschuss für Inneres, Sicherheit und Ordnung";Ausschuss für Inneres, Sicherheit und Ordnung;;;;;;;;;;;;;
+0204;Friedrichshain-Kreuzberg 4;Damiano Valgolio;Die Linke;117637;54155;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Arbeit und Soziales | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0203;Friedrichshain-Kreuzberg 3;Turgut Altuğ;SPD;117458;54154;constituency;Ausschuss für Sport | Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;;
+0201;Friedrichshain-Kreuzberg 1;Katrin Schmidberger;BÜNDNIS 90/­DIE GRÜNEN;117501;54153;constituency;Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Umwelt- und Klimaschutz | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0107;Mitte 7;Laura Neugebauer;BÜNDNIS 90/­DIE GRÜNEN;176567;54152;constituency;Ausschuss für Gesundheit und Pflege | Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Wissenschaft und Forschung;Ausschuss für Wissenschaft und Forschung;;;;;;;;;;;;;
+0105;Mitte 5;Mathias Schulz;SPD;176489;54151;list;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Mobilität und Verkehr | Ausschuss für Stadtentwicklung, Bauen und Wohnen;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0104;Mitte 4;Taylan Kurt;BÜNDNIS 90/­DIE GRÜNEN;176564;54150;constituency;Ausschuss für Arbeit und Soziales | Ausschuss für Bildung, Jugend und Familie | Ausschuss für Gesundheit und Pflege;Ausschuss für Arbeit und Soziales;;;;;;;;;;;;;
+0101;Mitte 1;Silke Gebel;BÜNDNIS 90/­DIE GRÜNEN;117544;54148;constituency;Ausschuss für Gesundheit und Pflege | Ausschuss für Wissenschaft und Forschung | Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling | Unterausschuss Vermögensverwaltung;Ausschuss für Gesundheit und Pflege | Hauptausschuss | Unterausschuss Beteiligungsmanagement und -controlling;;;;;;;;;;;;;
+0702;Tempelhof-Schöneberg 2;Catherina Pieroth-Manelli;BÜNDNIS 90/­DIE GRÜNEN;122809;54144;constituency;Ausschuss für Gesundheit und Pflege | Petitionsausschuss;Ausschuss für Gesundheit und Pflege;;;;;;;;;;;;;
+0308;Pankow 8;Daniela Billig;BÜNDNIS 90/­DIE GRÜNEN;117643;54143;constituency;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz;Ausschuss für Kultur, Engagement und Demokratieförderung | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0306;Pankow 6;Andreas Otto;BÜNDNIS 90/­DIE GRÜNEN;117417;54142;constituency;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Stadtentwicklung, Bauen und Wohnen | Unterausschuss Beteiligungsmanagement und -controlling;Ausschuss für Bundes- und Europaangelegenheiten, Medien | Ausschuss für Stadtentwicklung, Bauen und Wohnen;;;;;;;;;;;;;
+0202;Friedrichshain-Kreuzberg 2;Marianne Burkert-Eulitz;BÜNDNIS 90/­DIE GRÜNEN;117509;54141;constituency;Ausschuss für Bildung, Jugend und Familie | Ausschuss für Wissenschaft und Forschung;Ausschuss für Bildung, Jugend und Familie;;;;;;;;;;;;;
+0106;Mitte 6;Tuba Bozkurt;BÜNDNIS 90/­DIE GRÜNEN;176566;54140;constituency;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Wirtschaft, Energie und Betriebe;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung | Ausschuss für Wirtschaft, Energie und Betriebe;;;;;;;;;;;;;
+0103;Mitte 3;Jian Omar;BÜNDNIS 90/­DIE GRÜNEN;176563;54139;constituency;Ausschuss für Inneres, Sicherheit und Ordnung | Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung;;;;;;;;;;;;;
