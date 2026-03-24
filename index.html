@@ -611,6 +611,8 @@ const mapSelectionByLevelIds = {
 let currentLevel = "alle";
 let geoLayer = null;
 let selectedLayer = null;
+let selectedOverlayLayer = null;
+let selectedOverlayBaseStyle = null;
 let selectedFeature = null;
 let berlinGeoJSON = null;
 let overlayControl = null;
@@ -639,49 +641,49 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
 
 const wfsLayers = [
-  {
-    id: "kieze",
-    label: "Kieze (LOR)",
-    url: "https://gdi.berlin.de/services/wfs/lor_2021",
-    preferredTypeNames: [
+    {
+      id: "kieze",
+      label: "Kieze (LOR)",
+      url: "https://gdi.berlin.de/services/wfs/lor_2021",
+      preferredTypeNames: [
       "lor_2021:a_lor_plr_2021",
       "lor_2021:a_lor_plr",
       "lor_2021:plr_2021",
       "lor_2021:kieze",
       "lor_2021:kiez"
-    ],
-    pane: "pane-kieze",
-    zIndex: 420,
-    style: { color: "#4f8bd6", weight: 1, fillOpacity: 0 },
-    tooltipProps: ["plr_name", "name", "bezeichnung", "kiez"]
-  },
-  {
-    id: "einschulbereiche",
-    label: "Einschulbereiche",
-    url: "https://gdi.berlin.de/services/wfs/esb",
-    preferredTypeNames: ["esb:esb_2026", "esb:esb_2025", "esb:esb"],
-    pane: "pane-einschul",
-    zIndex: 425,
-    style: { color: "#f0b44a", weight: 1, fillOpacity: 0 },
-    tooltipProps: ["esb_text", "esb", "name", "bezeichnung"]
-  },
-  {
-    id: "postleitzahlen",
-    label: "Postleitzahlen",
-    url: "https://gdi.berlin.de/services/wfs/postleitzahlen",
-    preferredTypeNames: ["postleitzahlen:postleitzahlen", "postleitzahlen:plz"],
-    pane: "pane-plz",
-    zIndex: 430,
-    style: { color: "#9b6df0", weight: 1, fillOpacity: 0 },
-    tooltipProps: ["plz", "postleitzahl", "name"]
-  },
+      ],
+      pane: "pane-kieze",
+      zIndex: 480,
+      style: { color: "#4f8bd6", weight: 1, fillOpacity: 0 },
+      tooltipProps: ["plr_name", "name", "bezeichnung", "kiez"]
+    },
+    {
+      id: "einschulbereiche",
+      label: "Einschulbereiche",
+      url: "https://gdi.berlin.de/services/wfs/esb",
+      preferredTypeNames: ["esb:esb_2026", "esb:esb_2025", "esb:esb"],
+      pane: "pane-einschul",
+      zIndex: 470,
+      style: { color: "#f0b44a", weight: 1, fillOpacity: 0 },
+      tooltipProps: ["esb_text", "esb", "name", "bezeichnung"]
+    },
+    {
+      id: "postleitzahlen",
+      label: "Postleitzahlen",
+      url: "https://gdi.berlin.de/services/wfs/postleitzahlen",
+      preferredTypeNames: ["postleitzahlen:postleitzahlen", "postleitzahlen:plz"],
+      pane: "pane-plz",
+      zIndex: 460,
+      style: { color: "#9b6df0", weight: 1, fillOpacity: 0 },
+      tooltipProps: ["plz", "postleitzahl", "name"]
+    },
     {
       id: "ortsteile",
       label: "Ortsteile",
       url: "https://gdi.berlin.de/services/wfs/alkis_ortsteile",
       preferredTypeNames: ["alkis_ortsteile:ortsteile"],
       pane: "pane-ortsteile",
-      zIndex: 441,
+      zIndex: 450,
       style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
       tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
     },
@@ -691,7 +693,7 @@ const wfsLayers = [
       url: "https://gdi.berlin.de/services/wfs/alkis_bezirke",
       preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
       pane: "pane-bezirke",
-      zIndex: 436,
+      zIndex: 430,
       style: { color: "#7dd492", weight: 2.4, fillOpacity: 0 },
       tooltipProps: ["name", "bezirk", "bezeichnung"],
       defaultOn: true
@@ -702,7 +704,7 @@ const wfsLayers = [
       url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map&service=WFS&request=GetCapabilities",
       preferredTypeNames: ["ms:Wahlkreise"],
       pane: "pane-btg",
-      zIndex: 445,
+      zIndex: 420,
       style: { color: "#7a1f2b", weight: 1.6, fillOpacity: 0 },
       tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
     },
@@ -712,11 +714,11 @@ const wfsLayers = [
       url: "https://gdi.berlin.de/services/wfs/alkis_land",
       preferredTypeNames: ["alkis_land:land"],
       pane: "pane-land",
-    zIndex: 415,
-    style: { color: "#c8a96e", weight: 2.5, fillOpacity: 0 },
-    tooltipProps: ["name", "bezeichnung"],
-    defaultOn: true
-  }
+    zIndex: 410,
+      style: { color: "#c8a96e", weight: 2.5, fillOpacity: 0 },
+      tooltipProps: ["name", "bezeichnung"],
+      defaultOn: true
+    }
 ];
 
 const layerLevelMap = {
@@ -734,8 +736,8 @@ const overlayOrder = [
   "kieze",
   "einschulbereiche",
   "postleitzahlen",
-  "ortsteile",
   "agh",
+  "ortsteile",
   "bezirke",
   "btg",
   "eu"
@@ -844,6 +846,65 @@ function getOrtsteilTooltip(feature, props) {
   return null;
 }
 
+function normalizeOverlayStyle(style = {}) {
+  return {
+    color: style.color || "#c8a96e",
+    weight: Number.isFinite(style.weight) ? style.weight : 2,
+    opacity: Number.isFinite(style.opacity) ? style.opacity : 1,
+    fillColor: style.fillColor,
+    fillOpacity: Number.isFinite(style.fillOpacity) ? style.fillOpacity : 0
+  };
+}
+
+function lightenColor(hex, amount = 0.25) {
+  if (!hex || typeof hex !== "string") return hex;
+  const raw = hex.trim();
+  if (!raw.startsWith("#")) return hex;
+  const value = raw.slice(1);
+  const full = value.length === 3
+    ? value.split("").map(ch => ch + ch).join("")
+    : value.length === 6
+    ? value
+    : null;
+  if (!full) return hex;
+  const num = parseInt(full, 16);
+  if (Number.isNaN(num)) return hex;
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  const mix = (channel) => Math.round(channel + (255 - channel) * amount);
+  const toHex = (channel) => channel.toString(16).padStart(2, "0");
+  return `#${toHex(mix(r))}${toHex(mix(g))}${toHex(mix(b))}`;
+}
+
+function getHighlightStyle(baseStyle) {
+  const base = normalizeOverlayStyle(baseStyle);
+  const highlight = { ...base };
+  highlight.weight = Math.max(base.weight + 1.4, base.weight * 1.4);
+  highlight.color = lightenColor(base.color, 0.3);
+  if (base.fillOpacity > 0) {
+    highlight.fillOpacity = Math.min(0.85, base.fillOpacity + 0.25);
+  }
+  return highlight;
+}
+
+function clearOverlaySelection() {
+  if (selectedOverlayLayer && selectedOverlayBaseStyle) {
+    selectedOverlayLayer.setStyle(normalizeOverlayStyle(selectedOverlayBaseStyle));
+  }
+  selectedOverlayLayer = null;
+  selectedOverlayBaseStyle = null;
+}
+
+function selectOverlayLayer(layer, baseStyle) {
+  if (selectedOverlayLayer && selectedOverlayLayer !== layer) {
+    selectedOverlayLayer.setStyle(normalizeOverlayStyle(selectedOverlayBaseStyle));
+  }
+  selectedOverlayLayer = layer;
+  selectedOverlayBaseStyle = baseStyle;
+  layer.setStyle(getHighlightStyle(baseStyle));
+}
+
 function buildOverlayLayer(data, layerConfig, baseStyle) {
   const { id, pane, tooltipProps } = layerConfig;
   return L.geoJSON(data, {
@@ -879,10 +940,15 @@ function buildOverlayLayer(data, layerConfig, baseStyle) {
             });
           }
         }
-        lyr.on("click", () => handleLayerClick(id, feature));
-    }
-  });
-}
+        lyr.on("click", () => {
+          if (id !== "eu") {
+            selectOverlayLayer(lyr, baseStyle);
+          }
+          handleLayerClick(id, feature);
+        });
+      }
+    });
+  }
 
 function pickNameLikeProperty(feature) {
   if (!feature?.properties) return null;
@@ -1552,6 +1618,7 @@ function resetHighlight(e) {
 }
 
 function onFeatureClick(e) {
+  clearOverlaySelection();
   if (selectedLayer) {
     geoLayer.resetStyle(selectedLayer);
     selectedLayer.setStyle({ fillOpacity: 0.45, weight: 2, color: "#0d0f14" });
@@ -1567,7 +1634,7 @@ function initGeoLayer() {
   const wasVisible = geoLayer ? map.hasLayer(geoLayer) : true;
   if (geoLayer) { map.removeLayer(geoLayer); geoLayer = null; }
   selectedLayer = null;
-  ensurePane("pane-agh", 460);
+  ensurePane("pane-agh", 455);
   geoLayer = L.geoJSON(berlinGeoJSON, {
     pane: "pane-agh",
     style: styleFeature,
