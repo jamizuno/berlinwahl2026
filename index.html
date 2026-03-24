@@ -1028,7 +1028,7 @@ function pushUnique(list, entry) {
 }
 
 function loadBtgCSV() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     Papa.parse(btgCsvUrl, {
       download: true,
       header: false,
@@ -1037,7 +1037,10 @@ function loadBtgCSV() {
       complete: (result) => {
         const rows = result.data || [];
         const headerIndex = rows.findIndex(r => (r && r[0]) === "Wahlart");
-        if (headerIndex === -1) return resolve();
+        if (headerIndex === -1) {
+          console.warn("BTG CSV header not found. Skipping Bundestag list.");
+          return resolve();
+        }
         const headers = rows[headerIndex];
         const citywide = [];
         for (let i = headerIndex + 1; i < rows.length; i++) {
@@ -1074,7 +1077,11 @@ function loadBtgCSV() {
         btgCitywide = citywide;
         resolve();
       },
-      error: (err) => reject(err)
+      error: (err) => {
+        console.warn("BTG CSV could not be loaded. Skipping Bundestag list.", err);
+        btgCitywide = [];
+        resolve();
+      }
     });
   });
 }
@@ -1435,7 +1442,15 @@ function updateLegend() {
 
 async function initData() {
   try {
-    await Promise.all([loadDistrictCSV(), loadAghCSV(), loadBtgCSV(), loadBvvLists()]);
+    const results = await Promise.allSettled([
+      loadDistrictCSV(),
+      loadAghCSV(),
+      loadBtgCSV(),
+      loadBvvLists()
+    ]);
+    if (results[0].status === "rejected" || results[1].status === "rejected") {
+      throw new Error("Pflichtdaten konnten nicht geladen werden.");
+    }
     berlinGeoJSON = await loadWahlkreiseGeoJSON();
     indexAghByBezirk(berlinGeoJSON);
     initGeoLayer();
