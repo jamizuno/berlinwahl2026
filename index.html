@@ -649,7 +649,7 @@ const wfsLayers = [
     pane: "pane-ortsteile",
     zIndex: 435,
     style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
-    tooltipProps: ["name", "ortsteil", "bezeichnung"]
+    tooltipProps: ["name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name"]
   },
   {
     id: "bezirke",
@@ -698,13 +698,13 @@ const layerLevelMap = {
 
 const overlayOrder = [
   "eu",
+  "btg",
   "agh",
   "bezirke",
   "ortsteile",
   "postleitzahlen",
   "einschulbereiche",
-  "kieze",
-  "btg"
+  "kieze"
 ];
 
 // -----------------------------------------------------------------------
@@ -786,6 +786,19 @@ function pickTooltipText(feature, props) {
   return null;
 }
 
+function pickNameLikeProperty(feature) {
+  if (!feature?.properties) return null;
+  for (const [key, value] of Object.entries(feature.properties)) {
+    if (!key) continue;
+    if (!/name|bez|ort|teil/i.test(key)) continue;
+    const text = String(value ?? "").trim();
+    if (!text) continue;
+    if (/^\d+$/.test(text)) continue;
+    return text;
+  }
+  return null;
+}
+
 function getBezirkNameFromFeature(feature) {
   const rawName = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname", "bezirk_name", "gen"]);
   if (rawName) {
@@ -855,8 +868,12 @@ async function addWfsOverlayLayer(layerConfig) {
       pane,
       style: baseStyle,
       onEachFeature: (feature, lyr) => {
-        const tooltip = id === "bezirke"
+        const tooltip = id === "eu"
+          ? null
+          : id === "bezirke"
           ? getBezirkNameFromFeature(feature)
+          : id === "ortsteile"
+          ? (pickTooltipText(feature, tooltipProps) || pickNameLikeProperty(feature))
           : pickTooltipText(feature, tooltipProps);
         if (tooltip) {
           lyr.bindTooltip(tooltip, {
@@ -1318,7 +1335,9 @@ function initGeoLayer() {
   const wasVisible = geoLayer ? map.hasLayer(geoLayer) : true;
   if (geoLayer) { map.removeLayer(geoLayer); geoLayer = null; }
   selectedLayer = null;
+  ensurePane("pane-agh", 460);
   geoLayer = L.geoJSON(berlinGeoJSON, {
+    pane: "pane-agh",
     style: styleFeature,
     onEachFeature: (feature, layer) => {
       layer.on({ mouseover: highlightFeature, mouseout: resetHighlight, click: onFeatureClick });
