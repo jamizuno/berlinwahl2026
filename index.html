@@ -612,22 +612,24 @@ let aghOverlay = null;
 const wfsOverlayLayers = new Map();
 let activeContext = null;
 
-const districtByNumber = new Map();
-const districtByName = new Map();
-const aghByAwk = new Map();
-const aghByBez = new Map();
-const btgByWkr = new Map();
-let btgCitywide = [];
+  const districtByNumber = new Map();
+  const districtByName = new Map();
+  const aghByAwk = new Map();
+  const aghByBez = new Map();
+  const btgByWkr = new Map();
+  const btgTooltipByBwk = new Map();
+  let btgCitywide = [];
 const bvvByBezirk = new Map();
 const bezirkByArkis = new Map();
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
-const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
-const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
-const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
+  const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
+  const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
+  const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
+  const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
   const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
 
 const wfsLayers = [
@@ -842,13 +844,15 @@ function buildOverlayLayer(data, layerConfig, baseStyle) {
     pane,
     style: baseStyle,
     onEachFeature: (feature, lyr) => {
-      const tooltip = id === "eu"
-        ? null
-        : id === "bezirke"
-        ? getBezirkNameFromFeature(feature)
-        : id === "ortsteile"
-        ? getOrtsteilTooltip(feature, tooltipProps)
-        : pickTooltipText(feature, tooltipProps);
+        const tooltip = id === "eu"
+          ? null
+          : id === "btg"
+          ? getBtgTooltip(feature)
+          : id === "bezirke"
+          ? getBezirkNameFromFeature(feature)
+          : id === "ortsteile"
+          ? getOrtsteilTooltip(feature, tooltipProps)
+          : pickTooltipText(feature, tooltipProps);
       if (tooltip) {
         lyr.bindTooltip(tooltip, {
           permanent: false,
@@ -876,11 +880,11 @@ function pickNameLikeProperty(feature) {
   return null;
 }
 
-function getBezirkNameFromFeature(feature) {
-  const rawName = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname", "bezirk_name", "gen"]);
-  if (rawName) {
-    const trimmed = String(rawName).trim();
-    if (trimmed && !/^\d+$/.test(trimmed)) return trimmed;
+  function getBezirkNameFromFeature(feature) {
+    const rawName = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname", "bezirk_name", "gen"]);
+    if (rawName) {
+      const trimmed = String(rawName).trim();
+      if (trimmed && !/^\d+$/.test(trimmed)) return trimmed;
     const codeFromName = normalizeArkis(trimmed);
     const mapped = bezirkByArkis.get(codeFromName);
     if (mapped) return mapped;
@@ -890,9 +894,20 @@ function getBezirkNameFromFeature(feature) {
   if (normalized) {
     const mapped = bezirkByArkis.get(normalized);
     if (mapped) return mapped;
+    }
+    return rawName ? String(rawName).trim() : null;
   }
-  return rawName ? String(rawName).trim() : null;
-}
+
+  function getBtgTooltip(feature) {
+    const props = feature?.properties || {};
+    const bwk = findWkrValue(props);
+    const mapping = bwk ? btgTooltipByBwk.get(bwk) : null;
+    const bez = mapping?.bez || normalizeBez(props.BEZ || props.Bez || props.bez);
+    const bezName = bez ? districtByNumber.get(bez)?.name : null;
+    if (bezName) return bezName;
+    if (mapping?.name) return mapping.name;
+    return pickTooltipText(feature, ["name", "WKR_NAME", "WK_NAME", "Wahlkreis", "Wahlkreisname"]);
+  }
 
 function rebuildOverlayControl() {
   if (!map) return;
@@ -1247,10 +1262,10 @@ function pushUnique(list, entry) {
   list.push(entry);
 }
 
-function loadBtgCSV() {
-  return new Promise((resolve) => {
-    Papa.parse(btgCsvUrl, {
-      download: true,
+  function loadBtgCSV() {
+    return new Promise((resolve) => {
+      Papa.parse(btgCsvUrl, {
+        download: true,
       header: false,
       delimiter: ";",
       skipEmptyLines: true,
@@ -1302,9 +1317,34 @@ function loadBtgCSV() {
         btgCitywide = [];
         resolve();
       }
+      });
     });
-  });
-}
+  }
+
+  function loadBtgTooltipCSV() {
+    return new Promise((resolve) => {
+      Papa.parse(btgTooltipCsvUrl, {
+        download: true,
+        header: true,
+        delimiter: ",",
+        skipEmptyLines: true,
+        complete: (result) => {
+          (result.data || []).forEach(row => {
+            const bwk = normalizeWkr(row.BWK || row.bwk || row["BWK"]);
+            if (!bwk) return;
+            const name = (row["Wahlkreis-Name"] || row["Wahlkreisname"] || row.Name || "").trim();
+            const bez = normalizeBez(row.BEZ || row.Bez || row.bez);
+            btgTooltipByBwk.set(bwk, { name, bez });
+          });
+          resolve();
+        },
+        error: (err) => {
+          console.warn("BTG Wahlkreis tooltip mapping could not be loaded.", err);
+          resolve();
+        }
+      });
+    });
+  }
 
 function parseBvvFile(text) {
   const lines = text.split(/\r?\n/).map(l => l.trimEnd()).filter(l => l.trim() !== "");
@@ -1394,7 +1434,17 @@ async function loadWahlkreiseGeoJSON() {
     if (!response.ok) {
       throw new Error(`BTG GeoJSON could not be loaded: ${response.status} ${response.statusText}`);
     }
-    return await response.json();
+    const data = await response.json();
+    const crsName = String(data?.crs?.properties?.name || "").toUpperCase();
+    const needsReproject = crsName.includes("25833");
+    if (needsReproject && Array.isArray(data.features)) {
+      data.features.forEach(feature => {
+        if (feature?.geometry) {
+          feature.geometry = reprojectGeometry(feature.geometry);
+        }
+      });
+    }
+    return data;
   }
 
 function indexAghByBezirk(geojson) {
@@ -1705,13 +1755,14 @@ function updateLegend() {
 
 async function initData() {
   try {
-    const results = await Promise.allSettled([
-      loadDistrictCSV(),
-      loadAghCSV(),
-      loadBtgCSV(),
-      loadBvvLists(),
-      loadBezirkArkis()
-    ]);
+      const results = await Promise.allSettled([
+        loadDistrictCSV(),
+        loadAghCSV(),
+        loadBtgCSV(),
+        loadBtgTooltipCSV(),
+        loadBvvLists(),
+        loadBezirkArkis()
+      ]);
     if (results[0].status === "rejected" || results[1].status === "rejected") {
       throw new Error("Pflichtdaten konnten nicht geladen werden.");
     }

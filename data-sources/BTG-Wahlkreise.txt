@@ -1,0 +1,13 @@
+BWK,Wahlkreis-Name,BEZ
+74,Berlin-Mitte,01
+75,Berlin-Pankow,02
+76,Berlin-Reinickendorf,03
+77,Berlin-Spandau & Charlottenburg Nord,04
+78,Berlin-Steglitz-Zehlendorf,05
+79,Berlin-Charlottenburg-Wilmersdorf,06
+80,Berlin-Tempelhof-Schöneberg,07
+81,Berlin-Neukölln,08
+82,Berlin-Fr.-Kreuzberg & Prenzl. Berg Ost,09
+83,Berlin-Treptow-Köpenick,10
+84,Berlin-Marzahn-Hellersdorf,11
+85,Berlin-Lichtenberg,12
