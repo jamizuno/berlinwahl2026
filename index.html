@@ -946,10 +946,20 @@ async function addWfsOverlayLayer(layerConfig) {
     defaultOn
   } = layerConfig;
 
-  const baseStyle = style || {};
-  try {
-    ensurePane(pane, zIndex);
-    const typeName = await resolveTypeName(url, preferredTypeNames);
+    const baseStyle = style || {};
+    try {
+      if (id === "btg") {
+        ensurePane(pane, zIndex);
+        const localData = await loadBtgGeoJSONFromShapefile();
+        const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
+        wfsOverlayLayers.set(id, layer);
+        if (defaultOn) layer.addTo(map);
+        console.info("BTG layer loaded from local shapefile (WFS disabled).");
+        return;
+      }
+
+      ensurePane(pane, zIndex);
+      const typeName = await resolveTypeName(url, preferredTypeNames);
     if (!typeName) throw new Error(`No WFS typename found for ${label}`);
     const featureUrl = buildWfsGetFeatureUrl(url, typeName);
     let data = null;
