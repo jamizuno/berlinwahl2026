@@ -684,7 +684,7 @@ const wfsLayers = [
   {
     id: "btg",
     label: "BTG Wahlkreise",
-    url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map",
+    url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map&service=WFS&request=GetCapabilities",
     preferredTypeNames: ["ms:Wahlkreise"],
     pane: "pane-btg",
     zIndex: 445,
@@ -754,16 +754,23 @@ function ensurePane(name, zIndex) {
   map.getPane(name).style.zIndex = zIndex;
 }
 
+function buildUrlWithParams(baseUrl, params) {
+  const url = new URL(baseUrl);
+  Object.entries(params).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
+  return url.toString();
+}
+
 function buildWfsCapsUrl(baseUrl) {
-  const params = new URLSearchParams({
+  return buildUrlWithParams(baseUrl, {
     service: "WFS",
     request: "GetCapabilities"
   });
-  return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${params.toString()}`;
 }
 
 function buildWfsGetFeatureUrl(baseUrl, typeName, outputFormat = wfsDefaults.outputFormat) {
-  const params = new URLSearchParams({
+  return buildUrlWithParams(baseUrl, {
     service: "WFS",
     request: "GetFeature",
     version: wfsDefaults.version,
@@ -771,7 +778,6 @@ function buildWfsGetFeatureUrl(baseUrl, typeName, outputFormat = wfsDefaults.out
     outputFormat,
     srsName: wfsDefaults.srsName
   });
-  return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}${params.toString()}`;
 }
 
 async function fetchWfsTypeNames(baseUrl) {
