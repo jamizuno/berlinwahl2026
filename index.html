@@ -629,6 +629,7 @@ let selectedFeature = null;
 let berlinGeoJSON = null;
 let overlayControl = null;
 let aghOverlay = null;
+let selectionHighlightLayer = null;
 const wfsOverlayLayers = new Map();
 let activeContext = null;
 
@@ -909,18 +910,40 @@ function clearOverlaySelection() {
   }
   selectedOverlayLayer = null;
   selectedOverlayBaseStyle = null;
+  if (selectionHighlightLayer) {
+    map.removeLayer(selectionHighlightLayer);
+    selectionHighlightLayer = null;
+  }
 }
 
-function selectOverlayLayer(layer, baseStyle) {
+function showHighlightLayer(feature, style) {
+  if (selectionHighlightLayer) {
+    map.removeLayer(selectionHighlightLayer);
+    selectionHighlightLayer = null;
+  }
+  if (!feature || !style) return;
+  ensurePane("pane-highlight", 1000);
+  selectionHighlightLayer = L.geoJSON(feature, {
+    pane: "pane-highlight",
+    style,
+    interactive: false
+  }).addTo(map);
+  if (typeof selectionHighlightLayer.bringToFront === "function") {
+    selectionHighlightLayer.bringToFront();
+  }
+}
+
+function selectOverlayLayer(layer, baseStyle, feature) {
   if (selectedOverlayLayer && selectedOverlayLayer !== layer) {
     selectedOverlayLayer.setStyle(normalizeOverlayStyle(selectedOverlayBaseStyle));
   }
   selectedOverlayLayer = layer;
   selectedOverlayBaseStyle = baseStyle;
-  layer.setStyle(getHighlightStyle(baseStyle));
+  layer.setStyle(normalizeOverlayStyle(baseStyle));
   if (typeof layer.bringToFront === "function") {
     layer.bringToFront();
   }
+  showHighlightLayer(feature, getHighlightStyle(baseStyle));
 }
 
 function buildOverlayLayer(data, layerConfig, baseStyle) {
@@ -948,7 +971,7 @@ function buildOverlayLayer(data, layerConfig, baseStyle) {
         }
         lyr.on("click", () => {
           if (id !== "eu") {
-            selectOverlayLayer(lyr, baseStyle);
+            selectOverlayLayer(lyr, baseStyle, feature);
           }
           handleLayerClick(id, feature);
         });
@@ -1632,7 +1655,18 @@ function onFeatureClick(e) {
   }
   selectedLayer = e.target;
   selectedFeature = e.target.feature;
-  selectedLayer.setStyle({ fillOpacity: 0.8, weight: 3, color: "#c8a96e" });
+  const base = styleFeature(selectedFeature);
+  const highlightStyle = {
+    ...base,
+    color: "#c8a96e",
+    weight: 3,
+    fillOpacity: 0.8
+  };
+  selectedLayer.setStyle(base);
+  showHighlightLayer(selectedFeature, highlightStyle);
+  if (typeof selectedLayer.bringToFront === "function") {
+    selectedLayer.bringToFront();
+  }
   handleLayerClick("agh", e.target.feature);
 }
 
@@ -1917,7 +1951,9 @@ async function initData() {
 // Add tooltip style
 const style = document.createElement('style');
 style.textContent = `
+  .leaflet-container { outline: none; }
   .leaflet-tooltip { outline: none; }
+  path.leaflet-interactive:focus { outline: none; }
   .district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); outline: none; }
   .osm-dark { filter: brightness(0.82) contrast(1.05) saturate(0.9); }
 `;
