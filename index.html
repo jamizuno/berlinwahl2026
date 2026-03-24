@@ -1311,13 +1311,46 @@ async function loadWahlkreiseGeoJSON() {
 
 async function loadBtgGeoJSONFromShapefile() {
   const source = await shapefile.open(btgLocalShpUrl, btgLocalDbfUrl);
-  const features = [];
+  const groups = new Map();
+  let index = 0;
   while (true) {
     const result = await source.read();
     if (result.done) break;
     const feature = result.value;
     feature.geometry = reprojectGeometry(feature.geometry);
-    features.push(feature);
+    const wkr = normalizeWkr(pickProp(feature, [
+      "WKR_NR", "WK_NR", "WKR", "WKRNR", "WKNR",
+      "Wahlkreis", "Wahlkreisnr", "Wahlkreisnummer"
+    ]));
+    const name = pickProp(feature, ["WKR_NAME", "WK_NAME", "Wahlkreisname", "NAME", "name"]);
+    const key = wkr || name || `row-${index++}`;
+    if (!groups.has(key)) {
+      groups.set(key, { wkr: wkr || "", name: name || "", polygons: [] });
+    }
+    const group = groups.get(key);
+    const geom = feature.geometry;
+    if (!geom) continue;
+    if (geom.type === "Polygon") {
+      group.polygons.push(geom.coordinates);
+    } else if (geom.type === "MultiPolygon") {
+      group.polygons.push(...geom.coordinates);
+    }
+  }
+  const features = [];
+  for (const group of groups.values()) {
+    if (!group.polygons.length) continue;
+    features.push({
+      type: "Feature",
+      properties: {
+        WKR_NR: group.wkr || "",
+        WKR_NAME: group.name || "",
+        name: group.name || group.wkr || ""
+      },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: group.polygons
+      }
+    });
   }
   return { type: "FeatureCollection", features };
 }
