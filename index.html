@@ -205,6 +205,18 @@
     margin-bottom: 4px;
   }
 
+  .rep-name-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .rep-name-line .rep-name {
+    margin-bottom: 0;
+  }
+
   .rep-party {
     display: inline-block;
     font-size: 0.72rem;
@@ -755,7 +767,8 @@ const map = L.map('map', {
 
 var OpenStreetMap_DE = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
   maxZoom: 18,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  className: 'osm-dark'
 });
 OpenStreetMap_DE.addTo(map);
 
@@ -882,10 +895,11 @@ function lightenColor(hex, amount = 0.25) {
 function getHighlightStyle(baseStyle) {
   const base = normalizeOverlayStyle(baseStyle);
   const highlight = { ...base };
-  highlight.weight = Math.max(base.weight + 1.8, base.weight * 1.6);
-  highlight.color = lightenColor(base.color, 0.25);
-  highlight.fillColor = base.fillColor || lightenColor(base.color, 0.45);
-  highlight.fillOpacity = Math.min(0.6, Math.max(0.2, base.fillOpacity + 0.25));
+  highlight.weight = Math.max(base.weight + 2.6, base.weight * 1.9);
+  highlight.color = lightenColor(base.color, 0.45);
+  const fillBase = base.fillColor || base.color;
+  highlight.fillColor = lightenColor(fillBase, 0.35);
+  highlight.fillOpacity = 0.44;
   return highlight;
 }
 
@@ -1775,8 +1789,10 @@ function renderPanel(context) {
           const sinceText = entry.since ? ` · seit ${entry.since}` : "";
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
-            <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            <div class="rep-name-line">
+              <div class="rep-name">${entry.name}</div>
+              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            </div>
             <div class="rep-role">${entry.role}${sinceText}</div>
           </div>`;
         });
@@ -1805,8 +1821,10 @@ function renderPanel(context) {
             })();
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>
-            <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            <div class="rep-name-line">
+              <div class="rep-name">${entry.name}</div>
+              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            </div>
             <div class="rep-role">${role}</div>
           </div>`;
         });
@@ -1818,8 +1836,10 @@ function renderPanel(context) {
           const isList = entry.art !== "Direkt";
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
-            <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            <div class="rep-name-line">
+              <div class="rep-name">${entry.name}</div>
+              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            </div>
             <div class="rep-role">${entry.role}</div>
           </div>`;
         });
@@ -1830,8 +1850,10 @@ function renderPanel(context) {
         entries.forEach(entry => {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
-            <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            <div class="rep-name-line">
+              <div class="rep-name">${entry.name}</div>
+              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+            </div>
             <div class="rep-role">${entry.role}</div>
           </div>`;
         });
@@ -1902,6 +1924,7 @@ async function initData() {
 const style = document.createElement('style');
 style.textContent = `
   .district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .osm-dark { filter: brightness(0.82) contrast(1.05) saturate(0.9); }
 `;
 document.head.appendChild(style);
 
