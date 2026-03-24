@@ -1923,7 +1923,8 @@ async function initData() {
 // Add tooltip style
 const style = document.createElement('style');
 style.textContent = `
-  .district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .leaflet-tooltip { outline: none; }
+  .district-tooltip { background: #1a1f2e; border: 1px solid #c8a96e; color: #e8eaf0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); outline: none; }
   .osm-dark { filter: brightness(0.82) contrast(1.05) saturate(0.9); }
 `;
 document.head.appendChild(style);
