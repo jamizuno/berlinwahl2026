@@ -221,7 +221,7 @@
     margin-top: 4px;
   }
 
-  .party-CDU { background: rgba(37,99,168,0.25); color: #7db3f0; border: 1px solid rgba(37,99,168,0.4); }
+  .party-CDU { background: rgba(17,17,17,0.35); color: #e6e6e6; border: 1px solid rgba(17,17,17,0.6); }
   .party-SPD { background: rgba(212,38,60,0.25); color: #f08090; border: 1px solid rgba(212,38,60,0.4); }
   .party-Grüne { background: rgba(58,140,78,0.25); color: #7dd492; border: 1px solid rgba(58,140,78,0.4); }
   .party-Linke { background: rgba(155,46,207,0.25); color: #c98af0; border: 1px solid rgba(155,46,207,0.4); }
@@ -564,7 +564,7 @@ const euCitywide = (() => {
 })();
 
 const partyColors = {
-  CDU: "#5b9bd5", SPD: "#e06070", Grüne: "#5db87a",
+  CDU: "#111111", SPD: "#e06070", Grüne: "#5db87a",
   Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050",
   fraktionslos: "#9ca3af"
 };
@@ -575,6 +575,23 @@ const levelLabels = {
   bundestag: "Bundestag",
   eu: "EU-Parlament",
   alle: "Alle Ebenen"
+};
+
+const mapScopeByLevel = {
+  bezirk: ["Kieze", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
+  abgeordnetenhaus: ["AGH Wahlbezirke", "Ortsteile", "Bezirke"],
+  bundestag: ["BTG Wahlbezirke", "Berlin Stadtgebiet (Land)"],
+  eu: ["Berlin Stadtgebiet (Land)"],
+  alle: [
+    "Berlin Stadtgebiet (Land)",
+    "BTG Wahlbezirke",
+    "AGH Wahlbezirke",
+    "Bezirke",
+    "Ortsteile",
+    "Postleitzahlen",
+    "Einschulbereiche",
+    "Kieze"
+  ]
 };
 
 let currentLevel = "bezirk";
@@ -603,11 +620,13 @@ const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
 const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
 const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
 const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
+const btgLocalShpUrl = "./RBS_OD_UWB_BT25/RBS_OD_UWB_BT25.shp";
+const btgLocalDbfUrl = "./RBS_OD_UWB_BT25/RBS_OD_UWB_BT25.dbf";
 
 const wfsLayers = [
   {
     id: "kieze",
-    label: "Kieze (LOR 2021)",
+    label: "Kieze (LOR)",
     url: "https://gdi.berlin.de/services/wfs/lor_2021",
     preferredTypeNames: [
       "lor_2021:a_lor_plr_2021",
@@ -649,7 +668,7 @@ const wfsLayers = [
     pane: "pane-ortsteile",
     zIndex: 435,
     style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
-    tooltipProps: ["name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name"]
+    tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
   },
   {
     id: "bezirke",
@@ -664,13 +683,13 @@ const wfsLayers = [
   },
   {
     id: "btg",
-    label: "BTG Wahlbezirke",
+    label: "BTG Wahlkreise",
     url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map",
     preferredTypeNames: ["ms:Wahlkreise"],
     pane: "pane-btg",
     zIndex: 445,
     style: { color: "#58c0c7", weight: 1.5, fillOpacity: 0 },
-    tooltipProps: ["WKR_NAME", "WKR_NR", "name"]
+    tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
   },
   {
     id: "eu",
@@ -786,6 +805,50 @@ function pickTooltipText(feature, props) {
   return null;
 }
 
+function isUselessTooltip(value) {
+  if (value === null || value === undefined) return true;
+  const text = String(value).trim();
+  if (!text) return true;
+  if (text === "AX_KommunalesGebiet") return true;
+  return false;
+}
+
+function getOrtsteilTooltip(feature, props) {
+  const preferred = pickTooltipText(feature, props);
+  if (preferred && !isUselessTooltip(preferred) && !/^\d+$/.test(preferred)) {
+    return preferred;
+  }
+  const fallback = pickNameLikeProperty(feature);
+  if (fallback && !isUselessTooltip(fallback)) return fallback;
+  return null;
+}
+
+function buildOverlayLayer(data, layerConfig, baseStyle) {
+  const { id, pane, tooltipProps } = layerConfig;
+  return L.geoJSON(data, {
+    pane,
+    style: baseStyle,
+    onEachFeature: (feature, lyr) => {
+      const tooltip = id === "eu"
+        ? null
+        : id === "bezirke"
+        ? getBezirkNameFromFeature(feature)
+        : id === "ortsteile"
+        ? getOrtsteilTooltip(feature, tooltipProps)
+        : pickTooltipText(feature, tooltipProps);
+      if (tooltip) {
+        lyr.bindTooltip(tooltip, {
+          permanent: false,
+          direction: "center",
+          className: "district-tooltip",
+          opacity: 0.9
+        });
+      }
+      lyr.on("click", () => handleLayerClick(id, feature));
+    }
+  });
+}
+
 function pickNameLikeProperty(feature) {
   if (!feature?.properties) return null;
   for (const [key, value] of Object.entries(feature.properties)) {
@@ -794,6 +857,7 @@ function pickNameLikeProperty(feature) {
     const text = String(value ?? "").trim();
     if (!text) continue;
     if (/^\d+$/.test(text)) continue;
+    if (isUselessTooltip(text)) continue;
     return text;
   }
   return null;
@@ -849,6 +913,7 @@ async function addWfsOverlayLayer(layerConfig) {
     defaultOn
   } = layerConfig;
 
+  const baseStyle = style || {};
   try {
     ensurePane(pane, zIndex);
     const typeName = await resolveTypeName(url, preferredTypeNames);
@@ -863,45 +928,26 @@ async function addWfsOverlayLayer(layerConfig) {
       const altRes = await fetch(altUrl);
       data = await altRes.json();
     }
-    const baseStyle = style || {};
-    const layer = L.geoJSON(data, {
-      pane,
-      style: baseStyle,
-      onEachFeature: (feature, lyr) => {
-        const tooltip = id === "eu"
-          ? null
-          : id === "bezirke"
-          ? getBezirkNameFromFeature(feature)
-          : id === "ortsteile"
-          ? (pickTooltipText(feature, tooltipProps) || pickNameLikeProperty(feature))
-          : pickTooltipText(feature, tooltipProps);
-        if (tooltip) {
-          lyr.bindTooltip(tooltip, {
-            permanent: false,
-            direction: "center",
-            className: "district-tooltip",
-            opacity: 0.9
-          });
-        }
-        if (id !== "eu") {
-          lyr.on("mouseover", () => {
-            const hoverStyle = {
-              ...baseStyle,
-              weight: (baseStyle.weight || 1) + 1,
-              fillOpacity: Math.min(0.25, (baseStyle.fillOpacity ?? 0) + 0.15)
-            };
-            lyr.setStyle(hoverStyle);
-            lyr.bringToFront();
-          });
-          lyr.on("mouseout", () => lyr.setStyle(baseStyle));
-        }
-        lyr.on("click", () => handleLayerClick(id, feature));
-      }
-    });
+    const layer = buildOverlayLayer(data, layerConfig, baseStyle);
     wfsOverlayLayers.set(id, layer);
     if (defaultOn) layer.addTo(map);
   } catch (err) {
     console.warn(`WFS layer failed: ${label}`, err);
+    if (id === "btg") {
+      try {
+        ensurePane(pane, zIndex);
+        const localData = await loadBtgGeoJSONFromShapefile();
+        const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
+        wfsOverlayLayers.set(id, layer);
+        if (defaultOn) layer.addTo(map);
+        return;
+      } catch (localErr) {
+        console.warn("BTG local shapefile fallback failed.", localErr);
+      }
+    }
+    // Keep the layer in the UI list even if loading fails.
+    const fallback = L.geoJSON([], { pane, style: baseStyle });
+    wfsOverlayLayers.set(id, fallback);
   }
 }
 
@@ -934,7 +980,7 @@ function normalizeParty(value) {
   if (upper === "SPD" || upper.includes("SOZIALDEMOKRATISCHE")) return "SPD";
   if (upper === "FDP" || upper.includes("FREIE DEMOKRATISCHE")) return "FDP";
   if (upper === "AFD" || upper.includes("ALTERNATIVE FÜR DEUTSCHLAND")) return "AfD";
-  if (upper === "FRAKTIONSLOS") return "fraktionslos";
+  if (upper === "FRAKTIONSLOS" || upper === "EINZELVERORDNETE" || upper === "EINZELVERORDNETER") return "fraktionslos";
   return raw;
 }
 
@@ -1263,6 +1309,19 @@ async function loadWahlkreiseGeoJSON() {
   return { type: "FeatureCollection", features };
 }
 
+async function loadBtgGeoJSONFromShapefile() {
+  const source = await shapefile.open(btgLocalShpUrl, btgLocalDbfUrl);
+  const features = [];
+  while (true) {
+    const result = await source.read();
+    if (result.done) break;
+    const feature = result.value;
+    feature.geometry = reprojectGeometry(feature.geometry);
+    features.push(feature);
+  }
+  return { type: "FeatureCollection", features };
+}
+
 function indexAghByBezirk(geojson) {
   aghByBez.clear();
   geojson?.features?.forEach(feature => {
@@ -1340,7 +1399,7 @@ function initGeoLayer() {
     pane: "pane-agh",
     style: styleFeature,
     onEachFeature: (feature, layer) => {
-      layer.on({ mouseover: highlightFeature, mouseout: resetHighlight, click: onFeatureClick });
+      layer.on({ click: onFeatureClick });
       layer.bindTooltip(feature.properties.name, {
         permanent: false, direction: "center",
         className: "district-tooltip",
@@ -1380,9 +1439,9 @@ function buildContextFromFeature(layerId, feature) {
   }
 
   if (layerId === "btg") {
-    const wkr = pickProp(feature, ["WKR_NR", "wkr_nr", "wkr", "Wahlkreis", "wahlkreis"]);
+    const wkr = pickProp(feature, ["WKR_NR", "WK_NR", "WKRNR", "WKR", "wkr_nr", "wkr", "Wahlkreis", "wahlkreis", "Wahlkreisnummer"]);
     context.btgWkr = normalizeWkr(wkr);
-    context.btgName = pickProp(feature, ["WKR_NAME", "wkr_name", "name"]);
+    context.btgName = pickProp(feature, ["WKR_NAME", "WK_NAME", "wkr_name", "name", "NAME", "Wahlkreisname"]);
     return context;
   }
 
@@ -1446,8 +1505,17 @@ function collectBundestagEntries(context) {
 }
 
 function renderPanel(context) {
+  const scopeList = mapScopeByLevel[currentLevel] || [];
+  const scopeHtml = scopeList.length
+    ? `<div class="rep-card">
+        <div class="rep-level">Kartebenen</div>
+        <div class="rep-role">${scopeList.join(" · ")}</div>
+      </div>`
+    : "";
+
   if (!context) {
     document.getElementById('districtInfo').innerHTML = `
+      ${scopeHtml}
       <div class="empty-state">
         <div class="empty-icon">🗺️</div>
         <div class="empty-text">Bezirk auf der Karte auswählen</div>
@@ -1465,7 +1533,8 @@ function renderPanel(context) {
     <div class="district-name-banner">
       ${headerNr ? `<div class="bezirk-nr">Bezirk ${headerNr}</div>` : `<div class="bezirk-nr">Stadtgebiet</div>`}
       <h2>${headerName}</h2>
-    </div>`;
+    </div>
+    ${scopeHtml}`;
 
   for (const lvl of levels) {
     const label = levelLabels[lvl];
