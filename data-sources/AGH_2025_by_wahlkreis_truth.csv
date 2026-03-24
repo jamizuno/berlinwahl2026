@@ -1,320 +1,218 @@
-AWK;Wahlkreis;Gewaehlte;Partei;Anteil;Art;Hinweis
-0101;Mitte 1;Gebel, Silke;GRÜNE;33,5;Direkt;
-0101;Mitte 1;Lasić, Dr. Maja;SPD;;Landesliste;
-0101;Mitte 1;Schulz, Mathias;SPD;;Landesliste;
-0102;Mitte 2;Schaal, Lucas;CDU;24,9;Direkt;
-0102;Mitte 2;Lasić, Dr. Maja;SPD;;Landesliste;
-0102;Mitte 2;Schulz, Mathias;SPD;;Landesliste;
-0103;Mitte 3;Omar, Jian;GRÜNE;33,0;Direkt;
-0103;Mitte 3;Lasić, Dr. Maja;SPD;;Landesliste;
-0103;Mitte 3;Schulz, Mathias;SPD;;Landesliste;
-0104;Mitte 4;Kurt, Taylan;GRÜNE;40,1;Direkt;
-0104;Mitte 4;Lasić, Dr. Maja;SPD;;Landesliste;
-0104;Mitte 4;Schulz, Mathias;SPD;;Landesliste;
-0105;Mitte 5;Rissmann, Sven Nico;CDU;24,4;Direkt;
-0105;Mitte 5;Lasić, Dr. Maja;SPD;;Landesliste;
-0105;Mitte 5;Schulz, Mathias;SPD;;Landesliste;
-0106;Mitte 6;Bozkurt, Tuba;GRÜNE;32,0;Direkt;
-0106;Mitte 6;Lasić, Dr. Maja;SPD;;Landesliste;
-0106;Mitte 6;Schulz, Mathias;SPD;;Landesliste;
-0107;Mitte 7;Neugebauer, Laura;GRÜNE;30,1;Direkt;
-0107;Mitte 7;Lasić, Dr. Maja;SPD;;Landesliste;
-0107;Mitte 7;Schulz, Mathias;SPD;;Landesliste;
-0201;Friedrichshain-Kreuzberg 1;Schmidberger, Katrin;GRÜNE;40,3;Direkt;
-0201;Friedrichshain-Kreuzberg 1;Aydin, Sevim;SPD;;Landesliste;
-0201;Friedrichshain-Kreuzberg 1;Heinemann, Sven;SPD;;Landesliste;
-0201;Friedrichshain-Kreuzberg 1;Husein, Dr. Timur;CDU;;Landesliste;
-0201;Friedrichshain-Kreuzberg 1;Wansner, Kurt;CDU;;Landesliste;
-0202;Friedrichshain-Kreuzberg 2;Burkert-Eulitz, Marianne;GRÜNE;37,9;Direkt;
-0202;Friedrichshain-Kreuzberg 2;Aydin, Sevim;SPD;;Landesliste;
-0202;Friedrichshain-Kreuzberg 2;Heinemann, Sven;SPD;;Landesliste;
-0202;Friedrichshain-Kreuzberg 2;Husein, Dr. Timur;CDU;;Landesliste;
-0202;Friedrichshain-Kreuzberg 2;Wansner, Kurt;CDU;;Landesliste;
-0203;Friedrichshain-Kreuzberg 3;Dr. Altuğ, Turgut;GRÜNE;35,1;Direkt;
-0203;Friedrichshain-Kreuzberg 3;Aydin, Sevim;SPD;;Landesliste;
-0203;Friedrichshain-Kreuzberg 3;Heinemann, Sven;SPD;;Landesliste;
-0203;Friedrichshain-Kreuzberg 3;Husein, Dr. Timur;CDU;;Landesliste;
-0203;Friedrichshain-Kreuzberg 3;Wansner, Kurt;CDU;;Landesliste;
-0204;Friedrichshain-Kreuzberg 4;Valgolio, Damiano;DIE LINKE;24,7;Direkt;
-0204;Friedrichshain-Kreuzberg 4;Aydin, Sevim;SPD;;Landesliste;
-0204;Friedrichshain-Kreuzberg 4;Heinemann, Sven;SPD;;Landesliste;
-0204;Friedrichshain-Kreuzberg 4;Husein, Dr. Timur;CDU;;Landesliste;
-0204;Friedrichshain-Kreuzberg 4;Wansner, Kurt;CDU;;Landesliste;
-0205;Friedrichshain-Kreuzberg 5;Franco, Vasili;GRÜNE;36,1;Direkt;
-0205;Friedrichshain-Kreuzberg 5;Aydin, Sevim;SPD;;Landesliste;
-0205;Friedrichshain-Kreuzberg 5;Heinemann, Sven;SPD;;Landesliste;
-0205;Friedrichshain-Kreuzberg 5;Husein, Dr. Timur;CDU;;Landesliste;
-0205;Friedrichshain-Kreuzberg 5;Wansner, Kurt;CDU;;Landesliste;
-0206;Friedrichshain-Kreuzberg 6;Schwarze, Julian;GRÜNE;39,5;Direkt;
-0206;Friedrichshain-Kreuzberg 6;Aydin, Sevim;SPD;;Landesliste;
-0206;Friedrichshain-Kreuzberg 6;Heinemann, Sven;SPD;;Landesliste;
-0206;Friedrichshain-Kreuzberg 6;Husein, Dr. Timur;CDU;;Landesliste;
-0206;Friedrichshain-Kreuzberg 6;Wansner, Kurt;CDU;;Landesliste;
-0301;Pankow 1;Kraft, Johannes;CDU;41,6;Direkt;
-0301;Pankow 1;Buchner, Dennis;SPD;;Landesliste;
-0301;Pankow 1;Lenz, Stephan;CDU;;Landesliste;
-0301;Pankow 1;Schneider, Torsten;SPD;;Landesliste;
-0301;Pankow 1;Vierecke, Linda;SPD;;Landesliste;
-0302;Pankow 2;Bocian, Lars;CDU;31,4;Direkt;
-0302;Pankow 2;Buchner, Dennis;SPD;;Landesliste;
-0302;Pankow 2;Lenz, Stephan;CDU;;Landesliste;
-0302;Pankow 2;Schneider, Torsten;SPD;;Landesliste;
-0302;Pankow 2;Vierecke, Linda;SPD;;Landesliste;
-0303;Pankow 3;Hassepaß, Oda;GRÜNE;24,8;Direkt;
-0303;Pankow 3;Buchner, Dennis;SPD;;Landesliste;
-0303;Pankow 3;Lenz, Stephan;CDU;;Landesliste;
-0303;Pankow 3;Schneider, Torsten;SPD;;Landesliste;
-0303;Pankow 3;Vierecke, Linda;SPD;;Landesliste;
-0304;Pankow 4;Stettner, Dirk;CDU;30,2;Direkt;
-0304;Pankow 4;Buchner, Dennis;SPD;;Landesliste;
-0304;Pankow 4;Lenz, Stephan;CDU;;Landesliste;
-0304;Pankow 4;Schneider, Torsten;SPD;;Landesliste;
-0304;Pankow 4;Vierecke, Linda;SPD;;Landesliste;
-0305;Pankow 5;Krüger, Louis;GRÜNE;22,1;Direkt;
-0305;Pankow 5;Buchner, Dennis;SPD;;Landesliste;
-0305;Pankow 5;Lenz, Stephan;CDU;;Landesliste;
-0305;Pankow 5;Schneider, Torsten;SPD;;Landesliste;
-0305;Pankow 5;Vierecke, Linda;SPD;;Landesliste;
-0306;Pankow 6;Otto, Andreas;GRÜNE;41,6;Direkt;
-0306;Pankow 6;Buchner, Dennis;SPD;;Landesliste;
-0306;Pankow 6;Lenz, Stephan;CDU;;Landesliste;
-0306;Pankow 6;Schneider, Torsten;SPD;;Landesliste;
-0306;Pankow 6;Vierecke, Linda;SPD;;Landesliste;
-0307;Pankow 7;Schneider, Julia;GRÜNE;30,9;Direkt;
-0307;Pankow 7;Buchner, Dennis;SPD;;Landesliste;
-0307;Pankow 7;Lenz, Stephan;CDU;;Landesliste;
-0307;Pankow 7;Schneider, Torsten;SPD;;Landesliste;
-0307;Pankow 7;Vierecke, Linda;SPD;;Landesliste;
-0308;Pankow 8;Billig, Daniela;GRÜNE;37,2;Direkt;
-0308;Pankow 8;Buchner, Dennis;SPD;;Landesliste;
-0308;Pankow 8;Lenz, Stephan;CDU;;Landesliste;
-0308;Pankow 8;Schneider, Torsten;SPD;;Landesliste;
-0308;Pankow 8;Vierecke, Linda;SPD;;Landesliste;
-0309;Pankow 9;Schopf, Tino;SPD;25,6;Direkt;
-0309;Pankow 9;Buchner, Dennis;SPD;;Landesliste;
-0309;Pankow 9;Lenz, Stephan;CDU;;Landesliste;
-0309;Pankow 9;Schneider, Torsten;SPD;;Landesliste;
-0309;Pankow 9;Vierecke, Linda;SPD;;Landesliste;
-0401;Charlottenburg-Wilmersdorf 1;Häntsch, Stefan;CDU;28,3;Direkt;
-0401;Charlottenburg-Wilmersdorf 1;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0401;Charlottenburg-Wilmersdorf 1;Naumann, Reinhard;SPD;;Landesliste;
-0401;Charlottenburg-Wilmersdorf 1;Radziwill, Ülker;SPD;;Landesliste;
-0402;Charlottenburg-Wilmersdorf 2;Hack, Ariturel;CDU;38,7;Direkt;
-0402;Charlottenburg-Wilmersdorf 2;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0402;Charlottenburg-Wilmersdorf 2;Naumann, Reinhard;SPD;;Landesliste;
-0402;Charlottenburg-Wilmersdorf 2;Radziwill, Ülker;SPD;;Landesliste;
-0403;Charlottenburg-Wilmersdorf 3;Dr. Vandrey, Petra;GRÜNE;29,2;Direkt;
-0403;Charlottenburg-Wilmersdorf 3;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0403;Charlottenburg-Wilmersdorf 3;Naumann, Reinhard;SPD;;Landesliste;
-0403;Charlottenburg-Wilmersdorf 3;Radziwill, Ülker;SPD;;Landesliste;
-0404;Charlottenburg-Wilmersdorf 4;Niemczyk, Aldona Maria;CDU;28,6;Direkt;
-0404;Charlottenburg-Wilmersdorf 4;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0404;Charlottenburg-Wilmersdorf 4;Naumann, Reinhard;SPD;;Landesliste;
-0404;Charlottenburg-Wilmersdorf 4;Radziwill, Ülker;SPD;;Landesliste;
-0405;Charlottenburg-Wilmersdorf 5;Khalatbari, Sandra;CDU;42,3;Direkt;
-0405;Charlottenburg-Wilmersdorf 5;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0405;Charlottenburg-Wilmersdorf 5;Naumann, Reinhard;SPD;;Landesliste;
-0405;Charlottenburg-Wilmersdorf 5;Radziwill, Ülker;SPD;;Landesliste;
-0406;Charlottenburg-Wilmersdorf 6;Mock-Stümer, Peer;CDU;29,2;Direkt;
-0406;Charlottenburg-Wilmersdorf 6;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0406;Charlottenburg-Wilmersdorf 6;Naumann, Reinhard;SPD;;Landesliste;
-0406;Charlottenburg-Wilmersdorf 6;Radziwill, Ülker;SPD;;Landesliste;
-0407;Charlottenburg-Wilmersdorf 7;Bung, Stefanie;CDU;34,2;Direkt;
-0407;Charlottenburg-Wilmersdorf 7;Dörstelmann, Florian;SPD;;Landesliste;Nachgerückt
-0407;Charlottenburg-Wilmersdorf 7;Naumann, Reinhard;SPD;;Landesliste;
-0407;Charlottenburg-Wilmersdorf 7;Radziwill, Ülker;SPD;;Landesliste;
-0501;Spandau 1;Meißner, Bettina;CDU;37,3;Direkt;
-0501;Spandau 1;Atli, Sebahat;SPD;;Landesliste;
-0501;Spandau 1;Saleh, Raed;SPD;;Landesliste;
-0502;Spandau 2;Dr. Nas, Ersin;CDU;33,2;Direkt;
-0502;Spandau 2;Atli, Sebahat;SPD;;Landesliste;
-0502;Spandau 2;Saleh, Raed;SPD;;Landesliste;
-0503;Spandau 3;Brauner, Kerstin;CDU;34,4;Direkt;
-0503;Spandau 3;Atli, Sebahat;SPD;;Landesliste;
-0503;Spandau 3;Saleh, Raed;SPD;;Landesliste;
-0504;Spandau 4;Melzer, Heiko;CDU;45,3;Direkt;
-0504;Spandau 4;Atli, Sebahat;SPD;;Landesliste;
-0504;Spandau 4;Saleh, Raed;SPD;;Landesliste;
-0505;Spandau 5;Wegner, Kai;CDU;46,9;Direkt;
-0505;Spandau 5;Atli, Sebahat;SPD;;Landesliste;
-0505;Spandau 5;Saleh, Raed;SPD;;Landesliste;
-0601;Steglitz-Zehlendorf 1;Dr. Wein, Claudia;CDU;30,2;Direkt;
-0601;Steglitz-Zehlendorf 1;Czyborra, Dr. Ina;SPD;;Landesliste;
-0601;Steglitz-Zehlendorf 1;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0601;Steglitz-Zehlendorf 1;Golm, Mirjam;SPD;;Landesliste;
-0601;Steglitz-Zehlendorf 1;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0601;Steglitz-Zehlendorf 1;Matz, Martin;SPD;;Landesliste;
-0602;Steglitz-Zehlendorf 2;Cywinski, Tom Jan Filip;CDU;31,3;Direkt;
-0602;Steglitz-Zehlendorf 2;Czyborra, Dr. Ina;SPD;;Landesliste;
-0602;Steglitz-Zehlendorf 2;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0602;Steglitz-Zehlendorf 2;Golm, Mirjam;SPD;;Landesliste;
-0602;Steglitz-Zehlendorf 2;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0602;Steglitz-Zehlendorf 2;Matz, Martin;SPD;;Landesliste;
-0603;Steglitz-Zehlendorf 3;Goiny, Christian;CDU;40,5;Direkt;
-0603;Steglitz-Zehlendorf 3;Czyborra, Dr. Ina;SPD;;Landesliste;
-0603;Steglitz-Zehlendorf 3;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0603;Steglitz-Zehlendorf 3;Golm, Mirjam;SPD;;Landesliste;
-0603;Steglitz-Zehlendorf 3;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0603;Steglitz-Zehlendorf 3;Matz, Martin;SPD;;Landesliste;
-0604;Steglitz-Zehlendorf 4;Seibeld, Cornelia Simone Michaela;CDU;41,8;Direkt;
-0604;Steglitz-Zehlendorf 4;Czyborra, Dr. Ina;SPD;;Landesliste;
-0604;Steglitz-Zehlendorf 4;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0604;Steglitz-Zehlendorf 4;Golm, Mirjam;SPD;;Landesliste;
-0604;Steglitz-Zehlendorf 4;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0604;Steglitz-Zehlendorf 4;Matz, Martin;SPD;;Landesliste;
-0605;Steglitz-Zehlendorf 5;Friederici, Oliver;CDU;41,2;Direkt;
-0605;Steglitz-Zehlendorf 5;Czyborra, Dr. Ina;SPD;;Landesliste;
-0605;Steglitz-Zehlendorf 5;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0605;Steglitz-Zehlendorf 5;Golm, Mirjam;SPD;;Landesliste;
-0605;Steglitz-Zehlendorf 5;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0605;Steglitz-Zehlendorf 5;Matz, Martin;SPD;;Landesliste;
-0606;Steglitz-Zehlendorf 6;Grasse, Adrian;CDU;40,0;Direkt;
-0606;Steglitz-Zehlendorf 6;Czyborra, Dr. Ina;SPD;;Landesliste;
-0606;Steglitz-Zehlendorf 6;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0606;Steglitz-Zehlendorf 6;Golm, Mirjam;SPD;;Landesliste;
-0606;Steglitz-Zehlendorf 6;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0606;Steglitz-Zehlendorf 6;Matz, Martin;SPD;;Landesliste;
-0607;Steglitz-Zehlendorf 7;Standfuß, Stephan Carsten Günter;CDU;40,1;Direkt;
-0607;Steglitz-Zehlendorf 7;Czyborra, Dr. Ina;SPD;;Landesliste;
-0607;Steglitz-Zehlendorf 7;Gertig, Iris;CDU;;Landesliste;Nachgerückt
-0607;Steglitz-Zehlendorf 7;Golm, Mirjam;SPD;;Landesliste;
-0607;Steglitz-Zehlendorf 7;Kollatz, Dr. Matthias;SPD;;Landesliste;
-0607;Steglitz-Zehlendorf 7;Matz, Martin;SPD;;Landesliste;
-0701;Tempelhof-Schöneberg 1;Walter, Sebastian;GRÜNE;34,4;Direkt;
-0701;Tempelhof-Schöneberg 1;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0701;Tempelhof-Schöneberg 1;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0701;Tempelhof-Schöneberg 1;Rauchfuß, Lars;SPD;;Landesliste;
-0701;Tempelhof-Schöneberg 1;Senge, Katharina;CDU;;Landesliste;
-0702;Tempelhof-Schöneberg 2;Pieroth-Manelli, Catherina;GRÜNE;36,9;Direkt;
-0702;Tempelhof-Schöneberg 2;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0702;Tempelhof-Schöneberg 2;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0702;Tempelhof-Schöneberg 2;Rauchfuß, Lars;SPD;;Landesliste;
-0702;Tempelhof-Schöneberg 2;Senge, Katharina;CDU;;Landesliste;
-0703;Tempelhof-Schöneberg 3;Özdemir, Orkan;SPD;32,1;Direkt;
-0703;Tempelhof-Schöneberg 3;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0703;Tempelhof-Schöneberg 3;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0703;Tempelhof-Schöneberg 3;Rauchfuß, Lars;SPD;;Landesliste;
-0703;Tempelhof-Schöneberg 3;Senge, Katharina;CDU;;Landesliste;
-0704;Tempelhof-Schöneberg 4;Luhmann, Frank;CDU;28,5;Direkt;
-0704;Tempelhof-Schöneberg 4;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0704;Tempelhof-Schöneberg 4;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0704;Tempelhof-Schöneberg 4;Rauchfuß, Lars;SPD;;Landesliste;
-0704;Tempelhof-Schöneberg 4;Senge, Katharina;CDU;;Landesliste;
-0705;Tempelhof-Schöneberg 5;Simon, Roman;CDU;40,3;Direkt;
-0705;Tempelhof-Schöneberg 5;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0705;Tempelhof-Schöneberg 5;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0705;Tempelhof-Schöneberg 5;Rauchfuß, Lars;SPD;;Landesliste;
-0705;Tempelhof-Schöneberg 5;Senge, Katharina;CDU;;Landesliste;
-0706;Tempelhof-Schöneberg 6;Körber, Scott;CDU;47,4;Direkt;
-0706;Tempelhof-Schöneberg 6;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0706;Tempelhof-Schöneberg 6;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0706;Tempelhof-Schöneberg 6;Rauchfuß, Lars;SPD;;Landesliste;
-0706;Tempelhof-Schöneberg 6;Senge, Katharina;CDU;;Landesliste;
-0707;Tempelhof-Schöneberg 7;Zander, Christian;CDU;49,6;Direkt;
-0707;Tempelhof-Schöneberg 7;Kühnemann-Grunow, Melanie;SPD;;Landesliste;
-0707;Tempelhof-Schöneberg 7;Neumann, Wiebke;SPD;;Landesliste;Nachgerückt
-0707;Tempelhof-Schöneberg 7;Rauchfuß, Lars;SPD;;Landesliste;
-0707;Tempelhof-Schöneberg 7;Senge, Katharina;CDU;;Landesliste;
-0801;Neukölln 1;Schulze, André;GRÜNE;35,1;Direkt;
-0801;Neukölln 1;Giffey, Franziska;SPD;;Landesliste;
-0801;Neukölln 1;Hopp, Marcel;SPD;;Landesliste;
-0802;Neukölln 2;Dr. Kahlefeld, Susanna Maria;GRÜNE;34,5;Direkt;
-0802;Neukölln 2;Giffey, Franziska;SPD;;Landesliste;
-0802;Neukölln 2;Hopp, Marcel;SPD;;Landesliste;
-0803;Neukölln 3;Çağlar, Derya;SPD;23,4;Direkt;
-0803;Neukölln 3;Giffey, Franziska;SPD;;Landesliste;
-0803;Neukölln 3;Hopp, Marcel;SPD;;Landesliste;
-0804;Neukölln 4;Förster, Christopher;CDU;43,0;Direkt;
-0804;Neukölln 4;Giffey, Franziska;SPD;;Landesliste;
-0804;Neukölln 4;Hopp, Marcel;SPD;;Landesliste;
-0805;Neukölln 5;Dr. Juhnke, Robbin;CDU;43,1;Direkt;
-0805;Neukölln 5;Giffey, Franziska;SPD;;Landesliste;
-0805;Neukölln 5;Hopp, Marcel;SPD;;Landesliste;
-0806;Neukölln 6;Schenk, Olaf;CDU;45,3;Direkt;
-0806;Neukölln 6;Giffey, Franziska;SPD;;Landesliste;
-0806;Neukölln 6;Hopp, Marcel;SPD;;Landesliste;
-0901;Treptow-Köpenick 1;Gennburg, Katalin;DIE LINKE;25,9;Direkt;
-0901;Treptow-Köpenick 1;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0901;Treptow-Köpenick 1;Wolff, Dunja;SPD;;Landesliste;
-0902;Treptow-Köpenick 2;Düsterhöft, Lars;SPD;29,2;Direkt;
-0902;Treptow-Köpenick 2;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0902;Treptow-Köpenick 2;Wolff, Dunja;SPD;;Landesliste;
-0903;Treptow-Köpenick 3;Evers, Stefan;CDU;32,7;Direkt;
-0903;Treptow-Köpenick 3;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0903;Treptow-Köpenick 3;Wolff, Dunja;SPD;;Landesliste;
-0904;Treptow-Köpenick 4;Knack, Lisa-Bettina;CDU;27,2;Direkt;
-0904;Treptow-Köpenick 4;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0904;Treptow-Köpenick 4;Wolff, Dunja;SPD;;Landesliste;
-0905;Treptow-Köpenick 5;Dr. Sattelkau, Martin;CDU;27,7;Direkt;
-0905;Treptow-Köpenick 5;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0905;Treptow-Köpenick 5;Wolff, Dunja;SPD;;Landesliste;
-0906;Treptow-Köpenick 6;Penn, Maik;CDU;31,6;Direkt;
-0906;Treptow-Köpenick 6;Freier-Winterwerb, Alexander;SPD;;Landesliste;Nachgerückt
-0906;Treptow-Köpenick 6;Wolff, Dunja;SPD;;Landesliste;
-1001;Marzahn-Hellersdorf 1;Lindemann, Gunnar Norbert;AfD;28,8;Direkt;
-1001;Marzahn-Hellersdorf 1;Lehmann, Jan;SPD;;Landesliste;
-1001;Marzahn-Hellersdorf 1;Spranger, Iris;SPD;;Landesliste;
-1002;Marzahn-Hellersdorf 2;Gauks, Olga;CDU;25,5;Direkt;
-1002;Marzahn-Hellersdorf 2;Lehmann, Jan;SPD;;Landesliste;
-1002;Marzahn-Hellersdorf 2;Spranger, Iris;SPD;;Landesliste;
-1003;Marzahn-Hellersdorf 3;Auricht, Jeannette;AfD;25,9;Direkt;
-1003;Marzahn-Hellersdorf 3;Lehmann, Jan;SPD;;Landesliste;
-1003;Marzahn-Hellersdorf 3;Spranger, Iris;SPD;;Landesliste;
-1004;Marzahn-Hellersdorf 4;Gräff, Christian;CDU;42,9;Direkt;
-1004;Marzahn-Hellersdorf 4;Lehmann, Jan;SPD;;Landesliste;
-1004;Marzahn-Hellersdorf 4;Spranger, Iris;SPD;;Landesliste;
-1005;Marzahn-Hellersdorf 5;Günther-Wünsch, Katharina;CDU;45,0;Direkt;
-1005;Marzahn-Hellersdorf 5;Lehmann, Jan;SPD;;Landesliste;
-1005;Marzahn-Hellersdorf 5;Spranger, Iris;SPD;;Landesliste;
-1006;Marzahn-Hellersdorf 6;Herrmann, Alexander;CDU;37,8;Direkt;
-1006;Marzahn-Hellersdorf 6;Lehmann, Jan;SPD;;Landesliste;
-1006;Marzahn-Hellersdorf 6;Spranger, Iris;SPD;;Landesliste;
-1101;Lichtenberg 1;Freymark, Danny;CDU;40,8;Direkt;
-1101;Lichtenberg 1;Geisel, Andreas;SPD;;Landesliste;
-1101;Lichtenberg 1;Lüdke, Tamara;SPD;;Landesliste;
-1102;Lichtenberg 2;Dr. Pätzold, Martin;CDU;39,5;Direkt;
-1102;Lichtenberg 2;Geisel, Andreas;SPD;;Landesliste;
-1102;Lichtenberg 2;Lüdke, Tamara;SPD;;Landesliste;
-1103;Lichtenberg 3;Haustein, Dennis;CDU;23,4;Direkt;
-1103;Lichtenberg 3;Geisel, Andreas;SPD;;Landesliste;
-1103;Lichtenberg 3;Lüdke, Tamara;SPD;;Landesliste;
-1104;Lichtenberg 4;Schlüsselburg, Sebastian;DIE LINKE;27,2;Direkt;
-1104;Lichtenberg 4;Geisel, Andreas;SPD;;Landesliste;
-1104;Lichtenberg 4;Lüdke, Tamara;SPD;;Landesliste;
-1105;Lichtenberg 5;Klein, Hendrikje;DIE LINKE;25,0;Direkt;
-1105;Lichtenberg 5;Geisel, Andreas;SPD;;Landesliste;
-1105;Lichtenberg 5;Lüdke, Tamara;SPD;;Landesliste;
-1106;Lichtenberg 6;Usik, Lilia;CDU;22,4;Direkt;
-1106;Lichtenberg 6;Geisel, Andreas;SPD;;Landesliste;
-1106;Lichtenberg 6;Lüdke, Tamara;SPD;;Landesliste;
-1201;Reinickendorf 1;Dregger, Burkard;CDU;37,2;Direkt;
-1201;Reinickendorf 1;Graßelt, Niklas;CDU;;Landesliste;
-1201;Reinickendorf 1;König, Bettina;SPD;;Landesliste;
-1201;Reinickendorf 1;Meyer, Sven;SPD;;Landesliste;
-1201;Reinickendorf 1;Stroedter, Jörg;SPD;;Landesliste;
-1202;Reinickendorf 2;Demirbüken-Wegner, Emine;CDU;38,9;Direkt;
-1202;Reinickendorf 2;Graßelt, Niklas;CDU;;Landesliste;
-1202;Reinickendorf 2;König, Bettina;SPD;;Landesliste;
-1202;Reinickendorf 2;Meyer, Sven;SPD;;Landesliste;
-1202;Reinickendorf 2;Stroedter, Jörg;SPD;;Landesliste;
-1203;Reinickendorf 3;Schmidt, Stephan;CDU;44,1;Direkt;
-1203;Reinickendorf 3;Graßelt, Niklas;CDU;;Landesliste;
-1203;Reinickendorf 3;König, Bettina;SPD;;Landesliste;
-1203;Reinickendorf 3;Meyer, Sven;SPD;;Landesliste;
-1203;Reinickendorf 3;Stroedter, Jörg;SPD;;Landesliste;
-1204;Reinickendorf 4;Wohlert, Björn;CDU;41,3;Direkt;
-1204;Reinickendorf 4;Graßelt, Niklas;CDU;;Landesliste;
-1204;Reinickendorf 4;König, Bettina;SPD;;Landesliste;
-1204;Reinickendorf 4;Meyer, Sven;SPD;;Landesliste;
-1204;Reinickendorf 4;Stroedter, Jörg;SPD;;Landesliste;
-1205;Reinickendorf 5;Dietmann, Michael;CDU;43,8;Direkt;
-1205;Reinickendorf 5;Graßelt, Niklas;CDU;;Landesliste;
-1205;Reinickendorf 5;König, Bettina;SPD;;Landesliste;
-1205;Reinickendorf 5;Meyer, Sven;SPD;;Landesliste;
-1205;Reinickendorf 5;Stroedter, Jörg;SPD;;Landesliste;
-1206;Reinickendorf 6;Balzer, Frank;CDU;45,7;Direkt;
-1206;Reinickendorf 6;Graßelt, Niklas;CDU;;Landesliste;
-1206;Reinickendorf 6;König, Bettina;SPD;;Landesliste;
-1206;Reinickendorf 6;Meyer, Sven;SPD;;Landesliste;
-1206;Reinickendorf 6;Stroedter, Jörg;SPD;;Landesliste;
+AWK;Wahlkreis;MdA_2025;party_short_name;politician_id;mandate_id;mandate_type;info
+1004;Marzahn-Hellersdorf 4;Regina Kittler;Die Linke;117538;69065;moved_up;Regina Kittler ist am 02.12.2025 für Katrin Seidel in das Berliner Abgeordnetenhaus nachgerückt.
+0704;Tempelhof-Schöneberg 4;Philipp Bertram;Die Linke;122856;69057;moved_up;Philipp Bertram ist am 30.10.2025 für Sebastian Scheel in das Berliner Abgeordnetenhaus nachgerückt.
+;;Johannes Martin;CDU;184333;69053;moved_up;Johannes Martin ist am 27.09.2025 für Christian Gräff in das Berliner Abgeordnetenhaus nachgerückt.
+;;Marco Hahnfeld;CDU;184330;69039;moved_up;Marco Hahnfeld ist am 02.05.2025 für Adrian Grasse in das Berliner Abgeordnetenhaus nachgerückt.
+0406;Charlottenburg-Wilmersdorf 6;Michael Efler;Die Linke;122819;69038;moved_up;Michael Efler ist am 09.05.2025 für Katalin Gennburg in das Berliner Abgeordnetenhaus nachgerückt.
+0201;Friedrichshain-Kreuzberg 1;Frank Scheermesser;AfD;122987;69010;moved_up;Frank Scheermesser ist am 27.03.2025 für Ronald Gläser in das Berliner Abgeordnetenhaus nachgerückt.
+;;Niklas Graßelt;CDU;179810;58600;list;Mit der Wiederholungswahl ins Abgeordnetenhaus Berlin eingezogen.
+0105;Mitte 5;Ario Ebrahimpour Mirzaie;BÜNDNIS 90/­DIE GRÜNEN;176565;58599;list;Mit der Wiederholungswahl 2023 ins Abgeordnetenhaus Berlin eingezogen.
+0901;Treptow-Köpenick 1;Alexander Freier-Winterwerb;SPD;122933;58510;moved_up;Nachgerückt für Ellen Haußdörfer am 09.05.2023.
+0701;Tempelhof-Schöneberg 1;Wiebke Neumann;SPD;176509;58509;moved_up;Am 04.05.2023 für Michael Biel nachgerückt.
+0605;Steglitz-Zehlendorf 5;Iris Gertig;CDU;179809;58508;moved_up;
+1202;Reinickendorf 2;Rolf Wiedenhaupt;AfD;176619;58164;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
 
+"
+0602;Steglitz-Zehlendorf 2;Tonka Wojahn;BÜNDNIS 90/­DIE GRÜNEN;122807;58163;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0601;Steglitz-Zehlendorf 1;Claudia Wein;CDU;176467;58162;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0306;Pankow 6;Linda Vierecke;SPD;176497;58161;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+1106;Lichtenberg 6;Lilia Usik;CDU;176484;58160;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+1205;Reinickendorf 5;Carsten Ubbelohde;AfD;122981;58159;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+1001;Marzahn-Hellersdorf 1;June Tomiak;BÜNDNIS 90/­DIE GRÜNEN;141112;58158;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0701;Tempelhof-Schöneberg 1;Katharina Senge;CDU;176469;58157;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0806;Neukölln 6;Olaf Schenk;CDU;176476;58156;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0102;Mitte 2;Lucas Schaal;CDU;176450;58155;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0905;Treptow-Köpenick 5;Martin Sattelkau;CDU;117681;58154;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0403;Charlottenburg-Wilmersdorf 3;Ülker Radziwill;SPD;117564;58152;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0404;Charlottenburg-Wilmersdorf 4;Aldona Niemczyk;CDU;176464;58151;constituency;
+0404;Charlottenburg-Wilmersdorf 4;Reinhard Naumann;SPD;176501;58150;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0502;Spandau 2;Ersin Nas;CDU;123286;58149;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0406;Charlottenburg-Wilmersdorf 6;Peer Mock-Stümer;CDU;177308;58148;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0501;Spandau 1;Bettina Meißner;CDU;117612;58147;constituency;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+0605;Steglitz-Zehlendorf 5;Martin Matz;SPD;132706;58146;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0704;Tempelhof-Schöneberg 4;Frank Luhmann;CDU;176472;58145;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0306;Pankow 6;Stephan Lenz;CDU;117551;58144;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0107;Mitte 7;Maja Lasić;SPD;122913;58143;list;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+0904;Treptow-Köpenick 4;Lisa Knack;CDU;176477;58142;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0201;Friedrichshain-Kreuzberg 1;Timur Husein;CDU;118004;58141;list;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+1103;Lichtenberg 3;Dennis Haustein;CDU;176481;58140;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0401;Charlottenburg-Wilmersdorf 1;Stefan Häntsch;CDU;176462;58139;constituency;Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+1002;Marzahn-Hellersdorf 2;Olga Gauks;CDU;177264;58138;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0804;Neukölln 4;Robert Eschricht;AfD;177632;58136;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+1201;Reinickendorf 1;Burkard Dregger;CDU;117430;58135;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0602;Steglitz-Zehlendorf 2;Tom Cywinski;CDU;176468;58133;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0503;Spandau 3;Kerstin Brauner;CDU;176466;58132;constituency;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0302;Pankow 2;Lars Bocian;CDU;176457;58131;constituency;"Am 12.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0902;Treptow-Köpenick 2;Alexander Bertram;AfD;123051;58129;list;"Am 13.02.2023 aufgrund der Wahlwiederholung eingezogen.
+
+"
+0501;Spandau 1;Franziska Leschewitz;Die Linke;122846;57241;moved_up;Franziska Leschewitz ist am 01.12.2022 für Stefanie Fuchs nachgerückt und am 16.03.2023 ausgeschieden. Am 06.05.2025 ist sie erneut für Ferat Koçak in das Berliner Abgeordnetenhaus nachgerückt.
+0901;Treptow-Köpenick 1;Catrin Wahlen;BÜNDNIS 90/­DIE GRÜNEN;176593;54425;list;
+0303;Pankow 3;Torsten Schneider;SPD;117562;54424;list;
+0707;Tempelhof-Schöneberg 7;Alexander King;BSW;146081;54423;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
+Am 01.06.2023 für Sandra Brunner ins Berliner Abgeordnetenhaus nachgerückt. "
+0705;Tempelhof-Schöneberg 5;Antonin Brousek;parteilos;177616;54286;list;am 28.08.2023 aus AfD-Fraktion ausgetreten
+0105;Mitte 5;Sven Rissmann;CDU;117555;54285;constituency;
+1204;Reinickendorf 4;Sven Meyer;SPD;176528;54282;list;
+1104;Lichtenberg 4;Tamara Lüdke;SPD;176526;54280;list;
+1002;Marzahn-Hellersdorf 2;Iris Spranger;SPD;117488;54277;list;
+1006;Marzahn-Hellersdorf 6;Jan Lehmann;SPD;176523;54276;list;
+0906;Treptow-Köpenick 6;Maik Penn;CDU;117823;54274;constituency;
+0903;Treptow-Köpenick 3;Stefan Evers;CDU;28882;54273;constituency;
+0805;Neukölln 5;Robbin Juhnke;CDU;117455;54271;constituency;
+0804;Neukölln 4;Christopher Förster;CDU;122769;54270;constituency;
+0606;Steglitz-Zehlendorf 6;Ina Czyborra;SPD;117451;54269;list;
+0605;Steglitz-Zehlendorf 5;Mirjam Golm;SPD;176507;54268;list;
+0407;Charlottenburg-Wilmersdorf 7;Stefanie Bung;CDU;132788;54264;constituency;
+0304;Pankow 4;Dirk Stettner;CDU;117449;54262;constituency;
+0203;Friedrichshain-Kreuzberg 3;Sevim Aydin;SPD;122905;54260;list;
+0206;Friedrichshain-Kreuzberg 6;Sven Heinemann;SPD;117553;54259;list;
+0203;Friedrichshain-Kreuzberg 3;Kurt Wansner;CDU;117505;54258;list;
+0705;Tempelhof-Schöneberg 5;Roman Simon;CDU;117541;54255;constituency;
+0707;Tempelhof-Schöneberg 7;Melanie Kühnemann-Grunow;SPD;122932;54254;list;
+1101;Lichtenberg 1;Karsten Ludwig Woldeit;AfD;122995;54253;list;
+1201;Reinickendorf 1;Thorsten Weiß;AfD;123026;54252;list;
+0401;Charlottenburg-Wilmersdorf 1;Marc Vallendar;AfD;122982;54251;list;
+0905;Treptow-Köpenick 5;Martin Trefzer;AfD;123054;54250;list;
+0502;Spandau 2;Tommy Tabor;AfD;123033;54249;list;
+0407;Charlottenburg-Wilmersdorf 7;Harald Laatsch;AfD;141104;54248;list;
+0702;Tempelhof-Schöneberg 2;Frank-Christian Hansel;AfD;123047;54247;list;
+0402;Charlottenburg-Wilmersdorf 2;Hugh Theodore Bronson;AfD;122984;54245;list;
+0601;Steglitz-Zehlendorf 1;Kristin Brinker;AfD;141106;54244;list;
+0205;Friedrichshain-Kreuzberg 5;Steffen Zillich;Die Linke;117550;54243;list;
+0107;Mitte 7;Tobias Schulze;Die Linke;118005;54241;list;
+1205;Reinickendorf 5;Katina Schubert;Die Linke;176655;54240;list;
+0806;Neukölln 6;Niklas Schrader;Die Linke;141114;54239;list;
+0403;Charlottenburg-Wilmersdorf 3;Niklas Schenker;Die Linke;176635;54237;list;
+0906;Treptow-Köpenick 6;Carsten Schatz;parteilos;117433;54235;list;
+1006;Marzahn-Hellersdorf 6;Kristian Ronneburg;Die Linke;122828;54234;list;
+0303;Pankow 3;Klaus Lederer;parteilos;117504;54233;list;
+0103;Mitte 3;Anne Helm;Die Linke;29180;54232;list;
+0202;Friedrichshain-Kreuzberg 2;Elif Eralp;Die Linke;176626;54230;list;
+0602;Steglitz-Zehlendorf 2;Franziska Brychcy;Die Linke;117710;54229;list;
+0301;Pankow 1;Elke Breitenbach;parteilos;117461;54227;list;
+1005;Marzahn-Hellersdorf 5;Stefan Ziller;BÜNDNIS 90/­DIE GRÜNEN;117983;54226;list;
+;;Daniel Wesener;BÜNDNIS 90/­DIE GRÜNEN;122793;54225;list;MdA bis 21.12.2021 und erneut ab 16.03.2023. Im genannten Zeitraum Berliner Senator für Finanzen.
+1105;Lichtenberg 5;Stefan Taschner;BÜNDNIS 90/­DIE GRÜNEN;123587;54224;list;
+1206;Reinickendorf 6;Klara Schedlich;BÜNDNIS 90/­DIE GRÜNEN;176606;54223;list;
+0309;Pankow 9;Antje Kapek;BÜNDNIS 90/­DIE GRÜNEN;117422;54222;list;
+;;Bettina Jarasch;BÜNDNIS 90/­DIE GRÜNEN;122797;54221;list;Mitglied des Berliner AGH bis zum 31.12.2021 und erneut seit 16.03.2023. Zwischenzeitlich Senatorin für Umwelt, Mobilität, Verbraucher- und Klimaschutz, demzufolge kein Mandat im Berliner AGH.
+0804;Neukölln 4;Bahar Haghanipour;BÜNDNIS 90/­DIE GRÜNEN;176590;54220;list;
+;;Werner Graf;BÜNDNIS 90/­DIE GRÜNEN;178141;54219;list;
+0503;Spandau 3;Gollaleh Ahmadi;BÜNDNIS 90/­DIE GRÜNEN;122803;54218;list;
+1206;Reinickendorf 6;Frank Balzer;CDU;176486;54217;constituency;
+1205;Reinickendorf 5;Michael Dietmann;CDU;117447;54216;constituency;
+1204;Reinickendorf 4;Björn Wohlert;CDU;176485;54215;constituency;
+1203;Reinickendorf 3;Stephan Schmidt;CDU;123283;54214;constituency;
+1202;Reinickendorf 2;Jörg Stroedter;SPD;117493;54213;list;
+1201;Reinickendorf 1;Bettina König;SPD;117611;54212;list;
+1106;Lichtenberg 6;Andreas Geisel;SPD;119641;54211;list;
+1105;Lichtenberg 5;Hendrikje Klein;Die Linke;122826;54210;constituency;
+1104;Lichtenberg 4;Sebastian Schlüsselburg;SPD;117957;54209;constituency;
+1103;Lichtenberg 3;Claudia Engelmann;Die Linke;176649;54208;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
+Am 01.03.2026 für Ines Schmidt nachgerückt."
+1102;Lichtenberg 2;Martin Pätzold;CDU;79092;54207;constituency;
+1101;Lichtenberg 1;Danny Freymark;CDU;117444;54206;constituency;
+1006;Marzahn-Hellersdorf 6;Alexander J. Herrmann;CDU;117411;54205;constituency;
+1005;Marzahn-Hellersdorf 5;Katharina Günther-Wünsch;CDU;176480;54204;constituency;
+1003;Marzahn-Hellersdorf 3;Jeannette Auricht;AfD;123001;54202;constituency;
+1002;Marzahn-Hellersdorf 2;Manuela Schmidt;Die Linke;117508;54201;list;
+1001;Marzahn-Hellersdorf 1;Gunnar N. Lindemann;AfD;122997;54200;constituency;
+0906;Treptow-Köpenick 6;Dunja Wolff;SPD;176520;54199;list;
+0902;Treptow-Köpenick 2;Lars Düsterhöft;SPD;122934;54197;constituency;
+0806;Neukölln 6;Franziska Giffey;SPD;176519;54195;list;
+0804;Neukölln 4;Marcel Hopp;SPD;176517;54193;list;Fabian Fischer hat auf sein Mandat verzichtet, damit Marcel Hopp sein Mandat weiterhin ausüben kann.
+0803;Neukölln 3;Derya Çağlar;SPD;122916;54192;constituency;
+0802;Neukölln 2;Susanna Kahlefeld;BÜNDNIS 90/­DIE GRÜNEN;117456;54191;constituency;
+0801;Neukölln 1;André Schulze;BÜNDNIS 90/­DIE GRÜNEN;117579;54190;constituency;
+0707;Tempelhof-Schöneberg 7;Christian Zander;CDU;117627;54189;constituency;
+0706;Tempelhof-Schöneberg 6;Scott Körber;CDU;132775;54188;constituency;
+0705;Tempelhof-Schöneberg 5;Lars Rauchfuß;SPD;176513;54187;list;
+0703;Tempelhof-Schöneberg 3;Orkan Özdemir;SPD;176511;54185;constituency;
+0701;Tempelhof-Schöneberg 1;Sebastian Walter;BÜNDNIS 90/­DIE GRÜNEN;141111;54184;constituency;
+0607;Steglitz-Zehlendorf 7;Stephan Standfuß;CDU;123290;54183;constituency;
+0604;Steglitz-Zehlendorf 4;Cornelia Seibeld;CDU;117442;54180;constituency;
+0603;Steglitz-Zehlendorf 3;Christian Goiny;CDU;117435;54179;constituency;
+0602;Steglitz-Zehlendorf 2;Matthias Kollatz;SPD;122926;54178;list;
+0601;Steglitz-Zehlendorf 1;Benedikt Lux;BÜNDNIS 90/­DIE GRÜNEN;117423;54177;moved_up;Benedikt Lux ist am 14.05.2025 für Julia Schneider in das Berliner Abgerodnetenhaus nachgerückt. Zuvor war er am 16.03.2023 aufgrund der Wahlwiederholung ausgeschieden.
+0505;Spandau 5;Kai Wegner;CDU;78928;54176;constituency;
+0504;Spandau 4;Heiko Melzer;CDU;117483;54175;constituency;
+0502;Spandau 2;Raed Saleh;SPD;117534;54173;list;
+0501;Spandau 1;Sebahat Atli;SPD;176503;54172;list;
+0407;Charlottenburg-Wilmersdorf 7;Florian Dörstelmann;SPD;122904;54171;moved_up;"Am 12.02.2023 aufgrund der Wahlwiederholung ausgeschieden.
+
+Florian Dörstelmann ist am 07.11.2023 für Franziska Becker in das Abgeordnetenhaus von Berlin nachgerückt."
+0405;Charlottenburg-Wilmersdorf 5;Sandra Khalatbari;CDU;176465;54169;constituency;
+0404;Charlottenburg-Wilmersdorf 4;Christoph Wapler;BÜNDNIS 90/­DIE GRÜNEN;122776;54168;list;
+0403;Charlottenburg-Wilmersdorf 3;Petra Vandrey;BÜNDNIS 90/­DIE GRÜNEN;122775;54167;constituency;
+0402;Charlottenburg-Wilmersdorf 2;Ariturel Hack;CDU;176463;54166;constituency;
+0309;Pankow 9;Tino Schopf;SPD;122921;54164;constituency;Staatssekretär Energie & Betriebe vom 23.12.2021 bis 16.03.2023, daher kein Mandat als Abgeordneter im genannten Zeitraum.
+0305;Pankow 5;Louis Krüger;BÜNDNIS 90/­DIE GRÜNEN;176575;54162;constituency;
+0304;Pankow 4;Dennis Buchner;SPD;117445;54161;list;
+0303;Pankow 3;Oda Hassepaß;BÜNDNIS 90/­DIE GRÜNEN;176573;54160;constituency;
+0301;Pankow 1;Johannes Kraft;CDU;117785;54158;constituency;
+0206;Friedrichshain-Kreuzberg 6;Julian Schwarze;BÜNDNIS 90/­DIE GRÜNEN;176570;54157;constituency;
+0205;Friedrichshain-Kreuzberg 5;Vasili Franco;BÜNDNIS 90/­DIE GRÜNEN;176569;54156;constituency;
+0204;Friedrichshain-Kreuzberg 4;Damiano Valgolio;Die Linke;117637;54155;constituency;
+0203;Friedrichshain-Kreuzberg 3;Turgut Altuğ;SPD;117458;54154;constituency;
+0201;Friedrichshain-Kreuzberg 1;Katrin Schmidberger;BÜNDNIS 90/­DIE GRÜNEN;117501;54153;constituency;
+0107;Mitte 7;Laura Neugebauer;BÜNDNIS 90/­DIE GRÜNEN;176567;54152;constituency;
+0105;Mitte 5;Mathias Schulz;SPD;176489;54151;list;
+0104;Mitte 4;Taylan Kurt;BÜNDNIS 90/­DIE GRÜNEN;176564;54150;constituency;
+0101;Mitte 1;Silke Gebel;BÜNDNIS 90/­DIE GRÜNEN;117544;54148;constituency;
+0702;Tempelhof-Schöneberg 2;Catherina Pieroth-Manelli;BÜNDNIS 90/­DIE GRÜNEN;122809;54144;constituency;
+0308;Pankow 8;Daniela Billig;BÜNDNIS 90/­DIE GRÜNEN;117643;54143;constituency;
+0306;Pankow 6;Andreas Otto;BÜNDNIS 90/­DIE GRÜNEN;117417;54142;constituency;
+0202;Friedrichshain-Kreuzberg 2;Marianne Burkert-Eulitz;BÜNDNIS 90/­DIE GRÜNEN;117509;54141;constituency;
+0106;Mitte 6;Tuba Bozkurt;BÜNDNIS 90/­DIE GRÜNEN;176566;54140;constituency;
+0103;Mitte 3;Jian Omar;BÜNDNIS 90/­DIE GRÜNEN;176563;54139;constituency;

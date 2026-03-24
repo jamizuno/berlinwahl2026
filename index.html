@@ -1290,27 +1290,28 @@ function loadDistrictCSV() {
   });
 }
 
-function loadAghCSV() {
-  return new Promise((resolve, reject) => {
-    Papa.parse(aghCsvUrl, {
-      download: true,
-      header: true,
-      delimiter: ";",
-      skipEmptyLines: true,
-      complete: (result) => {
-        result.data.forEach(row => {
-          const awk = normalizeAwk(row.AWK);
-          if (!awk) return;
-          const name = (row.Gewaehlte || "").trim();
-          const party = normalizeParty(row.Partei);
-          const wahlkreis = (row.Wahlkreis || "").trim();
-          const percent = (row.Anteil || "").trim();
-          const art = (row.Art || "Direkt").trim();
-          const note = (row.Hinweis || "").trim();
-          if (!aghByAwk.has(awk)) aghByAwk.set(awk, []);
-          aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note, awk });
-        });
-        resolve();
+  function loadAghCSV() {
+    return new Promise((resolve, reject) => {
+      Papa.parse(aghCsvUrl, {
+        download: true,
+        header: true,
+        delimiter: ";",
+        skipEmptyLines: true,
+        complete: (result) => {
+          result.data.forEach(row => {
+            const awk = normalizeAwk(row.AWK);
+            if (!awk) return;
+            const name = (row.MdA_2025 || row.Gewaehlte || "").trim();
+            const party = normalizeParty(row.party_short_name || row.Partei || row.party_name || "");
+            const wahlkreis = (row.Wahlkreis || row.electoral_district_label || "").trim();
+            const percent = (row.Anteil || "").trim();
+            const mandateType = String(row.mandate_type || row.mandate_won || "").toLowerCase();
+            const art = mandateType === "constituency" ? "Direkt" : "Liste";
+            const note = (row.info || row.Hinweis || "").trim();
+            if (!aghByAwk.has(awk)) aghByAwk.set(awk, []);
+            aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note, awk });
+          });
+          resolve();
       },
       error: (err) => reject(err)
     });
