@@ -221,13 +221,18 @@
     margin-top: 4px;
   }
 
-  .party-CDU { background: rgba(43,47,54,0.45); color: #eef2f7; border: 1px solid rgba(120,130,145,0.5); }
-  .party-SPD { background: rgba(212,38,60,0.25); color: #f08090; border: 1px solid rgba(212,38,60,0.4); }
-  .party-Grüne { background: rgba(58,140,78,0.25); color: #7dd492; border: 1px solid rgba(58,140,78,0.4); }
-  .party-Linke { background: rgba(155,46,207,0.25); color: #c98af0; border: 1px solid rgba(155,46,207,0.4); }
-  .party-AfD { background: rgba(27,111,181,0.25); color: #6ab0f0; border: 1px solid rgba(27,111,181,0.4); }
-  .party-FDP { background: rgba(232,193,42,0.25); color: #f0d96a; border: 1px solid rgba(232,193,42,0.4); }
-  .party-fraktionslos { background: rgba(156,163,175,0.25); color: #c4c8d2; border: 1px solid rgba(156,163,175,0.4); }
+    .party-CDU { background: rgba(43,47,54,0.45); color: #eef2f7; border: 1px solid rgba(120,130,145,0.5); }
+    .party-SPD { background: rgba(212,38,60,0.25); color: #f08090; border: 1px solid rgba(212,38,60,0.4); }
+    .party-Grüne { background: rgba(58,140,78,0.25); color: #7dd492; border: 1px solid rgba(58,140,78,0.4); }
+    .party-Linke { background: rgba(155,46,207,0.25); color: #c98af0; border: 1px solid rgba(155,46,207,0.4); }
+    .party-AfD { background: rgba(27,111,181,0.25); color: #6ab0f0; border: 1px solid rgba(27,111,181,0.4); }
+    .party-FDP { background: rgba(232,193,42,0.25); color: #f0d96a; border: 1px solid rgba(232,193,42,0.4); }
+    .party-fraktionslos { background: rgba(156,163,175,0.25); color: #c4c8d2; border: 1px solid rgba(156,163,175,0.4); }
+    .party-BSW { background: rgba(113,30,59,0.25); color: #d28aa5; border: 1px solid rgba(113,30,59,0.4); }
+    .party-Tierschutzpartei { background: rgba(0,89,89,0.25); color: #73baba; border: 1px solid rgba(0,89,89,0.4); }
+    .party-Die-PARTEI { background: rgba(177,11,20,0.25); color: #ef6a74; border: 1px solid rgba(177,11,20,0.4); }
+    .party-Die-Grauen { background: rgba(153,153,153,0.25); color: #d1d1d1; border: 1px solid rgba(153,153,153,0.4); }
+    .party-Volt-Berlin { background: rgba(86,40,131,0.25); color: #b39ad8; border: 1px solid rgba(86,40,131,0.4); }
 
   .empty-state {
     padding: 32px 24px;
@@ -566,7 +571,8 @@ const euCitywide = (() => {
 const partyColors = {
   CDU: "#2b2f36", SPD: "#e06070", Grüne: "#5db87a",
   Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050",
-  fraktionslos: "#9ca3af"
+  fraktionslos: "#9ca3af", BSW: "#711E3B", Tierschutzpartei: "#005959",
+  "Die PARTEI": "#B10B14", "Die Grauen": "#999999", "Volt Berlin": "#562883"
 };
 
 const levelLabels = {
@@ -1059,18 +1065,22 @@ function normalizeAwk(value) {
   return String(value).padStart(4, "0");
 }
 
-function normalizeParty(value) {
-  const raw = String(value || "").trim();
-  const upper = raw.toUpperCase();
+  function normalizeParty(value) {
+    const raw = String(value || "").trim();
+    const upper = raw.toUpperCase();
   if (upper.includes("BÜNDNIS 90") || upper === "GRÜNE" || upper === "GRUENE" || upper === "BÜ 90/GRÜNE" || upper === "BU 90/GRUENE") return "Grüne";
   if (upper === "DIE LINKE" || upper === "LINKE") return "Linke";
   if (upper === "CDU" || upper.includes("CHRISTLICH DEMOKRATISCHE UNION")) return "CDU";
   if (upper === "SPD" || upper.includes("SOZIALDEMOKRATISCHE")) return "SPD";
   if (upper === "FDP" || upper.includes("FREIE DEMOKRATISCHE")) return "FDP";
-  if (upper === "AFD" || upper.includes("ALTERNATIVE FÜR DEUTSCHLAND")) return "AfD";
-  if (upper === "FRAKTIONSLOS" || upper === "EINZELVERORDNETE" || upper === "EINZELVERORDNETER") return "fraktionslos";
-  return raw;
-}
+    if (upper === "AFD" || upper.includes("ALTERNATIVE FÜR DEUTSCHLAND")) return "AfD";
+    if (upper === "FRAKTIONSLOS" || upper === "EINZELVERORDNETE" || upper === "EINZELVERORDNETER") return "fraktionslos";
+    return raw;
+  }
+
+  function partyClassName(value) {
+    return String(value || "").trim().replace(/\s+/g, "-");
+  }
 
 function normalizeArkis(value) {
   if (value === null || value === undefined) return "";
@@ -1697,7 +1707,7 @@ function renderPanel(context) {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             <div class="rep-role">${entry.role}${sinceText}</div>
           </div>`;
         });
@@ -1727,7 +1737,7 @@ function renderPanel(context) {
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             <div class="rep-role">${role}</div>
           </div>`;
         });
@@ -1740,7 +1750,7 @@ function renderPanel(context) {
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             <div class="rep-role">${entry.role}</div>
           </div>`;
         });
@@ -1752,7 +1762,7 @@ function renderPanel(context) {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name">${entry.name}</div>
-            <span class="rep-party party-${entry.party}">${entry.party}</span>
+            <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             <div class="rep-role">${entry.role}</div>
           </div>`;
         });
@@ -1779,13 +1789,16 @@ function setLevel(level) {
 
 
 function updateLegend() {
-  const parties = ["CDU","SPD","Grüne","Linke","AfD","FDP","fraktionslos"];
+  const parties = [
+    "CDU", "SPD", "Grüne", "Linke", "AfD", "FDP",
+    "fraktionslos", "BSW", "Tierschutzpartei", "Die PARTEI", "Die Grauen", "Volt Berlin"
+  ];
   const legend = document.getElementById('legend');
   legend.innerHTML = parties.map(p => `
-    <div class="legend-item">
-      <div class="legend-dot" style="background:${partyColors[p]}"></div>
-      ${p === "fraktionslos" ? "frakt/" : p}
-    </div>`).join('');
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${partyColors[p]}"></div>
+        ${p}
+      </div>`).join('');
 }
 
 async function initData() {
