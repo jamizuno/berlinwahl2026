@@ -578,19 +578,19 @@ const levelLabels = {
 };
 
 const mapScopeByLevel = {
-  bezirk: ["Kieze", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
-  abgeordnetenhaus: ["AGH Wahlbezirke", "Ortsteile", "Bezirke"],
-  bundestag: ["BTG Wahlbezirke", "Berlin Stadtgebiet (Land)"],
-  eu: ["Berlin Stadtgebiet (Land)"],
+  bezirk: ["Kieze (LOR)", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
+  abgeordnetenhaus: ["Abgeordnetenhaus WK", "Ortsteile", "Bezirke"],
+  bundestag: ["Bundestag WK", "Berlin (Land)"],
+  eu: ["Berlin (Land)"],
   alle: [
-    "Berlin Stadtgebiet (Land)",
-    "BTG Wahlbezirke",
-    "AGH Wahlbezirke",
+    "Berlin (Land)",
+    "Bundestag WK",
+    "Abgeordnetenhaus WK",
     "Bezirke",
     "Ortsteile",
     "Postleitzahlen",
     "Einschulbereiche",
-    "Kieze"
+    "Kieze (LOR)"
   ]
 };
 
@@ -690,22 +690,22 @@ const wfsLayers = [
     tooltipProps: ["name", "bezirk", "bezeichnung"],
     defaultOn: true
   },
-  {
-    id: "btg",
-    label: "BTG Wahlkreise",
-    url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map&service=WFS&request=GetCapabilities",
-    preferredTypeNames: ["ms:Wahlkreise"],
-    pane: "pane-btg",
+    {
+      id: "btg",
+      label: "Bundestag WK",
+      url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map&service=WFS&request=GetCapabilities",
+      preferredTypeNames: ["ms:Wahlkreise"],
+      pane: "pane-btg",
     zIndex: 445,
     style: { color: "#596366", weight: 1.6, fillOpacity: 0 },
     tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
   },
-  {
-    id: "eu",
-    label: "Berlin Stadtgebiet (Land)",
-    url: "https://gdi.berlin.de/services/wfs/alkis_land",
-    preferredTypeNames: ["alkis_land:land"],
-    pane: "pane-land",
+    {
+      id: "eu",
+      label: "Berlin (Land)",
+      url: "https://gdi.berlin.de/services/wfs/alkis_land",
+      preferredTypeNames: ["alkis_land:land"],
+      pane: "pane-land",
     zIndex: 415,
     style: { color: "#c8a96e", weight: 2.5, fillOpacity: 0 },
     tooltipProps: ["name", "bezeichnung"],
@@ -918,7 +918,7 @@ function rebuildOverlayControl() {
 
   const labelById = new Map();
   wfsLayers.forEach(layer => labelById.set(layer.id, layer.label));
-  labelById.set("agh", "AGH Wahlbezirke");
+    labelById.set("agh", "Abgeordnetenhaus WK");
 
   overlayOrder.forEach(id => {
     const layer = id === "agh" ? aghOverlay : wfsOverlayLayers.get(id);
