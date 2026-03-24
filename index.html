@@ -685,7 +685,7 @@ const wfsLayers = [
     preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
     pane: "pane-bezirke",
     zIndex: 440,
-    style: { color: "#f2e38b", weight: 2, fillOpacity: 0 },
+    style: { color: "#7dd492", weight: 2.4, fillOpacity: 0 },
     tooltipProps: ["name", "bezirk", "bezeichnung"],
     defaultOn: true
   },
@@ -964,6 +964,9 @@ async function addWfsOverlayLayer(layerConfig) {
     const layer = buildOverlayLayer(data, layerConfig, baseStyle);
     wfsOverlayLayers.set(id, layer);
     if (defaultOn) layer.addTo(map);
+    if (id === "btg") {
+      console.info("BTG layer loaded from WFS.");
+    }
   } catch (err) {
     console.warn(`WFS layer failed: ${label}`, err);
     if (id === "btg") {
@@ -973,6 +976,7 @@ async function addWfsOverlayLayer(layerConfig) {
         const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
         wfsOverlayLayers.set(id, layer);
         if (defaultOn) layer.addTo(map);
+        console.info("BTG layer loaded from local shapefile fallback.");
         return;
       } catch (localErr) {
         console.warn("BTG local shapefile fallback failed.", localErr);
@@ -1183,6 +1187,38 @@ function normalizeWkr(value) {
   return Number.isNaN(num) ? raw : String(num);
 }
 
+function findWkrValue(props) {
+  if (!props) return "";
+  const keys = [
+    "WKR_NR", "WK_NR", "WKR", "WKRNR", "WKNR",
+    "Wahlkreis", "Wahlkreisnr", "Wahlkreisnummer", "WKR_NUMMER", "WK_NUMMER"
+  ];
+  const direct = keys.map(k => props[k]).find(v => v !== null && v !== undefined && String(v).trim() !== "");
+  const normalizedDirect = normalizeWkr(direct);
+  if (normalizedDirect) return normalizedDirect;
+  for (const [key, value] of Object.entries(props)) {
+    if (!key) continue;
+    if (!/WKR|WAHLKREIS/i.test(key)) continue;
+    const v = normalizeWkr(value);
+    if (v) return v;
+  }
+  return "";
+}
+
+function findWkrName(props) {
+  if (!props) return "";
+  const keys = ["WKR_NAME", "WK_NAME", "Wahlkreisname", "NAME", "name"];
+  const direct = keys.map(k => props[k]).find(v => v !== null && v !== undefined && String(v).trim() !== "");
+  if (direct && !/^\d+$/.test(String(direct).trim())) return String(direct).trim();
+  for (const [key, value] of Object.entries(props)) {
+    if (!key) continue;
+    if (!/NAME/i.test(key)) continue;
+    const v = String(value ?? "").trim();
+    if (v && !/^\d+$/.test(v)) return v;
+  }
+  return "";
+}
+
 function buildFullName(row) {
   const parts = [
     row.Titel,
@@ -1352,11 +1388,8 @@ async function loadBtgGeoJSONFromShapefile() {
     if (result.done) break;
     const feature = result.value;
     feature.geometry = reprojectGeometry(feature.geometry);
-    const wkr = normalizeWkr(pickProp(feature, [
-      "WKR_NR", "WK_NR", "WKR", "WKRNR", "WKNR",
-      "Wahlkreis", "Wahlkreisnr", "Wahlkreisnummer"
-    ]));
-    const name = pickProp(feature, ["WKR_NAME", "WK_NAME", "Wahlkreisname", "NAME", "name"]);
+    const wkr = findWkrValue(feature.properties);
+    const name = findWkrName(feature.properties);
     const key = wkr || name || `row-${index++}`;
     if (!groups.has(key)) {
       groups.set(key, { wkr: wkr || "", name: name || "", polygons: [] });
@@ -1507,9 +1540,8 @@ function buildContextFromFeature(layerId, feature) {
   }
 
   if (layerId === "btg") {
-    const wkr = pickProp(feature, ["WKR_NR", "WK_NR", "WKRNR", "WKR", "wkr_nr", "wkr", "Wahlkreis", "wahlkreis", "Wahlkreisnummer"]);
-    context.btgWkr = normalizeWkr(wkr);
-    context.btgName = pickProp(feature, ["WKR_NAME", "WK_NAME", "wkr_name", "name", "NAME", "Wahlkreisname"]);
+    context.btgWkr = findWkrValue(feature.properties);
+    context.btgName = findWkrName(feature.properties);
     return context;
   }
 
@@ -1628,9 +1660,9 @@ function renderPanel(context) {
         ordered.forEach(entry => {
           const isList = entry.art !== "Direkt";
           const awkLabel = entry.awk ? `WK ${entry.awk}` : "";
-          const labelText = isList ? "Bezirksliste" : label;
+          const labelText = isList ? "Abgeordnetenhaus (Bezirksliste)" : label;
           const role = isList
-            ? (entry.note ? `Bezirksliste · ${entry.note}${awkLabel ? ` · ${awkLabel}` : ""}` : `Bezirksliste${awkLabel ? ` · ${awkLabel}` : ""}`)
+            ? (entry.note ? `Abgeordnetenhaus (Bezirksliste) · ${entry.note}${awkLabel ? ` · ${awkLabel}` : ""}` : `Abgeordnetenhaus (Bezirksliste)${awkLabel ? ` · ${awkLabel}` : ""}`)
             : (entry.wahlkreis ? `Direktmandat ${awkLabel} – ${entry.wahlkreis}` : `Direktmandat ${awkLabel}`.trim());
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>

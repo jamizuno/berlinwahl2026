@@ -1,319 +1,320 @@
 AWK;Wahlkreis;Gewaehlte;Partei;Anteil;Art;Hinweis
 0101;Mitte 1;Gebel, Silke;GRÜNE;33,5;Direkt;
-0101;Mitte 1;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0101;Mitte 1;Schulz, Mathias;SPD;;Bezirksliste;
+0101;Mitte 1;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0101;Mitte 1;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0102;Mitte 2;Schaal, Lucas;CDU;24,9;Direkt;
-0102;Mitte 2;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0102;Mitte 2;Schulz, Mathias;SPD;;Bezirksliste;
+0102;Mitte 2;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0102;Mitte 2;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0103;Mitte 3;Omar, Jian;GRÜNE;33,0;Direkt;
-0103;Mitte 3;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0103;Mitte 3;Schulz, Mathias;SPD;;Bezirksliste;
+0103;Mitte 3;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0103;Mitte 3;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0104;Mitte 4;Kurt, Taylan;GRÜNE;40,1;Direkt;
-0104;Mitte 4;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0104;Mitte 4;Schulz, Mathias;SPD;;Bezirksliste;
+0104;Mitte 4;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0104;Mitte 4;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0105;Mitte 5;Rissmann, Sven Nico;CDU;24,4;Direkt;
-0105;Mitte 5;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0105;Mitte 5;Schulz, Mathias;SPD;;Bezirksliste;
+0105;Mitte 5;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0105;Mitte 5;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0106;Mitte 6;Bozkurt, Tuba;GRÜNE;32,0;Direkt;
-0106;Mitte 6;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0106;Mitte 6;Schulz, Mathias;SPD;;Bezirksliste;
+0106;Mitte 6;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0106;Mitte 6;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0107;Mitte 7;Neugebauer, Laura;GRÜNE;30,1;Direkt;
-0107;Mitte 7;Lasić, Dr. Maja;SPD;;Bezirksliste;
-0107;Mitte 7;Schulz, Mathias;SPD;;Bezirksliste;
+0107;Mitte 7;Lasić, Dr. Maja;SPD;;Abgeordnetenhaus (Bezirksliste);
+0107;Mitte 7;Schulz, Mathias;SPD;;Abgeordnetenhaus (Bezirksliste);
 0201;Friedrichshain-Kreuzberg 1;Schmidberger, Katrin;GRÜNE;40,3;Direkt;
-0201;Friedrichshain-Kreuzberg 1;Aydin, Sevim;SPD;;Bezirksliste;
-0201;Friedrichshain-Kreuzberg 1;Heinemann, Sven;SPD;;Bezirksliste;
-0201;Friedrichshain-Kreuzberg 1;Husein, Dr. Timur;CDU;;Bezirksliste;
-0201;Friedrichshain-Kreuzberg 1;Wansner, Kurt;CDU;;Bezirksliste;
+0201;Friedrichshain-Kreuzberg 1;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0201;Friedrichshain-Kreuzberg 1;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0201;Friedrichshain-Kreuzberg 1;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0201;Friedrichshain-Kreuzberg 1;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0202;Friedrichshain-Kreuzberg 2;Burkert-Eulitz, Marianne;GRÜNE;37,9;Direkt;
-0202;Friedrichshain-Kreuzberg 2;Aydin, Sevim;SPD;;Bezirksliste;
-0202;Friedrichshain-Kreuzberg 2;Heinemann, Sven;SPD;;Bezirksliste;
-0202;Friedrichshain-Kreuzberg 2;Husein, Dr. Timur;CDU;;Bezirksliste;
-0202;Friedrichshain-Kreuzberg 2;Wansner, Kurt;CDU;;Bezirksliste;
+0202;Friedrichshain-Kreuzberg 2;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0202;Friedrichshain-Kreuzberg 2;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0202;Friedrichshain-Kreuzberg 2;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0202;Friedrichshain-Kreuzberg 2;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0203;Friedrichshain-Kreuzberg 3;Dr. Altuğ, Turgut;GRÜNE;35,1;Direkt;
-0203;Friedrichshain-Kreuzberg 3;Aydin, Sevim;SPD;;Bezirksliste;
-0203;Friedrichshain-Kreuzberg 3;Heinemann, Sven;SPD;;Bezirksliste;
-0203;Friedrichshain-Kreuzberg 3;Husein, Dr. Timur;CDU;;Bezirksliste;
-0203;Friedrichshain-Kreuzberg 3;Wansner, Kurt;CDU;;Bezirksliste;
+0203;Friedrichshain-Kreuzberg 3;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0203;Friedrichshain-Kreuzberg 3;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0203;Friedrichshain-Kreuzberg 3;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0203;Friedrichshain-Kreuzberg 3;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0204;Friedrichshain-Kreuzberg 4;Valgolio, Damiano;DIE LINKE;24,7;Direkt;
-0204;Friedrichshain-Kreuzberg 4;Aydin, Sevim;SPD;;Bezirksliste;
-0204;Friedrichshain-Kreuzberg 4;Heinemann, Sven;SPD;;Bezirksliste;
-0204;Friedrichshain-Kreuzberg 4;Husein, Dr. Timur;CDU;;Bezirksliste;
-0204;Friedrichshain-Kreuzberg 4;Wansner, Kurt;CDU;;Bezirksliste;
+0204;Friedrichshain-Kreuzberg 4;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0204;Friedrichshain-Kreuzberg 4;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0204;Friedrichshain-Kreuzberg 4;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0204;Friedrichshain-Kreuzberg 4;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0205;Friedrichshain-Kreuzberg 5;Franco, Vasili;GRÜNE;36,1;Direkt;
-0205;Friedrichshain-Kreuzberg 5;Aydin, Sevim;SPD;;Bezirksliste;
-0205;Friedrichshain-Kreuzberg 5;Heinemann, Sven;SPD;;Bezirksliste;
-0205;Friedrichshain-Kreuzberg 5;Husein, Dr. Timur;CDU;;Bezirksliste;
-0205;Friedrichshain-Kreuzberg 5;Wansner, Kurt;CDU;;Bezirksliste;
+0205;Friedrichshain-Kreuzberg 5;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0205;Friedrichshain-Kreuzberg 5;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0205;Friedrichshain-Kreuzberg 5;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0205;Friedrichshain-Kreuzberg 5;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0206;Friedrichshain-Kreuzberg 6;Schwarze, Julian;GRÜNE;39,5;Direkt;
-0206;Friedrichshain-Kreuzberg 6;Aydin, Sevim;SPD;;Bezirksliste;
-0206;Friedrichshain-Kreuzberg 6;Heinemann, Sven;SPD;;Bezirksliste;
-0206;Friedrichshain-Kreuzberg 6;Husein, Dr. Timur;CDU;;Bezirksliste;
-0206;Friedrichshain-Kreuzberg 6;Wansner, Kurt;CDU;;Bezirksliste;
+0206;Friedrichshain-Kreuzberg 6;Aydin, Sevim;SPD;;Abgeordnetenhaus (Bezirksliste);
+0206;Friedrichshain-Kreuzberg 6;Heinemann, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+0206;Friedrichshain-Kreuzberg 6;Husein, Dr. Timur;CDU;;Abgeordnetenhaus (Bezirksliste);
+0206;Friedrichshain-Kreuzberg 6;Wansner, Kurt;CDU;;Abgeordnetenhaus (Bezirksliste);
 0301;Pankow 1;Kraft, Johannes;CDU;41,6;Direkt;
-0301;Pankow 1;Buchner, Dennis;SPD;;Bezirksliste;
-0301;Pankow 1;Lenz, Stephan;CDU;;Bezirksliste;
-0301;Pankow 1;Schneider, Torsten;SPD;;Bezirksliste;
-0301;Pankow 1;Vierecke, Linda;SPD;;Bezirksliste;
+0301;Pankow 1;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0301;Pankow 1;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0301;Pankow 1;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0301;Pankow 1;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0302;Pankow 2;Bocian, Lars;CDU;31,4;Direkt;
-0302;Pankow 2;Buchner, Dennis;SPD;;Bezirksliste;
-0302;Pankow 2;Lenz, Stephan;CDU;;Bezirksliste;
-0302;Pankow 2;Schneider, Torsten;SPD;;Bezirksliste;
-0302;Pankow 2;Vierecke, Linda;SPD;;Bezirksliste;
+0302;Pankow 2;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0302;Pankow 2;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0302;Pankow 2;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0302;Pankow 2;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0303;Pankow 3;Hassepaß, Oda;GRÜNE;24,8;Direkt;
-0303;Pankow 3;Buchner, Dennis;SPD;;Bezirksliste;
-0303;Pankow 3;Lenz, Stephan;CDU;;Bezirksliste;
-0303;Pankow 3;Schneider, Torsten;SPD;;Bezirksliste;
-0303;Pankow 3;Vierecke, Linda;SPD;;Bezirksliste;
+0303;Pankow 3;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0303;Pankow 3;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0303;Pankow 3;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0303;Pankow 3;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0304;Pankow 4;Stettner, Dirk;CDU;30,2;Direkt;
-0304;Pankow 4;Buchner, Dennis;SPD;;Bezirksliste;
-0304;Pankow 4;Lenz, Stephan;CDU;;Bezirksliste;
-0304;Pankow 4;Schneider, Torsten;SPD;;Bezirksliste;
-0304;Pankow 4;Vierecke, Linda;SPD;;Bezirksliste;
+0304;Pankow 4;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0304;Pankow 4;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0304;Pankow 4;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0304;Pankow 4;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0305;Pankow 5;Krüger, Louis;GRÜNE;22,1;Direkt;
-0305;Pankow 5;Buchner, Dennis;SPD;;Bezirksliste;
-0305;Pankow 5;Lenz, Stephan;CDU;;Bezirksliste;
-0305;Pankow 5;Schneider, Torsten;SPD;;Bezirksliste;
-0305;Pankow 5;Vierecke, Linda;SPD;;Bezirksliste;
+0305;Pankow 5;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0305;Pankow 5;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0305;Pankow 5;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0305;Pankow 5;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0306;Pankow 6;Otto, Andreas;GRÜNE;41,6;Direkt;
-0306;Pankow 6;Buchner, Dennis;SPD;;Bezirksliste;
-0306;Pankow 6;Lenz, Stephan;CDU;;Bezirksliste;
-0306;Pankow 6;Schneider, Torsten;SPD;;Bezirksliste;
-0306;Pankow 6;Vierecke, Linda;SPD;;Bezirksliste;
+0306;Pankow 6;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0306;Pankow 6;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0306;Pankow 6;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0306;Pankow 6;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0307;Pankow 7;Schneider, Julia;GRÜNE;30,9;Direkt;
-0307;Pankow 7;Buchner, Dennis;SPD;;Bezirksliste;
-0307;Pankow 7;Lenz, Stephan;CDU;;Bezirksliste;
-0307;Pankow 7;Schneider, Torsten;SPD;;Bezirksliste;
-0307;Pankow 7;Vierecke, Linda;SPD;;Bezirksliste;
+0307;Pankow 7;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0307;Pankow 7;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0307;Pankow 7;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0307;Pankow 7;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0308;Pankow 8;Billig, Daniela;GRÜNE;37,2;Direkt;
-0308;Pankow 8;Buchner, Dennis;SPD;;Bezirksliste;
-0308;Pankow 8;Lenz, Stephan;CDU;;Bezirksliste;
-0308;Pankow 8;Schneider, Torsten;SPD;;Bezirksliste;
-0308;Pankow 8;Vierecke, Linda;SPD;;Bezirksliste;
+0308;Pankow 8;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0308;Pankow 8;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0308;Pankow 8;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0308;Pankow 8;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0309;Pankow 9;Schopf, Tino;SPD;25,6;Direkt;
-0309;Pankow 9;Buchner, Dennis;SPD;;Bezirksliste;
-0309;Pankow 9;Lenz, Stephan;CDU;;Bezirksliste;
-0309;Pankow 9;Schneider, Torsten;SPD;;Bezirksliste;
-0309;Pankow 9;Vierecke, Linda;SPD;;Bezirksliste;
+0309;Pankow 9;Buchner, Dennis;SPD;;Abgeordnetenhaus (Bezirksliste);
+0309;Pankow 9;Lenz, Stephan;CDU;;Abgeordnetenhaus (Bezirksliste);
+0309;Pankow 9;Schneider, Torsten;SPD;;Abgeordnetenhaus (Bezirksliste);
+0309;Pankow 9;Vierecke, Linda;SPD;;Abgeordnetenhaus (Bezirksliste);
 0401;Charlottenburg-Wilmersdorf 1;Häntsch, Stefan;CDU;28,3;Direkt;
-0401;Charlottenburg-Wilmersdorf 1;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0401;Charlottenburg-Wilmersdorf 1;Naumann, Reinhard;SPD;;Bezirksliste;
-0401;Charlottenburg-Wilmersdorf 1;Radziwill, Ülker;SPD;;Bezirksliste;
+0401;Charlottenburg-Wilmersdorf 1;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0401;Charlottenburg-Wilmersdorf 1;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0401;Charlottenburg-Wilmersdorf 1;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0402;Charlottenburg-Wilmersdorf 2;Hack, Ariturel;CDU;38,7;Direkt;
-0402;Charlottenburg-Wilmersdorf 2;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0402;Charlottenburg-Wilmersdorf 2;Naumann, Reinhard;SPD;;Bezirksliste;
-0402;Charlottenburg-Wilmersdorf 2;Radziwill, Ülker;SPD;;Bezirksliste;
+0402;Charlottenburg-Wilmersdorf 2;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0402;Charlottenburg-Wilmersdorf 2;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0402;Charlottenburg-Wilmersdorf 2;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0403;Charlottenburg-Wilmersdorf 3;Dr. Vandrey, Petra;GRÜNE;29,2;Direkt;
-0403;Charlottenburg-Wilmersdorf 3;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0403;Charlottenburg-Wilmersdorf 3;Naumann, Reinhard;SPD;;Bezirksliste;
-0403;Charlottenburg-Wilmersdorf 3;Radziwill, Ülker;SPD;;Bezirksliste;
+0403;Charlottenburg-Wilmersdorf 3;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0403;Charlottenburg-Wilmersdorf 3;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0403;Charlottenburg-Wilmersdorf 3;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0404;Charlottenburg-Wilmersdorf 4;Niemczyk, Aldona Maria;CDU;28,6;Direkt;
-0404;Charlottenburg-Wilmersdorf 4;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0404;Charlottenburg-Wilmersdorf 4;Naumann, Reinhard;SPD;;Bezirksliste;
-0404;Charlottenburg-Wilmersdorf 4;Radziwill, Ülker;SPD;;Bezirksliste;
+0404;Charlottenburg-Wilmersdorf 4;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0404;Charlottenburg-Wilmersdorf 4;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0404;Charlottenburg-Wilmersdorf 4;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0405;Charlottenburg-Wilmersdorf 5;Khalatbari, Sandra;CDU;42,3;Direkt;
-0405;Charlottenburg-Wilmersdorf 5;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0405;Charlottenburg-Wilmersdorf 5;Naumann, Reinhard;SPD;;Bezirksliste;
-0405;Charlottenburg-Wilmersdorf 5;Radziwill, Ülker;SPD;;Bezirksliste;
+0405;Charlottenburg-Wilmersdorf 5;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0405;Charlottenburg-Wilmersdorf 5;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0405;Charlottenburg-Wilmersdorf 5;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0406;Charlottenburg-Wilmersdorf 6;Mock-Stümer, Peer;CDU;29,2;Direkt;
-0406;Charlottenburg-Wilmersdorf 6;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0406;Charlottenburg-Wilmersdorf 6;Naumann, Reinhard;SPD;;Bezirksliste;
-0406;Charlottenburg-Wilmersdorf 6;Radziwill, Ülker;SPD;;Bezirksliste;
+0406;Charlottenburg-Wilmersdorf 6;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0406;Charlottenburg-Wilmersdorf 6;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0406;Charlottenburg-Wilmersdorf 6;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0407;Charlottenburg-Wilmersdorf 7;Bung, Stefanie;CDU;34,2;Direkt;
-0407;Charlottenburg-Wilmersdorf 7;Dörstelmann, Florian;SPD;;Bezirksliste;Nachgerückt
-0407;Charlottenburg-Wilmersdorf 7;Naumann, Reinhard;SPD;;Bezirksliste;
-0407;Charlottenburg-Wilmersdorf 7;Radziwill, Ülker;SPD;;Bezirksliste;
+0407;Charlottenburg-Wilmersdorf 7;Dörstelmann, Florian;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0407;Charlottenburg-Wilmersdorf 7;Naumann, Reinhard;SPD;;Abgeordnetenhaus (Bezirksliste);
+0407;Charlottenburg-Wilmersdorf 7;Radziwill, Ülker;SPD;;Abgeordnetenhaus (Bezirksliste);
 0501;Spandau 1;Meißner, Bettina;CDU;37,3;Direkt;
-0501;Spandau 1;Atli, Sebahat;SPD;;Bezirksliste;
-0501;Spandau 1;Saleh, Raed;SPD;;Bezirksliste;
+0501;Spandau 1;Atli, Sebahat;SPD;;Abgeordnetenhaus (Bezirksliste);
+0501;Spandau 1;Saleh, Raed;SPD;;Abgeordnetenhaus (Bezirksliste);
 0502;Spandau 2;Dr. Nas, Ersin;CDU;33,2;Direkt;
-0502;Spandau 2;Atli, Sebahat;SPD;;Bezirksliste;
-0502;Spandau 2;Saleh, Raed;SPD;;Bezirksliste;
+0502;Spandau 2;Atli, Sebahat;SPD;;Abgeordnetenhaus (Bezirksliste);
+0502;Spandau 2;Saleh, Raed;SPD;;Abgeordnetenhaus (Bezirksliste);
 0503;Spandau 3;Brauner, Kerstin;CDU;34,4;Direkt;
-0503;Spandau 3;Atli, Sebahat;SPD;;Bezirksliste;
-0503;Spandau 3;Saleh, Raed;SPD;;Bezirksliste;
+0503;Spandau 3;Atli, Sebahat;SPD;;Abgeordnetenhaus (Bezirksliste);
+0503;Spandau 3;Saleh, Raed;SPD;;Abgeordnetenhaus (Bezirksliste);
 0504;Spandau 4;Melzer, Heiko;CDU;45,3;Direkt;
-0504;Spandau 4;Atli, Sebahat;SPD;;Bezirksliste;
-0504;Spandau 4;Saleh, Raed;SPD;;Bezirksliste;
+0504;Spandau 4;Atli, Sebahat;SPD;;Abgeordnetenhaus (Bezirksliste);
+0504;Spandau 4;Saleh, Raed;SPD;;Abgeordnetenhaus (Bezirksliste);
 0505;Spandau 5;Wegner, Kai;CDU;46,9;Direkt;
-0505;Spandau 5;Atli, Sebahat;SPD;;Bezirksliste;
-0505;Spandau 5;Saleh, Raed;SPD;;Bezirksliste;
+0505;Spandau 5;Atli, Sebahat;SPD;;Abgeordnetenhaus (Bezirksliste);
+0505;Spandau 5;Saleh, Raed;SPD;;Abgeordnetenhaus (Bezirksliste);
 0601;Steglitz-Zehlendorf 1;Dr. Wein, Claudia;CDU;30,2;Direkt;
-0601;Steglitz-Zehlendorf 1;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0601;Steglitz-Zehlendorf 1;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0601;Steglitz-Zehlendorf 1;Golm, Mirjam;SPD;;Bezirksliste;
-0601;Steglitz-Zehlendorf 1;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0601;Steglitz-Zehlendorf 1;Matz, Martin;SPD;;Bezirksliste;
+0601;Steglitz-Zehlendorf 1;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0601;Steglitz-Zehlendorf 1;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0601;Steglitz-Zehlendorf 1;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0601;Steglitz-Zehlendorf 1;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0601;Steglitz-Zehlendorf 1;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0602;Steglitz-Zehlendorf 2;Cywinski, Tom Jan Filip;CDU;31,3;Direkt;
-0602;Steglitz-Zehlendorf 2;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0602;Steglitz-Zehlendorf 2;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0602;Steglitz-Zehlendorf 2;Golm, Mirjam;SPD;;Bezirksliste;
-0602;Steglitz-Zehlendorf 2;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0602;Steglitz-Zehlendorf 2;Matz, Martin;SPD;;Bezirksliste;
+0602;Steglitz-Zehlendorf 2;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0602;Steglitz-Zehlendorf 2;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0602;Steglitz-Zehlendorf 2;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0602;Steglitz-Zehlendorf 2;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0602;Steglitz-Zehlendorf 2;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0603;Steglitz-Zehlendorf 3;Goiny, Christian;CDU;40,5;Direkt;
-0603;Steglitz-Zehlendorf 3;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0603;Steglitz-Zehlendorf 3;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0603;Steglitz-Zehlendorf 3;Golm, Mirjam;SPD;;Bezirksliste;
-0603;Steglitz-Zehlendorf 3;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0603;Steglitz-Zehlendorf 3;Matz, Martin;SPD;;Bezirksliste;
+0603;Steglitz-Zehlendorf 3;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0603;Steglitz-Zehlendorf 3;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0603;Steglitz-Zehlendorf 3;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0603;Steglitz-Zehlendorf 3;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0603;Steglitz-Zehlendorf 3;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0604;Steglitz-Zehlendorf 4;Seibeld, Cornelia Simone Michaela;CDU;41,8;Direkt;
-0604;Steglitz-Zehlendorf 4;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0604;Steglitz-Zehlendorf 4;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0604;Steglitz-Zehlendorf 4;Golm, Mirjam;SPD;;Bezirksliste;
-0604;Steglitz-Zehlendorf 4;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0604;Steglitz-Zehlendorf 4;Matz, Martin;SPD;;Bezirksliste;
+0604;Steglitz-Zehlendorf 4;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0604;Steglitz-Zehlendorf 4;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0604;Steglitz-Zehlendorf 4;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0604;Steglitz-Zehlendorf 4;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0604;Steglitz-Zehlendorf 4;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0605;Steglitz-Zehlendorf 5;Friederici, Oliver;CDU;41,2;Direkt;
-0605;Steglitz-Zehlendorf 5;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0605;Steglitz-Zehlendorf 5;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0605;Steglitz-Zehlendorf 5;Golm, Mirjam;SPD;;Bezirksliste;
-0605;Steglitz-Zehlendorf 5;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0605;Steglitz-Zehlendorf 5;Matz, Martin;SPD;;Bezirksliste;
+0605;Steglitz-Zehlendorf 5;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0605;Steglitz-Zehlendorf 5;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0605;Steglitz-Zehlendorf 5;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0605;Steglitz-Zehlendorf 5;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0605;Steglitz-Zehlendorf 5;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0606;Steglitz-Zehlendorf 6;Grasse, Adrian;CDU;40,0;Direkt;
-0606;Steglitz-Zehlendorf 6;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0606;Steglitz-Zehlendorf 6;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0606;Steglitz-Zehlendorf 6;Golm, Mirjam;SPD;;Bezirksliste;
-0606;Steglitz-Zehlendorf 6;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0606;Steglitz-Zehlendorf 6;Matz, Martin;SPD;;Bezirksliste;
+0606;Steglitz-Zehlendorf 6;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0606;Steglitz-Zehlendorf 6;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0606;Steglitz-Zehlendorf 6;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0606;Steglitz-Zehlendorf 6;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0606;Steglitz-Zehlendorf 6;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0607;Steglitz-Zehlendorf 7;Standfuß, Stephan Carsten Günter;CDU;40,1;Direkt;
-0607;Steglitz-Zehlendorf 7;Czyborra, Dr. Ina;SPD;;Bezirksliste;
-0607;Steglitz-Zehlendorf 7;Gertig, Iris;CDU;;Bezirksliste;Nachgerückt
-0607;Steglitz-Zehlendorf 7;Golm, Mirjam;SPD;;Bezirksliste;
-0607;Steglitz-Zehlendorf 7;Kollatz, Dr. Matthias;SPD;;Bezirksliste;
-0607;Steglitz-Zehlendorf 7;Matz, Martin;SPD;;Bezirksliste;
+0607;Steglitz-Zehlendorf 7;Czyborra, Dr. Ina;SPD;;Abgeordnetenhaus (Bezirksliste);
+0607;Steglitz-Zehlendorf 7;Gertig, Iris;CDU;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0607;Steglitz-Zehlendorf 7;Golm, Mirjam;SPD;;Abgeordnetenhaus (Bezirksliste);
+0607;Steglitz-Zehlendorf 7;Kollatz, Dr. Matthias;SPD;;Abgeordnetenhaus (Bezirksliste);
+0607;Steglitz-Zehlendorf 7;Matz, Martin;SPD;;Abgeordnetenhaus (Bezirksliste);
 0701;Tempelhof-Schöneberg 1;Walter, Sebastian;GRÜNE;34,4;Direkt;
-0701;Tempelhof-Schöneberg 1;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0701;Tempelhof-Schöneberg 1;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0701;Tempelhof-Schöneberg 1;Rauchfuß, Lars;SPD;;Bezirksliste;
-0701;Tempelhof-Schöneberg 1;Senge, Katharina;CDU;;Bezirksliste;
+0701;Tempelhof-Schöneberg 1;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0701;Tempelhof-Schöneberg 1;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0701;Tempelhof-Schöneberg 1;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0701;Tempelhof-Schöneberg 1;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0702;Tempelhof-Schöneberg 2;Pieroth-Manelli, Catherina;GRÜNE;36,9;Direkt;
-0702;Tempelhof-Schöneberg 2;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0702;Tempelhof-Schöneberg 2;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0702;Tempelhof-Schöneberg 2;Rauchfuß, Lars;SPD;;Bezirksliste;
-0702;Tempelhof-Schöneberg 2;Senge, Katharina;CDU;;Bezirksliste;
+0702;Tempelhof-Schöneberg 2;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0702;Tempelhof-Schöneberg 2;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0702;Tempelhof-Schöneberg 2;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0702;Tempelhof-Schöneberg 2;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0703;Tempelhof-Schöneberg 3;Özdemir, Orkan;SPD;32,1;Direkt;
-0703;Tempelhof-Schöneberg 3;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0703;Tempelhof-Schöneberg 3;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0703;Tempelhof-Schöneberg 3;Rauchfuß, Lars;SPD;;Bezirksliste;
-0703;Tempelhof-Schöneberg 3;Senge, Katharina;CDU;;Bezirksliste;
+0703;Tempelhof-Schöneberg 3;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0703;Tempelhof-Schöneberg 3;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0703;Tempelhof-Schöneberg 3;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0703;Tempelhof-Schöneberg 3;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0704;Tempelhof-Schöneberg 4;Luhmann, Frank;CDU;28,5;Direkt;
-0704;Tempelhof-Schöneberg 4;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0704;Tempelhof-Schöneberg 4;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0704;Tempelhof-Schöneberg 4;Rauchfuß, Lars;SPD;;Bezirksliste;
-0704;Tempelhof-Schöneberg 4;Senge, Katharina;CDU;;Bezirksliste;
+0704;Tempelhof-Schöneberg 4;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0704;Tempelhof-Schöneberg 4;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0704;Tempelhof-Schöneberg 4;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0704;Tempelhof-Schöneberg 4;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0705;Tempelhof-Schöneberg 5;Simon, Roman;CDU;40,3;Direkt;
-0705;Tempelhof-Schöneberg 5;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0705;Tempelhof-Schöneberg 5;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0705;Tempelhof-Schöneberg 5;Rauchfuß, Lars;SPD;;Bezirksliste;
-0705;Tempelhof-Schöneberg 5;Senge, Katharina;CDU;;Bezirksliste;
+0705;Tempelhof-Schöneberg 5;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0705;Tempelhof-Schöneberg 5;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0705;Tempelhof-Schöneberg 5;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0705;Tempelhof-Schöneberg 5;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0706;Tempelhof-Schöneberg 6;Körber, Scott;CDU;47,4;Direkt;
-0706;Tempelhof-Schöneberg 6;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0706;Tempelhof-Schöneberg 6;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0706;Tempelhof-Schöneberg 6;Rauchfuß, Lars;SPD;;Bezirksliste;
-0706;Tempelhof-Schöneberg 6;Senge, Katharina;CDU;;Bezirksliste;
+0706;Tempelhof-Schöneberg 6;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0706;Tempelhof-Schöneberg 6;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0706;Tempelhof-Schöneberg 6;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0706;Tempelhof-Schöneberg 6;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0707;Tempelhof-Schöneberg 7;Zander, Christian;CDU;49,6;Direkt;
-0707;Tempelhof-Schöneberg 7;Kühnemann-Grunow, Melanie;SPD;;Bezirksliste;
-0707;Tempelhof-Schöneberg 7;Neumann, Wiebke;SPD;;Bezirksliste;Nachgerückt
-0707;Tempelhof-Schöneberg 7;Rauchfuß, Lars;SPD;;Bezirksliste;
-0707;Tempelhof-Schöneberg 7;Senge, Katharina;CDU;;Bezirksliste;
+0707;Tempelhof-Schöneberg 7;Kühnemann-Grunow, Melanie;SPD;;Abgeordnetenhaus (Bezirksliste);
+0707;Tempelhof-Schöneberg 7;Neumann, Wiebke;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0707;Tempelhof-Schöneberg 7;Rauchfuß, Lars;SPD;;Abgeordnetenhaus (Bezirksliste);
+0707;Tempelhof-Schöneberg 7;Senge, Katharina;CDU;;Abgeordnetenhaus (Bezirksliste);
 0801;Neukölln 1;Schulze, André;GRÜNE;35,1;Direkt;
-0801;Neukölln 1;Giffey, Franziska;SPD;;Bezirksliste;
-0801;Neukölln 1;Hopp, Marcel;SPD;;Bezirksliste;
+0801;Neukölln 1;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0801;Neukölln 1;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0802;Neukölln 2;Dr. Kahlefeld, Susanna Maria;GRÜNE;34,5;Direkt;
-0802;Neukölln 2;Giffey, Franziska;SPD;;Bezirksliste;
-0802;Neukölln 2;Hopp, Marcel;SPD;;Bezirksliste;
+0802;Neukölln 2;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0802;Neukölln 2;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0803;Neukölln 3;Çağlar, Derya;SPD;23,4;Direkt;
-0803;Neukölln 3;Giffey, Franziska;SPD;;Bezirksliste;
-0803;Neukölln 3;Hopp, Marcel;SPD;;Bezirksliste;
+0803;Neukölln 3;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0803;Neukölln 3;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0804;Neukölln 4;Förster, Christopher;CDU;43,0;Direkt;
-0804;Neukölln 4;Giffey, Franziska;SPD;;Bezirksliste;
-0804;Neukölln 4;Hopp, Marcel;SPD;;Bezirksliste;
+0804;Neukölln 4;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0804;Neukölln 4;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0805;Neukölln 5;Dr. Juhnke, Robbin;CDU;43,1;Direkt;
-0805;Neukölln 5;Giffey, Franziska;SPD;;Bezirksliste;
-0805;Neukölln 5;Hopp, Marcel;SPD;;Bezirksliste;
+0805;Neukölln 5;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0805;Neukölln 5;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0806;Neukölln 6;Schenk, Olaf;CDU;45,3;Direkt;
-0806;Neukölln 6;Giffey, Franziska;SPD;;Bezirksliste;
-0806;Neukölln 6;Hopp, Marcel;SPD;;Bezirksliste;
+0806;Neukölln 6;Giffey, Franziska;SPD;;Abgeordnetenhaus (Bezirksliste);
+0806;Neukölln 6;Hopp, Marcel;SPD;;Abgeordnetenhaus (Bezirksliste);
 0901;Treptow-Köpenick 1;Gennburg, Katalin;DIE LINKE;25,9;Direkt;
-0901;Treptow-Köpenick 1;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0901;Treptow-Köpenick 1;Wolff, Dunja;SPD;;Bezirksliste;
+0901;Treptow-Köpenick 1;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0901;Treptow-Köpenick 1;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 0902;Treptow-Köpenick 2;Düsterhöft, Lars;SPD;29,2;Direkt;
-0902;Treptow-Köpenick 2;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0902;Treptow-Köpenick 2;Wolff, Dunja;SPD;;Bezirksliste;
+0902;Treptow-Köpenick 2;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0902;Treptow-Köpenick 2;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 0903;Treptow-Köpenick 3;Evers, Stefan;CDU;32,7;Direkt;
-0903;Treptow-Köpenick 3;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0903;Treptow-Köpenick 3;Wolff, Dunja;SPD;;Bezirksliste;
+0903;Treptow-Köpenick 3;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0903;Treptow-Köpenick 3;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 0904;Treptow-Köpenick 4;Knack, Lisa-Bettina;CDU;27,2;Direkt;
-0904;Treptow-Köpenick 4;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0904;Treptow-Köpenick 4;Wolff, Dunja;SPD;;Bezirksliste;
+0904;Treptow-Köpenick 4;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0904;Treptow-Köpenick 4;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 0905;Treptow-Köpenick 5;Dr. Sattelkau, Martin;CDU;27,7;Direkt;
-0905;Treptow-Köpenick 5;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0905;Treptow-Köpenick 5;Wolff, Dunja;SPD;;Bezirksliste;
+0905;Treptow-Köpenick 5;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0905;Treptow-Köpenick 5;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 0906;Treptow-Köpenick 6;Penn, Maik;CDU;31,6;Direkt;
-0906;Treptow-Köpenick 6;Freier-Winterwerb, Alexander;SPD;;Bezirksliste;Nachgerückt
-0906;Treptow-Köpenick 6;Wolff, Dunja;SPD;;Bezirksliste;
+0906;Treptow-Köpenick 6;Freier-Winterwerb, Alexander;SPD;;Abgeordnetenhaus (Bezirksliste);Nachgerückt
+0906;Treptow-Köpenick 6;Wolff, Dunja;SPD;;Abgeordnetenhaus (Bezirksliste);
 1001;Marzahn-Hellersdorf 1;Lindemann, Gunnar Norbert;AfD;28,8;Direkt;
-1001;Marzahn-Hellersdorf 1;Lehmann, Jan;SPD;;Bezirksliste;
-1001;Marzahn-Hellersdorf 1;Spranger, Iris;SPD;;Bezirksliste;
+1001;Marzahn-Hellersdorf 1;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1001;Marzahn-Hellersdorf 1;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1002;Marzahn-Hellersdorf 2;Gauks, Olga;CDU;25,5;Direkt;
-1002;Marzahn-Hellersdorf 2;Lehmann, Jan;SPD;;Bezirksliste;
-1002;Marzahn-Hellersdorf 2;Spranger, Iris;SPD;;Bezirksliste;
+1002;Marzahn-Hellersdorf 2;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1002;Marzahn-Hellersdorf 2;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1003;Marzahn-Hellersdorf 3;Auricht, Jeannette;AfD;25,9;Direkt;
-1003;Marzahn-Hellersdorf 3;Lehmann, Jan;SPD;;Bezirksliste;
-1003;Marzahn-Hellersdorf 3;Spranger, Iris;SPD;;Bezirksliste;
+1003;Marzahn-Hellersdorf 3;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1003;Marzahn-Hellersdorf 3;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1004;Marzahn-Hellersdorf 4;Gräff, Christian;CDU;42,9;Direkt;
-1004;Marzahn-Hellersdorf 4;Lehmann, Jan;SPD;;Bezirksliste;
-1004;Marzahn-Hellersdorf 4;Spranger, Iris;SPD;;Bezirksliste;
+1004;Marzahn-Hellersdorf 4;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1004;Marzahn-Hellersdorf 4;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1005;Marzahn-Hellersdorf 5;Günther-Wünsch, Katharina;CDU;45,0;Direkt;
-1005;Marzahn-Hellersdorf 5;Lehmann, Jan;SPD;;Bezirksliste;
-1005;Marzahn-Hellersdorf 5;Spranger, Iris;SPD;;Bezirksliste;
+1005;Marzahn-Hellersdorf 5;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1005;Marzahn-Hellersdorf 5;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1006;Marzahn-Hellersdorf 6;Herrmann, Alexander;CDU;37,8;Direkt;
-1006;Marzahn-Hellersdorf 6;Lehmann, Jan;SPD;;Bezirksliste;
-1006;Marzahn-Hellersdorf 6;Spranger, Iris;SPD;;Bezirksliste;
+1006;Marzahn-Hellersdorf 6;Lehmann, Jan;SPD;;Abgeordnetenhaus (Bezirksliste);
+1006;Marzahn-Hellersdorf 6;Spranger, Iris;SPD;;Abgeordnetenhaus (Bezirksliste);
 1101;Lichtenberg 1;Freymark, Danny;CDU;40,8;Direkt;
-1101;Lichtenberg 1;Geisel, Andreas;SPD;;Bezirksliste;
-1101;Lichtenberg 1;Lüdke, Tamara;SPD;;Bezirksliste;
+1101;Lichtenberg 1;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1101;Lichtenberg 1;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1102;Lichtenberg 2;Dr. Pätzold, Martin;CDU;39,5;Direkt;
-1102;Lichtenberg 2;Geisel, Andreas;SPD;;Bezirksliste;
-1102;Lichtenberg 2;Lüdke, Tamara;SPD;;Bezirksliste;
+1102;Lichtenberg 2;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1102;Lichtenberg 2;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1103;Lichtenberg 3;Haustein, Dennis;CDU;23,4;Direkt;
-1103;Lichtenberg 3;Geisel, Andreas;SPD;;Bezirksliste;
-1103;Lichtenberg 3;Lüdke, Tamara;SPD;;Bezirksliste;
+1103;Lichtenberg 3;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1103;Lichtenberg 3;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1104;Lichtenberg 4;Schlüsselburg, Sebastian;DIE LINKE;27,2;Direkt;
-1104;Lichtenberg 4;Geisel, Andreas;SPD;;Bezirksliste;
-1104;Lichtenberg 4;Lüdke, Tamara;SPD;;Bezirksliste;
+1104;Lichtenberg 4;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1104;Lichtenberg 4;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1105;Lichtenberg 5;Klein, Hendrikje;DIE LINKE;25,0;Direkt;
-1105;Lichtenberg 5;Geisel, Andreas;SPD;;Bezirksliste;
-1105;Lichtenberg 5;Lüdke, Tamara;SPD;;Bezirksliste;
+1105;Lichtenberg 5;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1105;Lichtenberg 5;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1106;Lichtenberg 6;Usik, Lilia;CDU;22,4;Direkt;
-1106;Lichtenberg 6;Geisel, Andreas;SPD;;Bezirksliste;
-1106;Lichtenberg 6;Lüdke, Tamara;SPD;;Bezirksliste;
+1106;Lichtenberg 6;Geisel, Andreas;SPD;;Abgeordnetenhaus (Bezirksliste);
+1106;Lichtenberg 6;Lüdke, Tamara;SPD;;Abgeordnetenhaus (Bezirksliste);
 1201;Reinickendorf 1;Dregger, Burkard;CDU;37,2;Direkt;
-1201;Reinickendorf 1;Graßelt, Niklas;CDU;;Bezirksliste;
-1201;Reinickendorf 1;König, Bettina;SPD;;Bezirksliste;
-1201;Reinickendorf 1;Meyer, Sven;SPD;;Bezirksliste;
-1201;Reinickendorf 1;Stroedter, Jörg;SPD;;Bezirksliste;
+1201;Reinickendorf 1;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1201;Reinickendorf 1;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1201;Reinickendorf 1;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1201;Reinickendorf 1;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
 1202;Reinickendorf 2;Demirbüken-Wegner, Emine;CDU;38,9;Direkt;
-1202;Reinickendorf 2;Graßelt, Niklas;CDU;;Bezirksliste;
-1202;Reinickendorf 2;König, Bettina;SPD;;Bezirksliste;
-1202;Reinickendorf 2;Meyer, Sven;SPD;;Bezirksliste;
-1202;Reinickendorf 2;Stroedter, Jörg;SPD;;Bezirksliste;
+1202;Reinickendorf 2;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1202;Reinickendorf 2;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1202;Reinickendorf 2;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1202;Reinickendorf 2;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
 1203;Reinickendorf 3;Schmidt, Stephan;CDU;44,1;Direkt;
-1203;Reinickendorf 3;Graßelt, Niklas;CDU;;Bezirksliste;
-1203;Reinickendorf 3;König, Bettina;SPD;;Bezirksliste;
-1203;Reinickendorf 3;Meyer, Sven;SPD;;Bezirksliste;
-1203;Reinickendorf 3;Stroedter, Jörg;SPD;;Bezirksliste;
+1203;Reinickendorf 3;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1203;Reinickendorf 3;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1203;Reinickendorf 3;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1203;Reinickendorf 3;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
 1204;Reinickendorf 4;Wohlert, Björn;CDU;41,3;Direkt;
-1204;Reinickendorf 4;Graßelt, Niklas;CDU;;Bezirksliste;
-1204;Reinickendorf 4;König, Bettina;SPD;;Bezirksliste;
-1204;Reinickendorf 4;Meyer, Sven;SPD;;Bezirksliste;
-1204;Reinickendorf 4;Stroedter, Jörg;SPD;;Bezirksliste;
+1204;Reinickendorf 4;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1204;Reinickendorf 4;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1204;Reinickendorf 4;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1204;Reinickendorf 4;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
 1205;Reinickendorf 5;Dietmann, Michael;CDU;43,8;Direkt;
-1205;Reinickendorf 5;Graßelt, Niklas;CDU;;Bezirksliste;
-1205;Reinickendorf 5;König, Bettina;SPD;;Bezirksliste;
-1205;Reinickendorf 5;Meyer, Sven;SPD;;Bezirksliste;
-1205;Reinickendorf 5;Stroedter, Jörg;SPD;;Bezirksliste;
+1205;Reinickendorf 5;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1205;Reinickendorf 5;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1205;Reinickendorf 5;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1205;Reinickendorf 5;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
 1206;Reinickendorf 6;Balzer, Frank;CDU;45,7;Direkt;
-1206;Reinickendorf 6;Graßelt, Niklas;CDU;;Bezirksliste;
-1206;Reinickendorf 6;König, Bettina;SPD;;Bezirksliste;
-1206;Reinickendorf 6;Meyer, Sven;SPD;;Bezirksliste;
-1206;Reinickendorf 6;Stroedter, Jörg;SPD;;Bezirksliste;
+1206;Reinickendorf 6;Graßelt, Niklas;CDU;;Abgeordnetenhaus (Bezirksliste);
+1206;Reinickendorf 6;König, Bettina;SPD;;Abgeordnetenhaus (Bezirksliste);
+1206;Reinickendorf 6;Meyer, Sven;SPD;;Abgeordnetenhaus (Bezirksliste);
+1206;Reinickendorf 6;Stroedter, Jörg;SPD;;Abgeordnetenhaus (Bezirksliste);
+
