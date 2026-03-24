@@ -696,10 +696,10 @@ const wfsLayers = [
       url: "https://service.bundeswahlleiterin.de/gis/cgi-bin/mapserv?map=/home/fgs/gis/gisdocs/wahlkreise/wahlkreise2025wfs.map&service=WFS&request=GetCapabilities",
       preferredTypeNames: ["ms:Wahlkreise"],
       pane: "pane-btg",
-    zIndex: 445,
-    style: { color: "#596366", weight: 1.6, fillOpacity: 0 },
-    tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
-  },
+      zIndex: 445,
+      style: { color: "#7a1f2b", weight: 1.6, fillOpacity: 0 },
+      tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
+    },
     {
       id: "eu",
       label: "Berlin (Land)",
@@ -902,11 +902,37 @@ function pickNameLikeProperty(feature) {
     const props = feature?.properties || {};
     const bwk = findWkrValue(props);
     const mapping = bwk ? btgTooltipByBwk.get(bwk) : null;
+    const nameFromMapping = mapping?.name || "";
+    const bezNameFromWahlkreis = getBezirkNameFromBtgName(nameFromMapping);
+    if (bezNameFromWahlkreis) return bezNameFromWahlkreis;
     const bez = mapping?.bez || normalizeBez(props.BEZ || props.Bez || props.bez);
     const bezName = bez ? districtByNumber.get(bez)?.name : null;
     if (bezName) return bezName;
     if (mapping?.name) return mapping.name;
     return pickTooltipText(feature, ["name", "WKR_NAME", "WK_NAME", "Wahlkreis", "Wahlkreisname"]);
+  }
+
+  function getBezirkNameFromBtgName(value) {
+    if (!value) return "";
+    const raw = String(value).trim();
+    if (!raw) return "";
+    const lookup = {
+      "Berlin-Mitte": "Mitte",
+      "Berlin-Pankow": "Pankow",
+      "Berlin-Reinickendorf": "Reinickendorf",
+      "Berlin-Spandau & Charlottenburg Nord": "Spandau / Charlottenburg-Wilmersdorf",
+      "Berlin-Steglitz-Zehlendorf": "Steglitz-Zehlendorf",
+      "Berlin-Charlottenburg-Wilmersdorf": "Charlottenburg-Wilmersdorf",
+      "Berlin-Tempelhof-Schöneberg": "Tempelhof-Schöneberg",
+      "Berlin-Neukölln": "Neukölln",
+      "Berlin-Fr.-Kreuzberg & Prenzl. Berg Ost": "Friedrichshain-Kreuzberg / Pankow",
+      "Berlin-Treptow-Köpenick": "Treptow-Köpenick",
+      "Berlin-Marzahn-Hellersdorf": "Marzahn-Hellersdorf",
+      "Berlin-Lichtenberg": "Lichtenberg"
+    };
+    if (lookup[raw]) return lookup[raw];
+    if (raw.startsWith("Berlin-")) return raw.replace(/^Berlin-/, "").trim();
+    return raw;
   }
 
 function rebuildOverlayControl() {
