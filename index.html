@@ -627,9 +627,8 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
 const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
 const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
 const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
-const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
-const btgLocalShpUrl = "./RBS_OD_UWB_BT25/RBS_OD_UWB_BT25.shp";
-const btgLocalDbfUrl = "./RBS_OD_UWB_BT25/RBS_OD_UWB_BT25.dbf";
+  const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
+  const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
 
 const wfsLayers = [
   {
@@ -954,7 +953,7 @@ async function addWfsOverlayLayer(layerConfig) {
         const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
         wfsOverlayLayers.set(id, layer);
         if (defaultOn) layer.addTo(map);
-        console.info("BTG layer loaded from local shapefile (WFS disabled).");
+        console.info("BTG layer loaded from local GeoJSON (WFS disabled).");
         return;
       }
 
@@ -986,10 +985,10 @@ async function addWfsOverlayLayer(layerConfig) {
         const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
         wfsOverlayLayers.set(id, layer);
         if (defaultOn) layer.addTo(map);
-        console.info("BTG layer loaded from local shapefile fallback.");
+        console.info("BTG layer loaded from local GeoJSON fallback.");
         return;
       } catch (localErr) {
-        console.warn("BTG local shapefile fallback failed.", localErr);
+        console.warn("BTG local GeoJSON fallback failed.", localErr);
       }
     }
     // Keep the layer in the UI list even if loading fails.
@@ -1390,48 +1389,13 @@ async function loadWahlkreiseGeoJSON() {
   return { type: "FeatureCollection", features };
 }
 
-async function loadBtgGeoJSONFromShapefile() {
-  const source = await shapefile.open(btgLocalShpUrl, btgLocalDbfUrl);
-  const groups = new Map();
-  let index = 0;
-  while (true) {
-    const result = await source.read();
-    if (result.done) break;
-    const feature = result.value;
-    feature.geometry = reprojectGeometry(feature.geometry);
-    const wkr = findWkrValue(feature.properties);
-    const name = findWkrName(feature.properties);
-    const key = wkr || name || `row-${index++}`;
-    if (!groups.has(key)) {
-      groups.set(key, { wkr: wkr || "", name: name || "", polygons: [] });
+  async function loadBtgGeoJSONFromShapefile() {
+    const response = await fetch(btgLocalGeojsonUrl);
+    if (!response.ok) {
+      throw new Error(`BTG GeoJSON could not be loaded: ${response.status} ${response.statusText}`);
     }
-    const group = groups.get(key);
-    const geom = feature.geometry;
-    if (!geom) continue;
-    if (geom.type === "Polygon") {
-      group.polygons.push(geom.coordinates);
-    } else if (geom.type === "MultiPolygon") {
-      group.polygons.push(...geom.coordinates);
-    }
+    return await response.json();
   }
-  const features = [];
-  for (const group of groups.values()) {
-    if (!group.polygons.length) continue;
-    features.push({
-      type: "Feature",
-      properties: {
-        WKR_NR: group.wkr || "",
-        WKR_NAME: group.name || "",
-        name: group.name || group.wkr || ""
-      },
-      geometry: {
-        type: "MultiPolygon",
-        coordinates: group.polygons
-      }
-    });
-  }
-  return { type: "FeatureCollection", features };
-}
 
 function indexAghByBezirk(geojson) {
   aghByBez.clear();
