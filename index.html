@@ -1546,10 +1546,16 @@ async function loadBvvFromOparl(systemUrl, bezirkName) {
 
   const orgById = new Map(orgs.map(org => [org.id, org]));
   const bvvOrgIds = new Set(
-    orgs.filter(org => String(org.classification || "").toLowerCase() === "bvv").map(org => org.id)
+    orgs.filter(org => {
+      const cls = String(org.classification || "").toLowerCase();
+      return cls === "bvv" || cls.includes("bezirksverordnetenversammlung");
+    }).map(org => org.id)
   );
   const factionOrgIds = new Set(
-    orgs.filter(org => String(org.classification || "").toLowerCase() === "fraktion").map(org => org.id)
+    orgs.filter(org => {
+      const cls = String(org.classification || "").toLowerCase();
+      return cls.includes("fraktion") || cls.includes("gruppe");
+    }).map(org => org.id)
   );
 
   const entries = [];
@@ -1709,12 +1715,37 @@ function parseBvvFile(text) {
   return entries;
 }
 
+function parseBvvCsvText(text) {
+  const result = Papa.parse(text, {
+    header: true,
+    delimiter: ",",
+    skipEmptyLines: true
+  });
+  const entries = [];
+  (result.data || []).forEach(row => {
+    const name = (row.Name || row.name || "").trim();
+    if (!name) return;
+    const role = (row["Art der Mitarbeit"] || row.Art || row.Role || row.Funktion || "").trim();
+    const partyRaw = (row.Herkunft || row.Partei || row.Party || "").trim();
+    const since = (row.seit || row.Seit || row.since || "").trim();
+    entries.push({
+      name,
+      party: normalizeParty(partyRaw || "fraktionslos"),
+      role: role || "BVV",
+      since
+    });
+  });
+  return entries;
+}
+
 async function loadBvvLists() {
   await loadOparlApiMap();
   const bezirke = Object.keys(bezirkeData);
   await Promise.all(bezirke.map(async (bezirk) => {
-    const fileName = `BVV-${bezirk}.txt`;
-    const fileUrl = encodeURI(`${bvvBasePath}/${fileName}`);
+    const fileNameCsv = `BVV-${bezirk}.csv`;
+    const fileNameTxt = `BVV-${bezirk}.txt`;
+    const fileUrlCsv = encodeURI(`${bvvBasePath}/${fileNameCsv}`);
+    const fileUrlTxt = encodeURI(`${bvvBasePath}/${fileNameTxt}`);
     try {
       const oparlUrl = oparlApiByBezirk.get(bezirk);
       if (oparlUrl && bezirk !== "Spandau") {
@@ -1728,12 +1759,21 @@ async function loadBvvLists() {
           console.warn(`OPARL BVV lookup failed for ${bezirk}, falling back to local file.`, oparlErr);
         }
       }
-      const res = await fetch(fileUrl);
+      let res = await fetch(fileUrlCsv);
+      if (res.ok) {
+        const text = await res.text();
+        const entries = parseBvvCsvText(text);
+        if (entries.length) {
+          bvvByBezirk.set(bezirk, entries);
+          return;
+        }
+      }
+      res = await fetch(fileUrlTxt);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const text = await res.text();
       bvvByBezirk.set(bezirk, parseBvvFile(text));
     } catch (err) {
-      console.warn(`BVV list not found for ${bezirk}: ${fileName}`, err);
+      console.warn(`BVV list not found for ${bezirk}: ${fileNameCsv}`, err);
     }
   }));
 
