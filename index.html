@@ -1478,6 +1478,48 @@ function cleanOrgLabel(label) {
     .trim();
 }
 
+function normalizeOparlClasses(value) {
+  if (!value) return [];
+  const raw = Array.isArray(value) ? value : [value];
+  return raw
+    .map(v => String(v || "").toLowerCase().trim())
+    .filter(v => v.length);
+}
+
+function orgLooksLikeBvv(org) {
+  if (!org) return false;
+  const classes = normalizeOparlClasses(org.classification);
+  if (classes.some(c =>
+    c === "bvv" ||
+    c.includes("bezirksverordnetenversammlung") ||
+    c.includes("bezirksparlament") ||
+    c.includes("bezirksverordnete") ||
+    c.includes("stadtbezirk")
+  )) {
+    return true;
+  }
+  const name = String(org.name || org.shortName || "").toLowerCase();
+  return name.includes("bvv") || name.includes("bezirksverordneten");
+}
+
+function roleLooksLikeBvv(role) {
+  return /bezirksverordnete|bvv/i.test(role || "");
+}
+
+function orgLooksLikeFaction(org) {
+  if (!org) return false;
+  const classes = normalizeOparlClasses(org.classification);
+  if (classes.some(c => c.includes("fraktion") || c.includes("gruppe"))) return true;
+  const name = String(org.name || org.shortName || "").toLowerCase();
+  return name.includes("fraktion") || name.includes("gruppe");
+}
+
+function getOparlOrgId(value) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value.id || "";
+}
+
 async function fetchOparlPaged(url) {
   let next = url;
   const all = [];
@@ -1546,16 +1588,10 @@ async function loadBvvFromOparl(systemUrl, bezirkName) {
 
   const orgById = new Map(orgs.map(org => [org.id, org]));
   const bvvOrgIds = new Set(
-    orgs.filter(org => {
-      const cls = String(org.classification || "").toLowerCase();
-      return cls === "bvv" || cls.includes("bezirksverordnetenversammlung");
-    }).map(org => org.id)
+    orgs.filter(orgLooksLikeBvv).map(org => org.id)
   );
   const factionOrgIds = new Set(
-    orgs.filter(org => {
-      const cls = String(org.classification || "").toLowerCase();
-      return cls.includes("fraktion") || cls.includes("gruppe");
-    }).map(org => org.id)
+    orgs.filter(orgLooksLikeFaction).map(org => org.id)
   );
 
   const entries = [];
@@ -1563,11 +1599,17 @@ async function loadBvvFromOparl(systemUrl, bezirkName) {
 
   persons.forEach(person => {
     const memberships = Array.isArray(person.membership) ? person.membership : [];
-    const activeBvv = memberships.filter(m => bvvOrgIds.has(m.organization) && isActiveMembership(m, today));
+    const activeBvv = memberships.filter(m => {
+      const orgId = getOparlOrgId(m.organization);
+      return (bvvOrgIds.has(orgId) || roleLooksLikeBvv(m.role)) && isActiveMembership(m, today);
+    });
     if (!activeBvv.length) return;
     const bvvMembership = pickLatestMembership(activeBvv);
 
-    const activeFaction = memberships.filter(m => factionOrgIds.has(m.organization) && isActiveMembership(m, today));
+    const activeFaction = memberships.filter(m => {
+      const orgId = getOparlOrgId(m.organization);
+      return factionOrgIds.has(orgId) && isActiveMembership(m, today);
+    });
     const factionMembership = pickLatestMembership(activeFaction);
     const factionOrg = factionMembership ? orgById.get(factionMembership.organization) : null;
     let partyLabel = factionOrg ? (factionOrg.shortName || factionOrg.name || "") : "";
