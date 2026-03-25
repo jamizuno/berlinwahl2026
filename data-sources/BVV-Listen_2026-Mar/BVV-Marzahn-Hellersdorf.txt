@@ -9,11 +9,11 @@ SPD
 27.04.2023
 Martina Polizzi	
 Beisitzerin
-Linksfraktion
+Linke
 27.04.2023
 Ina Seidel-Grothe	
 Beisitzerin
-fraktl. BV
+fraktionslos
 04.11.2021
 Wolfhart Ulbrich	
 Beisitzer
@@ -25,7 +25,7 @@ SPD
 04.11.2021
 Sarah Bigall	
 Bezirksverordnete
-Linksfraktion
+Linke
 27.10.2011
 Daniel Birkefeld	
 Bezirksverordneter
@@ -37,7 +37,7 @@ CDU
 16.03.2023
 Zoe Dahler	
 Bezirksverordnete
-Linksfraktion
+Linke
 01.01.2024
 Jessica Deutscher	
 Bezirksverordnete
@@ -101,7 +101,7 @@ SPD
 04.11.2021
 Steven Kelz	
 Bezirksverordneter
-Linksfraktion
+Linke
 04.11.2021
 Rolf Keßler	
 Bezirksverordneter
@@ -137,7 +137,7 @@ CDU
 27.10.2016
 Paul Lehmann	
 Bezirksverordneter
-Linksfraktion
+Linke
 01.01.2025
 Christian Linke	
 Bezirksverordneter
@@ -169,7 +169,7 @@ CDU
 16.03.2023
 Steffen Ostehr	
 Bezirksverordneter
-Linksfraktion
+Linke
 27.04.2023
 Martina Patzwall	
 Bezirksverordnete
@@ -193,15 +193,15 @@ CDU
 18.11.2011
 Norbert Seichter	
 Bezirksverordneter
-Linksfraktion
+Linke
 02.12.2025
 Laurenz Terl	
 Bezirksverordneter
-Linksfraktion
+Linke
 01.08.2023
 Björn Tielebein	
 Bezirksverordneter
-Linksfraktion
+Linke
 29.11.2001
 Nickel von Neumann	
 Bezirksverordneter
@@ -221,5 +221,5 @@ AfD
 04.11.2021
 Stefan Bley	
 BzStR SchulSportWeiKultFM
-BzStR SchulSportWeiKultFM
+CDU
 12.05.2023

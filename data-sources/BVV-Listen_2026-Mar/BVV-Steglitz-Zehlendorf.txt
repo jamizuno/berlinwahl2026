@@ -5,11 +5,11 @@ CDU
 26.10.2006
 Gülsah Bayar	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 Carsten Berger	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.12.2018
 Dr. Marela Bone-Winkel	
 Bezirksverordnete/r
@@ -33,7 +33,7 @@ Gruppe Die Linke
 04.11.2021
 Daniel Eliasson	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 16.06.2022
 Dr. Clemens Escher	
 Bezirksverordnete/r
@@ -85,7 +85,7 @@ CDU
 14.11.1995
 Ulrike Kipf	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 Bettina Kirsch	
 Bezirksverordnete/r
@@ -101,11 +101,11 @@ SPD
 29.11.2001
 Dr. Konstantinos Kosmas	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 08.12.2021
 Alexander Kräß	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 Martin Kromm	
 Bezirksverordnete/r
@@ -113,7 +113,7 @@ SPD
 04.11.2021
 Jonas Krone	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 08.12.2021
 Jens Kronhagel	
 Bezirksverordnete/r
@@ -133,7 +133,7 @@ SPD
 27.10.2016
 Johanna Martens	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 Michael Mc Laughlin	
 Bezirksverordnete/r
@@ -157,7 +157,7 @@ CDU
 16.03.2023
 Mariella Perna	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 Beate Roll	
 Bezirksverordnete/r
@@ -173,11 +173,11 @@ FDP
 27.10.2016
 Bernhard Steinhoff	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 01.10.2009
 Kulhimet Emre Tekemen	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 04.11.2021
 André Tinibel	
 Bezirksverordnete/r
@@ -189,7 +189,7 @@ SPD
 11.10.2018
 Birgit Vasiliades	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 09.01.2024
 Sebastian Voigt	
 Bezirksverordnete/r
@@ -197,7 +197,7 @@ CDU
 04.11.2021
 Marianne Wagner	
 Bezirksverordnete/r
-GRÜNE
+Grüne
 02.09.2022
 Karen Wirrwitz	
 Bezirksverordnete/r
@@ -205,7 +205,7 @@ CDU
 04.11.2021
 Felix Wolf	
 Bezirksverordnete/r
-Fraktionslos
+fraktionslos
 10.09.2019
 Leonard Wolters	
 Bezirksverordnete/r

@@ -571,7 +571,8 @@ const partyColors = {
   CDU: "#2b2f36", SPD: "#e06070", Grüne: "#5db87a",
   Linke: "#c090e8", AfD: "#6ab0f0", FDP: "#f0d050",
   fraktionslos: "#9ca3af", BSW: "#711E3B", Tierschutzpartei: "#005959",
-  "Die PARTEI": "#B10B14", "Die Grauen": "#999999", "Volt Berlin": "#562883"
+  "Die PARTEI": "#B10B14", "Die Grauen": "#999999", "Volt Berlin": "#562883",
+  Andere: "#6b7280"
 };
 
 const levelLabels = {
@@ -617,6 +618,40 @@ let activeContext = null;
   let btgCitywide = [];
 const bvvByBezirk = new Map();
 const bezirkByArkis = new Map();
+const oparlApiByBezirk = new Map();
+let oparlApiLoaded = false;
+const unknownOparlParties = new Set();
+
+const STANDARD_PARTIES = new Set([
+  "CDU",
+  "SPD",
+  "Grüne",
+  "Linke",
+  "AfD",
+  "FDP",
+  "fraktionslos",
+  "BSW",
+  "Tierschutzpartei",
+  "Die PARTEI",
+  "Die Grauen",
+  "Volt Berlin",
+  "Andere"
+]);
+
+const BEZIRK_FALLBACK = {
+  "01": "Mitte",
+  "02": "Pankow",
+  "03": "Reinickendorf",
+  "04": "Spandau",
+  "05": "Steglitz-Zehlendorf",
+  "06": "Charlottenburg-Wilmersdorf",
+  "07": "Tempelhof-Schöneberg",
+  "08": "Neukölln",
+  "09": "Friedrichshain-Kreuzberg",
+  "10": "Treptow-Köpenick",
+  "11": "Marzahn-Hellersdorf",
+  "12": "Lichtenberg"
+};
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
@@ -625,6 +660,7 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
   const euCsvUrl = "./data-sources/EU_2025_by_Landesliste_truth.csv";
   const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
+  const oparlApiListUrl = "./data-sources/BVV-Listen_2026-Mar/APIs/Opendata-Berlin-APIs.txt";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
   const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
@@ -1157,9 +1193,21 @@ function normalizeAwk(value) {
   return String(value).padStart(4, "0");
 }
 
-  function normalizeParty(value) {
-    const raw = String(value || "").trim();
-    const upper = raw.toUpperCase();
+function normalizeParty(value) {
+  const raw = String(value || "").trim();
+  const upper = raw.toUpperCase();
+  if (upper === "FRCDU") return "CDU";
+  if (upper === "FRSPD") return "SPD";
+  if (upper === "PARTEILOS") return "fraktionslos";
+  if (upper === "BVO FDP") return "FDP";
+  if (["B'90/G", "B´90/GRÜ", "B90", "B90GRÜNE", "BÜ 90/GR", "BÜGR", "BÜGRÜ", "G BÜGR", "GRÜ", "GRÜN"].includes(upper)) return "Grüne";
+  if (["DIELINKE", "LIN", "PDS", "LI.PDS", "WASG", "WASB", "WAS-B", "BVO WASG"].includes(upper)) return "Linke";
+  if (["PIR", "PIRATEN", "PIRATENPARTEI"].includes(upper)) return "Andere";
+  if (["MENSCH-UMWELT-TIERSCHUTZ", "TP", "TSP"].includes(upper)) return "Tierschutzpartei";
+  if (upper === "DIEPRT") return "Die PARTEI";
+  if (upper === "GRAUE") return "Die Grauen";
+  if (["EINZELVERORDNETE/R", "EINZELVERORDNETE", "EINZELVERORDNETER", "FBV", "FRAKTLOS", "FRLOSBV"].includes(upper)) return "fraktionslos";
+  if (["STATT", "SAG", "BÜSF", "NPD", "BVO NPD"].includes(upper)) return "Andere";
   if (upper.includes("BÜNDNIS 90") || upper === "GRÜNE" || upper === "GRUENE" || upper === "BÜ 90/GRÜNE" || upper === "BU 90/GRUENE") return "Grüne";
   if (upper === "DIE LINKE" || upper === "LINKE") return "Linke";
   if (upper === "CDU" || upper.includes("CHRISTLICH DEMOKRATISCHE UNION")) return "CDU";
@@ -1445,9 +1493,52 @@ async function fetchOparlPaged(url) {
   return all;
 }
 
-async function loadBvvMitteFromOparl() {
-  const orgUrl = "https://www.sitzungsdienst-mitte.de/oi/oparl/1.0/organizations.asp?body=1";
-  const personsUrl = "https://www.sitzungsdienst-mitte.de/oi/oparl/1.0/persons.asp?body=1";
+async function loadOparlApiMap() {
+  if (oparlApiLoaded) return oparlApiByBezirk;
+  return new Promise((resolve) => {
+    Papa.parse(oparlApiListUrl, {
+      download: true,
+      header: true,
+      delimiter: ",",
+      skipEmptyLines: true,
+      complete: (result) => {
+        (result.data || []).forEach(row => {
+          const bez = normalizeBez(row.BEZ || row.bez || row.Bez);
+          const api = (row["OPARL-API"] || row.OPARL || row.oparl || "").trim();
+          if (!api) return;
+          const nameFromDistrict = bez ? districtByNumber.get(bez)?.name : null;
+          const name = nameFromDistrict || BEZIRK_FALLBACK[bez] || "";
+          if (name) oparlApiByBezirk.set(name, api);
+        });
+        oparlApiLoaded = true;
+        resolve(oparlApiByBezirk);
+      },
+      error: (err) => {
+        console.warn("OPARL API list could not be loaded.", err);
+        oparlApiLoaded = true;
+        resolve(oparlApiByBezirk);
+      }
+    });
+  });
+}
+
+async function loadBvvFromOparl(systemUrl, bezirkName) {
+  const sysRes = await fetch(systemUrl);
+  if (!sysRes.ok) throw new Error(`OPARL system ${sysRes.status} for ${systemUrl}`);
+  const system = await sysRes.json();
+  const bodyUrl = system.body;
+  if (!bodyUrl) throw new Error(`OPARL system missing body URL for ${bezirkName}`);
+
+  const bodyRes = await fetch(bodyUrl);
+  if (!bodyRes.ok) throw new Error(`OPARL body ${bodyRes.status} for ${bezirkName}`);
+  const bodyPayload = await bodyRes.json();
+  const body = Array.isArray(bodyPayload.data) ? bodyPayload.data[0] : bodyPayload;
+  if (!body) throw new Error(`OPARL body not found for ${bezirkName}`);
+
+  const orgUrl = body.organization;
+  const personsUrl = body.person;
+  if (!orgUrl || !personsUrl) throw new Error(`OPARL body missing org/person URLs for ${bezirkName}`);
+
   const [orgs, persons] = await Promise.all([
     fetchOparlPaged(orgUrl),
     fetchOparlPaged(personsUrl)
@@ -1474,7 +1565,7 @@ async function loadBvvMitteFromOparl() {
     const factionMembership = pickLatestMembership(activeFaction);
     const factionOrg = factionMembership ? orgById.get(factionMembership.organization) : null;
     let partyLabel = factionOrg ? (factionOrg.shortName || factionOrg.name || "") : "";
-    if (factionOrg?.name && /Einzelverordnete/i.test(factionOrg.name)) {
+    if (factionOrg?.name && /Einzelverordnete|parteilos/i.test(factionOrg.name)) {
       partyLabel = "fraktionslos";
     } else {
       partyLabel = cleanOrgLabel(partyLabel || factionOrg?.name || "");
@@ -1484,9 +1575,13 @@ async function loadBvvMitteFromOparl() {
     if (!name) return;
     const role = (bvvMembership?.role || "BVV").trim();
     const since = (bvvMembership?.startDate || "").trim();
+    const normalizedParty = normalizeParty(partyLabel || "fraktionslos");
+    if (!STANDARD_PARTIES.has(normalizedParty)) {
+      unknownOparlParties.add(partyLabel || normalizedParty || "unbekannt");
+    }
     entries.push({
       name,
-      party: normalizeParty(partyLabel || "fraktionslos"),
+      party: normalizedParty,
       role,
       since
     });
@@ -1615,20 +1710,22 @@ function parseBvvFile(text) {
 }
 
 async function loadBvvLists() {
+  await loadOparlApiMap();
   const bezirke = Object.keys(bezirkeData);
   await Promise.all(bezirke.map(async (bezirk) => {
     const fileName = `BVV-${bezirk}.txt`;
     const fileUrl = encodeURI(`${bvvBasePath}/${fileName}`);
     try {
-      if (bezirk === "Mitte") {
+      const oparlUrl = oparlApiByBezirk.get(bezirk);
+      if (oparlUrl && bezirk !== "Spandau") {
         try {
-          const entries = await loadBvvMitteFromOparl();
+          const entries = await loadBvvFromOparl(oparlUrl, bezirk);
           if (entries && entries.length) {
             bvvByBezirk.set(bezirk, entries);
             return;
           }
         } catch (oparlErr) {
-          console.warn("OPARL BVV Mitte lookup failed, falling back to local file.", oparlErr);
+          console.warn(`OPARL BVV lookup failed for ${bezirk}, falling back to local file.`, oparlErr);
         }
       }
       const res = await fetch(fileUrl);
@@ -1639,6 +1736,10 @@ async function loadBvvLists() {
       console.warn(`BVV list not found for ${bezirk}: ${fileName}`, err);
     }
   }));
+
+  if (unknownOparlParties.size) {
+    console.warn("Unrecognized BVV party labels from OPARL:", Array.from(unknownOparlParties).sort());
+  }
 }
 
 function loadBezirkArkis() {
@@ -2040,7 +2141,8 @@ function setLevel(level) {
 function updateLegend() {
   const parties = [
     "CDU", "SPD", "Grüne", "Linke", "AfD", "FDP",
-    "fraktionslos", "BSW", "Tierschutzpartei", "Die PARTEI", "Die Grauen", "Volt Berlin"
+    "fraktionslos", "BSW", "Tierschutzpartei", "Die PARTEI", "Die Grauen", "Volt Berlin",
+    "Andere"
   ];
   const legend = document.getElementById('legend');
   legend.innerHTML = parties.map(p => `

@@ -1,0 +1,16 @@
+politician_id              -> Person.id
+email_address              -> Person.email
+constituency_office_address-> Person.location / Person.locationObject
+mandate_id                 -> Membership.id
+mandate_type               -> Membership.role
+party_short_name           -> Organization.shortName
+committees                 -> Membership.organization -> Organization.classification="Ausschuss"
+spokesperson_role          -> Membership.role
+
+
+Pure OParl-native fields:
+	politician_id, mandate_id, mandate_type, email_address
+OParl-derived fields:
+	party_short_name, committees, spokesperson_role
+Externally enriched fields:
+	AWK, Wahlkreis, MdA_2025, all sm_*, sm_rss, sm_newsletter

@@ -1,13 +1,13 @@
 Name	Art der Mitarbeit	Herkunft
 Astrid Bialluch-Liu	
 Bezirksverordnete
-GRÜNE
+Grüne
 Stefan Böltes	
 Vorsteher der BVV
 SPD
 Bertram von Boxberg	
 Bezirksverordneter
-GRÜNE
+Grüne
 Dr. Carsten Buchholz	
 Bezirksverordneter
 CDU
@@ -22,10 +22,10 @@ Bezirksverordnete
 SPD
 Simone Drews	
 Bezirksverordnete
-GRÜNE
+Grüne
 Marius Feldkamp	
 Bezirksverordneter
-GRÜNE
+Grüne
 Oliver Fey	
 Bezirksverordneter
 SPD
@@ -40,7 +40,7 @@ Bezirksverordneter
 SPD
 Harald Gindra	
 Bezirksverordneter
-DIE LINKE
+Linke
 Lisa-Cathrin Glowatz	
 Bezirksverordnete
 CDU
@@ -55,19 +55,19 @@ Bezirksverordnete
 SPD
 Janna Hennig	
 Bezirksverordnete
-GRÜNE
+Grüne
 Annette Hertlein	
 Bezirksverordnete
 SPD
 Ingeborg Hofer-Hutter	
 Bezirksverordnete
-GRÜNE
+Grüne
 Marijke Höppner	
 Bezirksverordnete
 SPD
 Torben Elias Joswich	
 Bezirksverordneter
-GRÜNE
+Grüne
 Hartmut Kämper	
 Bezirksverordneter
 FDP
@@ -85,19 +85,19 @@ Bezirksverordneter
 CDU
 Ralf Kühne	
 Bezirksverordneter
-GRÜNE
+Grüne
 Patrick Liesener	
 Bezirksverordneter
 CDU
 Ronja Losert	
 Bezirksverordnete
-GRÜNE
+Grüne
 Katharina Marg	
 Bezirksverordnete
-DIE LINKE
+Linke
 Dennis Mateškovic	
 Bezirksverordneter
-GRÜNE
+Grüne
 Denis McGee	
 Bezirksverordneter
 CDU
@@ -109,7 +109,7 @@ Bezirksverordneter
 CDU
 Dr. Christopher Peter	
 Bezirksverordneter
-GRÜNE
+Grüne
 Guido Pschollkowski	
 Bezirksverordneter
 CDU
@@ -130,7 +130,7 @@ Bezirksverordneter
 CDU
 Fabian Schlecht	
 Bezirksverordneter
-GRÜNE
+Grüne
 Britta Schmidt-Krüger	
 Bezirksverordnete
 CDU
@@ -157,10 +157,10 @@ Bezirksverordnete
 SPD
 Elisabeth Wissel	
 Bezirksverordnete
-DIE LINKE
+Linke
 Annabelle Wolfsturm	
 Bezirksverordnete
-GRÜNE
+Grüne
 Martina Zander-Rade	
 stellv. Vorsteherin der BVV
-GRÜNE
+Grüne

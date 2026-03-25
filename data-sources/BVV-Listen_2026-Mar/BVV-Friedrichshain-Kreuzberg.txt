@@ -17,23 +17,23 @@ CDU
 27.10.2016
 Karolin Behlert	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 04.11.2021
 Maria Bischof	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 03.11.2025
 Kerima Bouali	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 04.11.2021
 Anne Burckhardt-Schön	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 01.05.2024
 Murat Cinar	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 26.02.2019
 Riza Cörtlen	
 Bezirksverordnete/r
@@ -41,15 +41,15 @@ Die PARTEI
 27.10.2016
 Vito Dabisch	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Elke Dangeleit	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 16.12.2016
 Torben Denecke	
 Bezirksverordnete/r
-Die PARTEI
+Die Partei
 27.10.2016
 Marita Fabeck	
 Bezirksverordnete/r
@@ -57,7 +57,7 @@ CDU
 16.03.2023
 Adalet Firat	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 11.11.2024
 Florian Fleischmann	
 Bezirksverordnete/r
@@ -69,15 +69,15 @@ SPD
 14.12.2011
 Kolja Fuchslocher	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 05.09.2019
 Karl-Heinz Garcia Bergt	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Taina Gärtner	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 27.10.2006
 Thomas Giebel	
 Bezirksverordnete/r
@@ -85,15 +85,15 @@ SPD
 04.11.2021
 Gabriele Gottwald	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 04.11.2021
 Maria Haberer	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Werner Heck	
 Vorsteher
-B'90/Die Grünen
+Grüne
 04.11.2021
 Dr. Marlene Heihsel	
 Bezirksverordnete/r
@@ -105,7 +105,7 @@ FDP
 27.10.2016
 Magnus Heise	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 16.02.2021
 Tim Hirselandt	
 Bezirksverordnete/r
@@ -125,19 +125,19 @@ SPD
 04.11.2021
 Katja Jösting	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 27.10.2011
 Ulrike Juda	
 stellv. Vorsteherin
-DIE LINKE
+Linke
 25.06.2025
 Kiymet Kilic	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Olja Koterewa	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Anna Lang	
 Bezirksverordnete/r
@@ -149,7 +149,7 @@ AfD
 04.04.2025
 Karl-Heinz Ludewig	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 10.11.2025
 Hannah Sophie Lupper	
 Bezirksverordnete/r
@@ -165,11 +165,11 @@ SPD
 01.12.2010
 René Pérez Domínguez	
 Bezirksverordnete/r
-DIE LINKE
+Linke
 27.10.2016
 Dr. Dominik Pross	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 06.12.2021
 Ulrike von Rekowsky	
 Bezirksverordnete/r
@@ -177,7 +177,7 @@ CDU
 16.03.2023
 Julie Richier	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 05.06.2023
 Dr. Jörn Rieken	
 Bezirksverordnete/r
@@ -185,23 +185,23 @@ fraktionslos
 24.06.2025
 Silvia Rothmund	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Jutta Schmidt-Stanojevic	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 23.03.2005
 Claudia Schulte	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 27.10.2016
 Christian Specht	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 26.11.2025
 Pascal Striebel	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 27.10.2016
 Frank Vollmert	
 Bezirksverordnete/r
@@ -209,11 +209,11 @@ SPD
 15.12.2016
 Murat Yücel	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 04.11.2021
 Alina Zimmermann	
 Bezirksverordnete/r
-B'90/Die Grünen
+Grüne
 08.09.2025
 Aleksandar Zugic	
 Bezirksverordnete/r

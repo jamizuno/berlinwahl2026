@@ -9,7 +9,7 @@ SPD
 04.11.2021
 Can Diego Aru	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 04.11.2021
 Frank Behnke	
 Bezirksverordneter
@@ -37,11 +37,11 @@ Linke
 27.10.2016
 Jan Drewitz	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 04.11.2021
 Carola Ehrlich-Cypra	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 02.01.2025
 Dr. Thomas Enge	
 Bezirksverordneter
@@ -49,19 +49,19 @@ FDP
 04.11.2021
 Patrizia Flores Rivera	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 04.11.2021
 Silke Gänger	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 04.11.2021
 Karsten Dirk Gloger	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 18.01.2018
 Christoph Göring	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 01.09.2023
 Sascha Groß	
 Bezirksverordneter
@@ -81,11 +81,11 @@ SPD
 04.11.2021
 Claudia Jung	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 02.02.2026
 Dr. Oliver Jütting	
 Bezirksverordnetenvorsteher
-Bü 90/Grüne
+Grüne
 04.11.2021
 Wolfram Kempe	
 Bezirksverordneter
@@ -97,7 +97,7 @@ CDU
 12.05.2023
 Katharina Koufen	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 04.11.2021
 Daniel Krüger	
 Bezirksverordneter
@@ -117,7 +117,7 @@ SPD
 24.04.2018
 Axel Lüssow	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 04.11.2021
 Katrin Maillefert	
 Bezirksverordnete
@@ -132,7 +132,7 @@ Bezirksverordneter
 AfD
 04.11.2021
 David Paul	
-stellvertretender Bezirksverordnetenvorsteher
+stellv. Bezirksverordnetenvorsteher
 CDU
 16.03.2023
 Ulrike Rosensky	
@@ -149,11 +149,11 @@ Linke
 27.10.2016
 Paul Schlüter	
 Bezirksverordneter
-Bü 90/Grüne
+Grüne
 24.01.2025
 Heike Schmidt	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 04.11.2021
 Roland Schröder	
 Bezirksverordneter
@@ -201,7 +201,7 @@ SPD
 02.11.2011
 Almuth Tharan	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 29.11.2001
 Prof. Dr. Antje Tölle	
 Bezirksverordnete
@@ -213,7 +213,7 @@ CDU
 16.03.2023
 Hannah-Caroline Wettig	
 Bezirksverordnete
-Bü 90/Grüne
+Grüne
 17.11.2021
 Stephanie Wölk	
 Bezirksverordnete
