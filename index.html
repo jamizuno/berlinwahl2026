@@ -306,10 +306,9 @@
   </div>
   <div class="level-tabs">
     <button class="tab" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
-    <button class="tab" onclick="setLevel('abgeordnetenhaus')">Abgeordnetenhaus</button>
+    <button class="tab active" onclick="setLevel('abgeordnetenhaus')">Abgeordnetenhaus</button>
     <button class="tab" onclick="setLevel('bundestag')">Bundestag</button>
     <button class="tab" onclick="setLevel('eu')">EU-Parlament</button>
-    <button class="tab active" onclick="setLevel('alle')">Alle</button>
   </div>
 </header>
 
@@ -566,19 +565,7 @@ const bezirkeData = {
   }
 };
 
-const euCitywide = (() => {
-  const seen = new Set();
-  const list = [];
-  Object.values(bezirkeData).forEach(entry => {
-    (entry.eu || []).forEach(rep => {
-      const key = `${rep.name}|${rep.party}|${rep.role}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      list.push(rep);
-    });
-  });
-  return list;
-})();
+let euCitywide = [];
 
 const partyColors = {
   CDU: "#2b2f36", SPD: "#e06070", Grüne: "#5db87a",
@@ -591,36 +578,24 @@ const levelLabels = {
   bezirk: "Bezirk (BVV)",
   abgeordnetenhaus: "Abgeordnetenhaus Berlin",
   bundestag: "Bundestag",
-  eu: "EU-Parlament",
-  alle: "Alle Ebenen"
+  eu: "EU-Parlament"
 };
 
 const mapScopeByLevel = {
   bezirk: ["Kieze (LOR)", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
   abgeordnetenhaus: ["Abgeordnetenhaus WK", "Ortsteile", "Bezirke"],
   bundestag: ["Bundestag WK", "Berlin (Land)"],
-  eu: ["Berlin (Land)"],
-  alle: [
-    "Berlin (Land)",
-    "Bundestag WK",
-    "Abgeordnetenhaus WK",
-    "Bezirke",
-    "Ortsteile",
-    "Postleitzahlen",
-    "Einschulbereiche",
-    "Kieze (LOR)"
-  ]
+  eu: ["Berlin (Land)"]
 };
 
 const mapSelectionByLevelIds = {
-  bezirk: ["kieze", "ortsteile", "bezirke"],
+  bezirk: ["bezirke"],
   abgeordnetenhaus: ["agh", "bezirke"],
   bundestag: ["btg", "eu"],
-  eu: ["eu"],
-  alle: ["eu", "bezirke", "kieze"]
+  eu: ["eu"]
 };
 
-let currentLevel = "alle";
+let currentLevel = "abgeordnetenhaus";
 let geoLayer = null;
 let selectedLayer = null;
 let selectedOverlayLayer = null;
@@ -648,6 +623,7 @@ const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
   const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
+  const euCsvUrl = "./data-sources/EU_2025_by_Landesliste_truth.csv";
   const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
@@ -707,7 +683,7 @@ const wfsLayers = [
       preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
       pane: "pane-bezirke",
       zIndex: 430,
-      style: { color: "#7dd492", weight: 2.4, fillOpacity: 0 },
+      style: { color: "#5b3a88", weight: 2.4, fillOpacity: 0 },
       tooltipProps: ["name", "bezirk", "bezeichnung"],
       defaultOn: true
     },
@@ -718,7 +694,7 @@ const wfsLayers = [
       preferredTypeNames: ["ms:Wahlkreise"],
       pane: "pane-btg",
       zIndex: 420,
-      style: { color: "#7a1f2b", weight: 1.6, fillOpacity: 0 },
+      style: { color: "#7a1f2b", weight: 1.6, fillOpacity: 0, highlightColor: "#9b3a44" },
       tooltipProps: ["WKR_NAME", "WKR_NR", "WK_NAME", "WK_NR", "Wahlkreis", "Wahlkreisname", "name", "NAME"]
     },
     {
@@ -896,11 +872,13 @@ function lightenColor(hex, amount = 0.25) {
 function getHighlightStyle(baseStyle) {
   const base = normalizeOverlayStyle(baseStyle);
   const highlight = { ...base };
-  highlight.weight = Math.max(base.weight + 2.6, base.weight * 1.9);
-  highlight.color = lightenColor(base.color, 0.45);
-  const fillBase = base.fillColor || base.color;
-  highlight.fillColor = lightenColor(fillBase, 0.35);
-  highlight.fillOpacity = 0.44;
+  const customWeight = Number.isFinite(baseStyle?.highlightWeight) ? baseStyle.highlightWeight : null;
+  const customFillOpacity = Number.isFinite(baseStyle?.highlightFillOpacity) ? baseStyle.highlightFillOpacity : null;
+  highlight.weight = customWeight ?? Math.max(base.weight + 2.6, base.weight * 1.9);
+  highlight.color = baseStyle?.highlightColor || lightenColor(base.color, 0.45);
+  const fillBase = baseStyle?.highlightFillColor || base.fillColor || base.color;
+  highlight.fillColor = baseStyle?.highlightFillColor ? fillBase : lightenColor(fillBase, 0.35);
+  highlight.fillOpacity = customFillOpacity ?? 0.44;
   return highlight;
 }
 
@@ -914,6 +892,15 @@ function clearOverlaySelection() {
     map.removeLayer(selectionHighlightLayer);
     selectionHighlightLayer = null;
   }
+}
+
+function resetMapSelection() {
+  clearOverlaySelection();
+  if (selectedLayer && geoLayer) {
+    geoLayer.resetStyle(selectedLayer);
+  }
+  selectedLayer = null;
+  selectedFeature = null;
 }
 
 function showHighlightLayer(feature, style) {
@@ -970,9 +957,7 @@ function buildOverlayLayer(data, layerConfig, baseStyle) {
           });
         }
         lyr.on("click", () => {
-          if (id !== "eu") {
-            selectOverlayLayer(lyr, baseStyle, feature);
-          }
+          selectOverlayLayer(lyr, baseStyle, feature);
           handleLayerClick(id, feature);
         });
       }
@@ -1398,16 +1383,117 @@ function buildFullName(row) {
   return parts.join(" ");
 }
 
-function buildBtgRole(entry) {
-  if (entry?.role) return entry.role;
+function buildBtgMandateLine(entry) {
   const wkr = entry?.wkr ? `WK ${entry.wkr}` : "";
-  const mappedName = entry?.wkr ? btgTooltipByBwk.get(entry.wkr)?.name : "";
-  const wahlkreis = mappedName || entry?.wahlkreis || "";
   const base = entry?.art === "Direkt" ? "Direktmandat" : "Listenmandat";
-  let role = base;
-  if (wkr) role += ` ${wkr}`;
-  if (wahlkreis) role += ` – ${wahlkreis}`;
-  return role;
+  return wkr ? `${base} · ${wkr}` : base;
+}
+
+function parseIsoDate(value) {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    return new Date(`${raw}T00:00:00`);
+  }
+  const dt = new Date(raw);
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+
+function isActiveMembership(membership, today = new Date()) {
+  if (!membership) return false;
+  const start = parseIsoDate(membership.startDate);
+  const end = parseIsoDate(membership.endDate);
+  if (start && start > today) return false;
+  if (end && end < today) return false;
+  return true;
+}
+
+function pickLatestMembership(list = []) {
+  if (!list.length) return null;
+  return [...list].sort((a, b) => {
+    const aDate = parseIsoDate(a.startDate);
+    const bDate = parseIsoDate(b.startDate);
+    if (aDate && bDate) return bDate - aDate;
+    if (aDate) return -1;
+    if (bDate) return 1;
+    return 0;
+  })[0];
+}
+
+function cleanOrgLabel(label) {
+  return String(label || "")
+    .replace(/^Fraktion\s+der\s+/i, "")
+    .replace(/^Fraktion\s+/i, "")
+    .replace(/^Gruppe\s+der\s+/i, "")
+    .replace(/^Gruppe\s+/i, "")
+    .trim();
+}
+
+async function fetchOparlPaged(url) {
+  let next = url;
+  const all = [];
+  while (next) {
+    const res = await fetch(next);
+    if (!res.ok) throw new Error(`OPARL ${res.status} for ${next}`);
+    const payload = await res.json();
+    if (Array.isArray(payload.data)) {
+      all.push(...payload.data);
+    }
+    next = payload.links?.next || null;
+  }
+  return all;
+}
+
+async function loadBvvMitteFromOparl() {
+  const orgUrl = "https://www.sitzungsdienst-mitte.de/oi/oparl/1.0/organizations.asp?body=1";
+  const personsUrl = "https://www.sitzungsdienst-mitte.de/oi/oparl/1.0/persons.asp?body=1";
+  const [orgs, persons] = await Promise.all([
+    fetchOparlPaged(orgUrl),
+    fetchOparlPaged(personsUrl)
+  ]);
+
+  const orgById = new Map(orgs.map(org => [org.id, org]));
+  const bvvOrgIds = new Set(
+    orgs.filter(org => String(org.classification || "").toLowerCase() === "bvv").map(org => org.id)
+  );
+  const factionOrgIds = new Set(
+    orgs.filter(org => String(org.classification || "").toLowerCase() === "fraktion").map(org => org.id)
+  );
+
+  const entries = [];
+  const today = new Date();
+
+  persons.forEach(person => {
+    const memberships = Array.isArray(person.membership) ? person.membership : [];
+    const activeBvv = memberships.filter(m => bvvOrgIds.has(m.organization) && isActiveMembership(m, today));
+    if (!activeBvv.length) return;
+    const bvvMembership = pickLatestMembership(activeBvv);
+
+    const activeFaction = memberships.filter(m => factionOrgIds.has(m.organization) && isActiveMembership(m, today));
+    const factionMembership = pickLatestMembership(activeFaction);
+    const factionOrg = factionMembership ? orgById.get(factionMembership.organization) : null;
+    let partyLabel = factionOrg ? (factionOrg.shortName || factionOrg.name || "") : "";
+    if (factionOrg?.name && /Einzelverordnete/i.test(factionOrg.name)) {
+      partyLabel = "fraktionslos";
+    } else {
+      partyLabel = cleanOrgLabel(partyLabel || factionOrg?.name || "");
+    }
+
+    const name = (person.name || [person.givenName, person.familyName].filter(Boolean).join(" ")).trim();
+    if (!name) return;
+    const role = (bvvMembership?.role || "BVV").trim();
+    const since = (bvvMembership?.startDate || "").trim();
+    entries.push({
+      name,
+      party: normalizeParty(partyLabel || "fraktionslos"),
+      role,
+      since
+    });
+  });
+
+  entries.sort((a, b) => a.name.localeCompare(b.name, "de"));
+  return entries;
 }
 
 function pushUnique(list, entry) {
@@ -1446,6 +1532,36 @@ function pushUnique(list, entry) {
         error: (err) => {
           console.warn("BTG CSV could not be loaded. Skipping Bundestag list.", err);
           btgCitywide = [];
+          resolve();
+        }
+      });
+    });
+  }
+
+  function loadEuCSV() {
+    return new Promise((resolve) => {
+      Papa.parse(euCsvUrl, {
+        download: true,
+        header: true,
+        delimiter: ";",
+        skipEmptyLines: true,
+        complete: (result) => {
+          const rows = result.data || [];
+          const list = [];
+          rows.forEach(row => {
+            const name = (row.MdA_2025 || row.MdB_2025 || row.full_name || row.name || "").trim();
+            if (!name) return;
+            const party = normalizeParty(row.party_short_name || row.party_name || row.Party || row.Partei || "");
+            const listLabel = (row.Wahlkreis || row.electoral_list || "").trim();
+            const role = listLabel ? `EU-Parlament (${listLabel})` : "EU-Parlament";
+            list.push({ name, party, role, art: "Liste" });
+          });
+          euCitywide = list;
+          resolve();
+        },
+        error: (err) => {
+          console.warn("EU CSV could not be loaded. Skipping EU list.", err);
+          euCitywide = [];
           resolve();
         }
       });
@@ -1504,6 +1620,17 @@ async function loadBvvLists() {
     const fileName = `BVV-${bezirk}.txt`;
     const fileUrl = encodeURI(`${bvvBasePath}/${fileName}`);
     try {
+      if (bezirk === "Mitte") {
+        try {
+          const entries = await loadBvvMitteFromOparl();
+          if (entries && entries.length) {
+            bvvByBezirk.set(bezirk, entries);
+            return;
+          }
+        } catch (oparlErr) {
+          console.warn("OPARL BVV Mitte lookup failed, falling back to local file.", oparlErr);
+        }
+      }
       const res = await fetch(fileUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const text = await res.text();
@@ -1624,7 +1751,8 @@ function styleFeature(feature) {
 
 function highlightFeature(e) {
   const layer = e.target;
-  layer.setStyle({ fillOpacity: 0.75, weight: 3, color: "#c8a96e" });
+  const border = layer.options?.fillColor || layer.options?.color || "#c8a96e";
+  layer.setStyle({ fillOpacity: 0.5, weight: 3, color: border });
   layer.bringToFront();
 }
 
@@ -1645,9 +1773,9 @@ function onFeatureClick(e) {
   const base = styleFeature(selectedFeature);
   const highlightStyle = {
     ...base,
-    color: "#c8a96e",
+    color: base.fillColor || base.color,
     weight: 3,
-    fillOpacity: 0.8
+    fillOpacity: 0.5
   };
   selectedLayer.setStyle(base);
   showHighlightLayer(selectedFeature, highlightStyle);
@@ -1669,7 +1797,9 @@ function initGeoLayer() {
     onEachFeature: (feature, layer) => {
       layer.on({ click: onFeatureClick });
       layer.bindTooltip(feature.properties.name, {
-        permanent: false, direction: "center",
+        permanent: false,
+        direction: "top",
+        offset: [0, -12],
         className: "district-tooltip",
         opacity: 0.9
       });
@@ -1710,6 +1840,16 @@ function buildContextFromFeature(layerId, feature) {
   if (layerId === "btg") {
     context.btgWkr = findWkrValue(feature.properties);
     context.btgName = findWkrName(feature.properties);
+    const mapping = context.btgWkr ? btgTooltipByBwk.get(context.btgWkr) : null;
+    const mappedBez = mapping?.bez || normalizeBez(feature.properties?.BEZ || feature.properties?.Bez || feature.properties?.bez);
+    if (mappedBez) {
+      context.bez = mappedBez;
+      context.bezirkName = districtByNumber.get(mappedBez)?.name || context.bezirkName;
+    }
+    if (!context.bezirkName) {
+      const fallbackBez = getBezirkNameFromBtgName(mapping?.name || context.btgName);
+      if (fallbackBez) context.bezirkName = fallbackBez;
+    }
     return context;
   }
 
@@ -1849,14 +1989,15 @@ function renderPanel(context) {
       if (entries.length > 0) {
         entries.forEach(entry => {
           const isList = entry.art !== "Direkt";
-          const role = buildBtgRole(entry);
+          const mandateLine = buildBtgMandateLine(entry);
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
-            <div class="rep-role">${role}</div>
+            <div class="rep-role">Bundestagsabgeordnete/r</div>
+            <div class="rep-role">${mandateLine}</div>
           </div>`;
         });
       }
@@ -1886,6 +2027,7 @@ function renderPanel(context) {
 
 function setLevel(level) {
   currentLevel = level;
+  resetMapSelection();
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
   initGeoLayer();
@@ -1914,6 +2056,7 @@ async function initData() {
         loadDistrictCSV(),
         loadAghCSV(),
         loadBtgCSV(),
+        loadEuCSV(),
         loadBtgTooltipCSV(),
         loadBvvLists(),
         loadBezirkArkis()
