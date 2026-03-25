@@ -647,7 +647,7 @@ const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
-  const btgCsvUrl = "./Bundestagswahl 2025 - Kandidaten/btw25_gewaehlte_utf8/btw25_gewaehlte_utf8.csv";
+  const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
   const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
@@ -1398,6 +1398,18 @@ function buildFullName(row) {
   return parts.join(" ");
 }
 
+function buildBtgRole(entry) {
+  if (entry?.role) return entry.role;
+  const wkr = entry?.wkr ? `WK ${entry.wkr}` : "";
+  const mappedName = entry?.wkr ? btgTooltipByBwk.get(entry.wkr)?.name : "";
+  const wahlkreis = mappedName || entry?.wahlkreis || "";
+  const base = entry?.art === "Direkt" ? "Direktmandat" : "Listenmandat";
+  let role = base;
+  if (wkr) role += ` ${wkr}`;
+  if (wahlkreis) role += ` – ${wahlkreis}`;
+  return role;
+}
+
 function pushUnique(list, entry) {
   const key = `${entry.name}|${entry.party}|${entry.role || entry.wahlkreis || entry.awk || entry.art || ""}`;
   if (!list._keys) list._keys = new Set();
@@ -1410,57 +1422,32 @@ function pushUnique(list, entry) {
     return new Promise((resolve) => {
       Papa.parse(btgCsvUrl, {
         download: true,
-      header: false,
-      delimiter: ";",
-      skipEmptyLines: true,
-      complete: (result) => {
-        const rows = result.data || [];
-        const headerIndex = rows.findIndex(r => (r && r[0]) === "Wahlart");
-        if (headerIndex === -1) {
-          console.warn("BTG CSV header not found. Skipping Bundestag list.");
-          return resolve();
+        header: true,
+        delimiter: ";",
+        skipEmptyLines: true,
+        complete: (result) => {
+          const rows = result.data || [];
+          rows.forEach(row => {
+            const name = (row.MdA_2025 || row.MdB_2025 || row.full_name || row.name || "").trim();
+            if (!name) return;
+            const party = normalizeParty(row.party_short_name || row.party_name || row.Party || row.Partei || "");
+            const wkr = normalizeWkr(row.AWK || row.WK || row.WKR || row.Wahlkreisnummer || row.Wahlkreis || "");
+            if (!wkr) return;
+            const wahlkreis = (row.Wahlkreis || row.wahlkreis || "").trim();
+            const mandateType = String(row.mandate_type || row.mandate_won || "").toLowerCase();
+            const isDirect = mandateType === "constituency" || mandateType === "direct" || mandateType === "direct_mandate" || mandateType === "direkt";
+            const entry = { name, party, art: isDirect ? "Direkt" : "Liste", wkr, wahlkreis, mandateType };
+            if (!btgByWkr.has(wkr)) btgByWkr.set(wkr, []);
+            pushUnique(btgByWkr.get(wkr), entry);
+          });
+          btgCitywide = [];
+          resolve();
+        },
+        error: (err) => {
+          console.warn("BTG CSV could not be loaded. Skipping Bundestag list.", err);
+          btgCitywide = [];
+          resolve();
         }
-        const headers = rows[headerIndex];
-        const citywide = [];
-        for (let i = headerIndex + 1; i < rows.length; i++) {
-          const rowArr = rows[i];
-          if (!rowArr || rowArr.length === 0) continue;
-          const row = {};
-          headers.forEach((h, idx) => { row[h] = rowArr[idx]; });
-          if ((row.Wahlart || "").trim() !== "BT") continue;
-          if ((row.GebietLandAbk || "").trim() !== "BE") continue;
-
-          const name = buildFullName(row);
-          if (!name) continue;
-          const party = normalizeParty(row.Gruppenname || row.GruppennameLang);
-          const gebietsart = (row.Gebietsart || "").trim();
-          const gebietsnummer = normalizeWkr(row.Gebietsnummer);
-          const gebietsname = (row.Gebietsname || "").trim();
-          const listenplatz = (row.Listenplatz || "").trim();
-
-          if (gebietsart === "Wahlkreis" && gebietsnummer) {
-            const role = gebietsname
-              ? `Direktmandat WK ${gebietsnummer} – ${gebietsname}`
-              : `Direktmandat WK ${gebietsnummer}`;
-            const entry = { name, party, role, art: "Direkt", wkr: gebietsnummer };
-            if (!btgByWkr.has(gebietsnummer)) btgByWkr.set(gebietsnummer, []);
-            pushUnique(btgByWkr.get(gebietsnummer), entry);
-          } else if (gebietsart === "Land") {
-            const role = listenplatz
-              ? `Landesliste Berlin (Listenplatz ${listenplatz})`
-              : "Landesliste Berlin";
-            const entry = { name, party, role, art: "Liste" };
-            pushUnique(citywide, entry);
-          }
-        }
-        btgCitywide = citywide;
-        resolve();
-      },
-      error: (err) => {
-        console.warn("BTG CSV could not be loaded. Skipping Bundestag list.", err);
-        btgCitywide = [];
-        resolve();
-      }
       });
     });
   }
@@ -1862,13 +1849,14 @@ function renderPanel(context) {
       if (entries.length > 0) {
         entries.forEach(entry => {
           const isList = entry.art !== "Direkt";
+          const role = buildBtgRole(entry);
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
-            <div class="rep-role">${entry.role}</div>
+            <div class="rep-role">${role}</div>
           </div>`;
         });
       }
