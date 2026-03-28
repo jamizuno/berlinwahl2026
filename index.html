@@ -618,6 +618,94 @@ const bezirkByArkis = new Map();
 const oparlApiByBezirk = new Map();
 let oparlApiLoaded = false;
 const unknownOparlParties = new Set();
+const unknownOparlRoles = new Set();
+
+const BVV_ROLE_DICTIONARY = {
+  mitglied_bvv: {
+    label: "Bezirksverordnete/r",
+    organization_classifications_allowed: ["parlament"],
+    source_labels_common: ["Mitglied", "Bezirksverordnete", "Bezirksverordneter", "Bezirksverordnete/r", "BV", "BVV"]
+  },
+  vorsteher_bvv: {
+    label: "BVV-Vorsitz",
+    organization_classifications_allowed: ["parlament"],
+    source_labels_common: ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV", "BV-Vorsteher/in", "BV-Vorsteherin"]
+  },
+  stv_vorsteher_bvv: {
+    label: "Stv. BVV-Vorsitz",
+    organization_classifications_allowed: ["parlament"],
+    source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin"]
+  },
+  fraktionsvorsitz: {
+    label: "Fraktionsvorsitz",
+    organization_classifications_allowed: ["fraktion"],
+    source_labels_common: ["Vorsitz", "Fraktionsvorsitz", "Fraktionsvorsitzende", "Fraktionsvorsitzender", "Fraktionsvorsitzende/r", "Fraktionsvorsitzende Doppelspitze", "Fraktionsvorsitzender Doppelspitze"]
+  },
+  stv_fraktionsvorsitz: {
+    label: "Stv. Fraktionsvorsitz",
+    organization_classifications_allowed: ["fraktion"],
+    source_labels_common: ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz"]
+  },
+  fraktionsmitglied: {
+    label: "Fraktionsmitglied",
+    organization_classifications_allowed: ["fraktion"],
+    source_labels_common: ["Mitglied"]
+  },
+  ausschussvorsitz: {
+    label: "Ausschussvorsitz",
+    organization_classifications_allowed: ["ausschuss", "gremium"],
+    source_labels_common: ["Vorsitz", "Ausschussvorsitz", "Vorsitzende", "Vorsitzender"]
+  },
+  stv_ausschussvorsitz: {
+    label: "Stv. Ausschussvorsitz",
+    organization_classifications_allowed: ["ausschuss", "gremium"],
+    source_labels_common: ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz"]
+  },
+  ausschussmitglied: {
+    label: "Ausschussmitglied",
+    organization_classifications_allowed: ["ausschuss", "gremium"],
+    source_labels_common: ["Mitglied"]
+  },
+  buergerdeputierte_r: {
+    label: "Bürgerdeputierte/r",
+    organization_classifications_allowed: ["ausschuss", "gremium"],
+    source_labels_common: ["Bürgerdeputierte", "Bürgerdeputierter"]
+  },
+  aeltestenrat_mitglied: {
+    label: "Ältestenrat",
+    organization_classifications_allowed: ["gremium"],
+    source_labels_common: ["Mitglied", "Mitglied des Ältestenrats"]
+  },
+  schriftfuehrung: {
+    label: "Schriftführung",
+    organization_classifications_allowed: ["parlament", "gremium"],
+    source_labels_common: ["Schriftführung", "Schriftführer", "Schriftführerin", "Schriftführer/in", "Schriftführerin BVV"]
+  },
+  sonstige_funktion: {
+    label: "Sonstige Funktion",
+    organization_classifications_allowed: ["parlament", "fraktion", "ausschuss", "gremium", "sonstiges"],
+    source_labels_common: []
+  }
+};
+
+const BVV_ROLE_SOURCE_MAP = new Map();
+
+function normalizeRoleKey(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
+function registerRoleAliases(canonical, labels) {
+  if (!labels || !labels.length) return;
+  labels.forEach(label => {
+    const key = normalizeRoleKey(label);
+    if (key) BVV_ROLE_SOURCE_MAP.set(key, canonical);
+  });
+}
+
+Object.entries(BVV_ROLE_DICTIONARY).forEach(([canonical, def]) => {
+  registerRoleAliases(canonical, def.source_labels_common || []);
+  if (def.label) registerRoleAliases(canonical, [def.label]);
+});
 
 const STANDARD_PARTIES = new Set([
   "CDU",
@@ -1511,6 +1599,14 @@ function orgLooksLikeFaction(org) {
   return name.includes("fraktion") || name.includes("gruppe");
 }
 
+function orgLooksLikeCommittee(org) {
+  if (!org) return false;
+  const classes = normalizeOparlClasses(org.classification);
+  if (classes.some(c => c.includes("ausschuss"))) return true;
+  const name = String(org.name || org.shortName || "").toLowerCase();
+  return name.includes("ausschuss");
+}
+
 function getOparlOrgId(value) {
   if (!value) return "";
   if (typeof value === "string") return value;
@@ -1590,50 +1686,324 @@ async function loadBvvFromOparl(systemUrl, bezirkName) {
   const factionOrgIds = new Set(
     orgs.filter(orgLooksLikeFaction).map(org => org.id)
   );
+  const committeeOrgIds = new Set(
+    orgs.filter(orgLooksLikeCommittee).map(org => org.id)
+  );
 
   const entries = [];
   const today = new Date();
 
   persons.forEach(person => {
-    const memberships = Array.isArray(person.membership) ? person.membership : [];
-    const activeBvv = memberships.filter(m => {
-      const orgId = getOparlOrgId(m.organization);
-      return (bvvOrgIds.has(orgId) || roleLooksLikeBvv(m.role)) && isActiveMembership(m, today);
+    const card = buildBvvPersonCard(person, {
+      orgById,
+      bvvOrgIds,
+      factionOrgIds,
+      committeeOrgIds,
+      today
     });
-    if (!activeBvv.length) return;
-    const bvvMembership = pickLatestMembership(activeBvv);
-
-    const activeFaction = memberships.filter(m => {
-      const orgId = getOparlOrgId(m.organization);
-      return factionOrgIds.has(orgId) && isActiveMembership(m, today);
-    });
-    const factionMembership = pickLatestMembership(activeFaction);
-    const factionOrg = factionMembership ? orgById.get(factionMembership.organization) : null;
-    let partyLabel = factionOrg ? (factionOrg.shortName || factionOrg.name || "") : "";
-    if (factionOrg?.name && /Einzelverordnete|parteilos/i.test(factionOrg.name)) {
-      partyLabel = "fraktionslos";
-    } else {
-      partyLabel = cleanOrgLabel(partyLabel || factionOrg?.name || "");
-    }
-
-    const name = (person.name || [person.givenName, person.familyName].filter(Boolean).join(" ")).trim();
-    if (!name) return;
-    const role = (bvvMembership?.role || "BVV").trim();
-    const since = (bvvMembership?.startDate || "").trim();
-    const normalizedParty = normalizeParty(partyLabel || "fraktionslos");
-    if (!STANDARD_PARTIES.has(normalizedParty)) {
-      unknownOparlParties.add(partyLabel || normalizedParty || "unbekannt");
-    }
-    entries.push({
-      name,
-      party: normalizedParty,
-      role,
-      since
-    });
+    if (card) entries.push(card);
   });
 
   entries.sort((a, b) => a.name.localeCompare(b.name, "de"));
   return entries;
+}
+
+function trackUnknownOparlRole(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return;
+  const upper = normalizeRoleKey(raw);
+  if (BVV_ROLE_SOURCE_MAP.has(upper)) return;
+  if (/^BZSTR\.?/i.test(raw)) return;
+  unknownOparlRoles.add(raw);
+}
+
+function normalizeBvvRole(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "Bezirksverordnete/r";
+  const upper = normalizeRoleKey(raw);
+  const canonical = BVV_ROLE_SOURCE_MAP.get(upper);
+  if (canonical && BVV_ROLE_DICTIONARY[canonical]?.label) {
+    return BVV_ROLE_DICTIONARY[canonical].label;
+  }
+  const bzStrMatch = raw.match(/^BZSTR\.?\s*(.*)$/i);
+  if (bzStrMatch) {
+    const suffix = (bzStrMatch[1] || "").trim();
+    return suffix ? `Bezirksstadtrat/in ${suffix}` : "Bezirksstadtrat/in";
+  }
+  return raw;
+}
+
+function getBvvRoleCanonical(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const upper = normalizeRoleKey(raw);
+  return BVV_ROLE_SOURCE_MAP.get(upper) || "";
+}
+
+function buildMembershipCard(membership, org) {
+  const card = {};
+  const orgName = (org?.shortName || org?.name || "").trim();
+  if (orgName) card.name = orgName;
+  const role = String(membership?.role || "").trim();
+  if (role) card.role = role;
+  if (membership?.startDate) card.startDate = membership.startDate;
+  if (membership?.endDate) card.endDate = membership.endDate;
+  return card;
+}
+
+function buildBvvPersonCard(person, options) {
+  const {
+    orgById,
+    bvvOrgIds,
+    factionOrgIds,
+    committeeOrgIds,
+    today = new Date()
+  } = options || {};
+
+  const memberships = Array.isArray(person?.membership) ? person.membership : [];
+  const activeBvv = memberships.filter(m => {
+    const orgId = getOparlOrgId(m.organization);
+    return (bvvOrgIds?.has(orgId) || roleLooksLikeBvv(m.role)) && isActiveMembership(m, today);
+  });
+  if (!activeBvv.length) return null;
+  const bvvMembership = pickLatestMembership(activeBvv);
+
+  const activeFaction = memberships.filter(m => {
+    const orgId = getOparlOrgId(m.organization);
+    return factionOrgIds?.has(orgId) && isActiveMembership(m, today);
+  });
+  const factionMembership = pickLatestMembership(activeFaction);
+  const factionOrg = factionMembership ? orgById?.get(getOparlOrgId(factionMembership.organization)) : null;
+  let partyLabel = factionOrg ? (factionOrg.shortName || factionOrg.name || "") : "";
+  if (factionOrg?.name && /Einzelverordnete|parteilos/i.test(factionOrg.name)) {
+    partyLabel = "fraktionslos";
+  } else {
+    partyLabel = cleanOrgLabel(partyLabel || factionOrg?.name || "");
+  }
+
+  const name = (person?.name || [person?.givenName, person?.familyName].filter(Boolean).join(" ")).trim();
+  if (!name) return null;
+  trackUnknownOparlRole(bvvMembership?.role);
+  const role = normalizeBvvRole(bvvMembership?.role);
+  const since = (bvvMembership?.startDate || "").trim();
+  const normalizedParty = normalizeParty(partyLabel || "fraktionslos");
+  if (!STANDARD_PARTIES.has(normalizedParty)) {
+    unknownOparlParties.add(partyLabel || normalizedParty || "unbekannt");
+  }
+
+  const card = {
+    name,
+    party: normalizedParty,
+    role,
+    since
+  };
+
+  const activeCommitteeMemberships = memberships.filter(m => {
+    const orgId = getOparlOrgId(m.organization);
+    return committeeOrgIds?.has(orgId) && isActiveMembership(m, today);
+  });
+  if (activeCommitteeMemberships.length > 0) {
+    card.committee_memberships = activeCommitteeMemberships
+      .map(m => buildMembershipCard(m, orgById?.get(getOparlOrgId(m.organization))))
+      .filter(m => Object.keys(m).length > 0);
+    if (card.committee_memberships.length === 0) {
+      delete card.committee_memberships;
+    }
+  }
+
+  const activeFactionChair = activeFaction.filter(m => getBvvRoleCanonical(m.role) === "fraktionsvorsitz");
+  if (activeFactionChair.length > 0) {
+    const chairMembership = pickLatestMembership(activeFactionChair);
+    const chairOrg = chairMembership ? orgById?.get(getOparlOrgId(chairMembership.organization)) : null;
+    const factionCard = buildMembershipCard(chairMembership, chairOrg);
+    if (Object.keys(factionCard).length > 0) {
+      card.faction_membership = factionCard;
+    }
+  }
+
+  return card;
+}
+
+function runBvvPersonCardTests() {
+  const today = new Date("2026-03-28T00:00:00");
+  const orgById = new Map([
+    ["bvv", { id: "bvv", name: "BVV" }],
+    ["comm", { id: "comm", name: "Ausschuss Finanzen" }],
+    ["frac", { id: "frac", name: "CDU", shortName: "CDU" }]
+  ]);
+  const bvvOrgIds = new Set(["bvv"]);
+  const factionOrgIds = new Set(["frac"]);
+  const committeeOrgIds = new Set(["comm"]);
+
+  const baseMemberships = [
+    { organization: "bvv", role: "BVV", startDate: "2021-01-01" }
+  ];
+
+  const assert = (condition, message) => {
+    if (!condition) throw new Error(message);
+  };
+
+  // 1) no committee / no faction chair
+  const person1 = { name: "Test A", membership: [...baseMemberships] };
+  const card1 = buildBvvPersonCard(person1, { orgById, bvvOrgIds, factionOrgIds, committeeOrgIds, today });
+  assert(card1, "Test 1: card should exist");
+  assert(!("committee_memberships" in card1), "Test 1: committee_memberships should be omitted");
+  assert(!("faction_membership" in card1), "Test 1: faction_membership should be omitted");
+
+  // 2) committee yes / faction chair no
+  const person2 = { name: "Test B", membership: [...baseMemberships, { organization: "comm", role: "Mitglied", startDate: "2022-01-01" }] };
+  const card2 = buildBvvPersonCard(person2, { orgById, bvvOrgIds, factionOrgIds, committeeOrgIds, today });
+  assert(card2, "Test 2: card should exist");
+  assert(Array.isArray(card2.committee_memberships) && card2.committee_memberships.length > 0, "Test 2: committee_memberships should be present");
+  assert(!("faction_membership" in card2), "Test 2: faction_membership should be omitted");
+
+  // 3) committee yes / faction chair yes
+  const person3 = {
+    name: "Test C",
+    membership: [
+      ...baseMemberships,
+      { organization: "comm", role: "Mitglied", startDate: "2022-01-01" },
+      { organization: "frac", role: "Fraktionsvorsitz", startDate: "2023-01-01" }
+    ]
+  };
+  const card3 = buildBvvPersonCard(person3, { orgById, bvvOrgIds, factionOrgIds, committeeOrgIds, today });
+  assert(card3, "Test 3: card should exist");
+  assert(Array.isArray(card3.committee_memberships) && card3.committee_memberships.length > 0, "Test 3: committee_memberships should be present");
+  assert("faction_membership" in card3, "Test 3: faction_membership should be present");
+
+  // 4) faction member only should not produce faction_membership
+  const person4 = {
+    name: "Test D",
+    membership: [
+      ...baseMemberships,
+      { organization: "frac", role: "Mitglied", startDate: "2023-01-01" }
+    ]
+  };
+  const card4 = buildBvvPersonCard(person4, { orgById, bvvOrgIds, factionOrgIds, committeeOrgIds, today });
+  assert(card4, "Test 4: card should exist");
+  assert(!("faction_membership" in card4), "Test 4: faction_membership should be omitted");
+
+  return true;
+}
+
+async function runBvvPersonCardOparlTestForBezirk(bezirkName) {
+  if (!bezirkName) return false;
+  try {
+    await loadOparlApiMap();
+    const systemUrl = oparlApiByBezirk.get(bezirkName);
+    if (!systemUrl) {
+      console.warn(`BVV person card OPARL test skipped: no API for ${bezirkName}.`);
+      return false;
+    }
+
+    const sysRes = await fetch(systemUrl);
+    if (!sysRes.ok) throw new Error(`OPARL system ${sysRes.status} for ${systemUrl}`);
+    const system = await sysRes.json();
+    const bodyUrl = system.body;
+    if (!bodyUrl) throw new Error(`OPARL system missing body URL for ${bezirkName}`);
+
+    const bodyRes = await fetch(bodyUrl);
+    if (!bodyRes.ok) throw new Error(`OPARL body ${bodyRes.status} for ${bezirkName}`);
+    const bodyPayload = await bodyRes.json();
+    const body = Array.isArray(bodyPayload.data) ? bodyPayload.data[0] : bodyPayload;
+    if (!body) throw new Error(`OPARL body not found for ${bezirkName}`);
+
+    const orgUrl = body.organization;
+    const personsUrl = body.person;
+    if (!orgUrl || !personsUrl) throw new Error(`OPARL body missing org/person URLs for ${bezirkName}`);
+
+    const [orgs, persons] = await Promise.all([
+      fetchOparlPaged(orgUrl),
+      fetchOparlPaged(personsUrl)
+    ]);
+
+    const orgById = new Map(orgs.map(org => [org.id, org]));
+    const bvvOrgIds = new Set(orgs.filter(orgLooksLikeBvv).map(org => org.id));
+    const factionOrgIds = new Set(orgs.filter(orgLooksLikeFaction).map(org => org.id));
+    const committeeOrgIds = new Set(orgs.filter(orgLooksLikeCommittee).map(org => org.id));
+
+    const today = new Date();
+    const assert = (condition, message) => {
+      if (!condition) throw new Error(message);
+    };
+
+    persons.forEach(person => {
+      const memberships = Array.isArray(person?.membership) ? person.membership : [];
+      const hasActiveBvv = memberships.some(m => {
+        const orgId = getOparlOrgId(m.organization);
+        return (bvvOrgIds.has(orgId) || roleLooksLikeBvv(m.role)) && isActiveMembership(m, today);
+      });
+      if (!hasActiveBvv) return;
+
+      const card = buildBvvPersonCard(person, {
+        orgById,
+        bvvOrgIds,
+        factionOrgIds,
+        committeeOrgIds,
+        today
+      });
+
+      assert(card, `${bezirkName}: missing card for active BVV member`);
+
+      const hasActiveCommittee = memberships.some(m => {
+        const orgId = getOparlOrgId(m.organization);
+        return committeeOrgIds.has(orgId) && isActiveMembership(m, today);
+      });
+      if (hasActiveCommittee) {
+        assert(Array.isArray(card.committee_memberships) && card.committee_memberships.length > 0, `${bezirkName}: committee_memberships missing`);
+      } else {
+        assert(!("committee_memberships" in card), `${bezirkName}: committee_memberships should be omitted`);
+      }
+
+      const hasFactionChair = memberships.some(m => {
+        const orgId = getOparlOrgId(m.organization);
+        return factionOrgIds.has(orgId) && isActiveMembership(m, today) && getBvvRoleCanonical(m.role) === "fraktionsvorsitz";
+      });
+      if (hasFactionChair) {
+        assert("faction_membership" in card, `${bezirkName}: faction_membership missing`);
+      } else {
+        assert(!("faction_membership" in card), `${bezirkName}: faction_membership should be omitted`);
+      }
+    });
+
+    console.log(`BVV person card OPARL test passed for ${bezirkName}.`);
+    return true;
+  } catch (err) {
+    console.error(`BVV person card OPARL test failed for ${bezirkName}.`, err);
+    return false;
+  }
+}
+
+function formatSinceYear(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const match = raw.match(/(\d{4})/);
+  return match ? match[1] : raw;
+}
+
+function looksLikeParty(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  const normalized = normalizeParty(raw);
+  return STANDARD_PARTIES.has(normalized);
+}
+
+function looksLikeRole(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  const upper = normalizeRoleKey(raw);
+  if (BVV_ROLE_SOURCE_MAP.has(upper)) return true;
+  return /bezirks|bvv|vorsteher|fraktion|ausschuss|schrift|beisitz|bzstr/i.test(raw);
+}
+
+function looksLikeName(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  if (looksLikeParty(raw) || looksLikeRole(raw)) return false;
+  if (!/[A-Za-zÄÖÜäöüß]/.test(raw)) return false;
+  if (/\d/.test(raw)) return false;
+  const parts = raw.split(/\s+/).filter(Boolean);
+  return parts.length >= 2;
 }
 
 function pushUnique(list, entry) {
@@ -1747,7 +2117,7 @@ function parseBvvFile(text) {
     entries.push({
       name,
       party: normalizeParty(partyRaw),
-      role: role || "BVV",
+      role: normalizeBvvRole(role),
       since
     });
   }
@@ -1762,15 +2132,31 @@ function parseBvvCsvText(text) {
   });
   const entries = [];
   (result.data || []).forEach(row => {
-    const name = (row.Name || row.name || "").trim();
+    let rawName = (row.Name || row.name || "").trim();
+    let rawRole = (row["Art der Mitarbeit"] || row.Art || row.Role || row.Funktion || "").trim();
+    let rawParty = (row.Herkunft || row.Partei || row.Party || "").trim();
+
+    if (rawName === "Name") rawName = "";
+
+    const nameLooksLikeParty = looksLikeParty(rawName);
+    const roleLooksLikeName = looksLikeName(rawRole);
+    const partyLooksLikeRole = looksLikeRole(rawParty);
+    if ((nameLooksLikeParty || !rawName) && roleLooksLikeName && partyLooksLikeRole) {
+      const correctedParty = nameLooksLikeParty ? rawName : "";
+      rawName = rawRole;
+      rawRole = rawParty;
+      rawParty = correctedParty;
+    }
+
+    const name = rawName.trim();
     if (!name) return;
-    const role = (row["Art der Mitarbeit"] || row.Art || row.Role || row.Funktion || "").trim();
-    const partyRaw = (row.Herkunft || row.Partei || row.Party || "").trim();
+    const role = rawRole.trim();
+    const partyRaw = rawParty.trim();
     const since = (row.seit || row.Seit || row.since || "").trim();
     entries.push({
       name,
       party: normalizeParty(partyRaw || "fraktionslos"),
-      role: role || "BVV",
+      role: normalizeBvvRole(role),
       since
     });
   });
@@ -1818,6 +2204,9 @@ async function loadBvvLists() {
 
   if (unknownOparlParties.size) {
     console.warn("Unrecognized BVV party labels from OPARL:", Array.from(unknownOparlParties).sort());
+  }
+  if (unknownOparlRoles.size) {
+    console.warn("Unrecognized BVV roles from OPARL:", Array.from(unknownOparlRoles).sort());
   }
 }
 
@@ -2106,8 +2495,13 @@ function updateSidebarHeader(context) {
   const bezData = context.bezirkName ? bezirkeData[context.bezirkName] : null;
   const headerName = context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin");
   const headerNr = context.bez || bezData?.nr;
+  const wkLabel = (currentLevel === "abgeordnetenhaus" && context.awk) ? `WK ${context.awk}` : "";
 
-  nrEl.textContent = headerNr ? `Bezirk ${headerNr}` : "Stadtgebiet";
+  if (headerNr) {
+    nrEl.textContent = wkLabel ? `Bezirk ${headerNr} · ${wkLabel}` : `Bezirk ${headerNr}`;
+  } else {
+    nrEl.textContent = wkLabel ? `Stadtgebiet · ${wkLabel}` : "Stadtgebiet";
+  }
   nameEl.textContent = headerName;
 }
 
@@ -2132,7 +2526,8 @@ function renderPanel(context) {
       const entries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
       if (entries.length > 0) {
         entries.forEach(entry => {
-          const sinceText = entry.since ? ` · seit ${entry.since}` : "";
+          const sinceYear = formatSinceYear(entry.since);
+          const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
@@ -2285,7 +2680,22 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-initData().then(initOverlayLayers);
+const RUN_BVV_PERSON_CARD_TESTS = true;
+const RUN_BVV_OPARL_TEST_BEZIRK = "Mitte";
+
+initData().then(async () => {
+  initOverlayLayers();
+  if (!RUN_BVV_PERSON_CARD_TESTS) return;
+  try {
+    runBvvPersonCardTests();
+    console.log("BVV person card tests passed.");
+    if (RUN_BVV_OPARL_TEST_BEZIRK) {
+      await runBvvPersonCardOparlTestForBezirk(RUN_BVV_OPARL_TEST_BEZIRK);
+    }
+  } catch (err) {
+    console.error("BVV person card tests failed.", err);
+  }
+});
 </script>
 </body>
 </html>

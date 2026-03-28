@@ -1,0 +1,69 @@
+{
+  "role_dictionary": {
+    "mitglied_bvv": {
+      "label": "Bezirksverordnete/r",
+      "organization_classifications_allowed": ["parlament"],
+      "source_labels_common": ["Mitglied", "Bezirksverordnete", "Bezirksverordneter"]
+    },
+    "vorsteher_bvv": {
+      "label": "BVV-Vorsitz",
+      "organization_classifications_allowed": ["parlament"],
+      "source_labels_common": ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV"]
+    },
+    "stv_vorsteher_bvv": {
+      "label": "Stv. BVV-Vorsitz",
+      "organization_classifications_allowed": ["parlament"],
+      "source_labels_common": ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher"]
+    },
+    "fraktionsvorsitz": {
+      "label": "Fraktionsvorsitz",
+      "organization_classifications_allowed": ["fraktion"],
+      "source_labels_common": ["Vorsitz", "Fraktionsvorsitz", "Fraktionsvorsitzende", "Fraktionsvorsitzender"]
+    },
+    "stv_fraktionsvorsitz": {
+      "label": "Stv. Fraktionsvorsitz",
+      "organization_classifications_allowed": ["fraktion"],
+      "source_labels_common": ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz"]
+    },
+    "fraktionsmitglied": {
+      "label": "Fraktionsmitglied",
+      "organization_classifications_allowed": ["fraktion"],
+      "source_labels_common": ["Mitglied"]
+    },
+    "ausschussvorsitz": {
+      "label": "Ausschussvorsitz",
+      "organization_classifications_allowed": ["ausschuss", "gremium"],
+      "source_labels_common": ["Vorsitz", "Ausschussvorsitz", "Vorsitzende", "Vorsitzender"]
+    },
+    "stv_ausschussvorsitz": {
+      "label": "Stv. Ausschussvorsitz",
+      "organization_classifications_allowed": ["ausschuss", "gremium"],
+      "source_labels_common": ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz"]
+    },
+    "ausschussmitglied": {
+      "label": "Ausschussmitglied",
+      "organization_classifications_allowed": ["ausschuss", "gremium"],
+      "source_labels_common": ["Mitglied"]
+    },
+    "buergerdeputierte_r": {
+      "label": "Bürgerdeputierte/r",
+      "organization_classifications_allowed": ["ausschuss", "gremium"],
+      "source_labels_common": ["Bürgerdeputierte", "Bürgerdeputierter"]
+    },
+    "aeltestenrat_mitglied": {
+      "label": "Ältestenrat",
+      "organization_classifications_allowed": ["gremium"],
+      "source_labels_common": ["Mitglied", "Mitglied des Ältestenrats"]
+    },
+    "schriftfuehrung": {
+      "label": "Schriftführung",
+      "organization_classifications_allowed": ["parlament", "gremium"],
+      "source_labels_common": ["Schriftführung", "Schriftführer", "Schriftführerin"]
+    },
+    "sonstige_funktion": {
+      "label": "Sonstige Funktion",
+      "organization_classifications_allowed": ["parlament", "fraktion", "ausschuss", "gremium", "sonstiges"],
+      "source_labels_common": []
+    }
+  }
+}

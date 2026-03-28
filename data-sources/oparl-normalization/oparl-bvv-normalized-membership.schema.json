@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schema/oparl-bvv-normalized-membership.schema.json",
+  "title": "Normalized OParl BVV Membership",
+  "description": "Normalisierte Mitgliedschaft für BVV-/Fraktions-/Ausschussdaten auf Basis von OParl-Quellen",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_system",
+    "person",
+    "organization",
+    "membership"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "description": "Eindeutige ID des normalisierten Datensatzes"
+    },
+    "source_system": {
+      "type": "string",
+      "enum": ["oparl", "scraped", "manual", "mixed"],
+      "description": "Herkunft des Datensatzes"
+    },
+    "source_refs": {
+      "type": "array",
+      "description": "Verweise auf Quellobjekte",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["Person", "Organization", "Membership", "Meeting", "Other"]
+          },
+          "id": {
+            "type": "string",
+            "description": "Quell-ID oder URL"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "person": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["person_id", "name"],
+      "properties": {
+        "person_id": {
+          "type": "string",
+          "description": "Stabile interne Personen-ID"
+        },
+        "oparl_person_id": {
+          "type": "string",
+          "description": "Originale OParl-Person-ID oder URL"
+        },
+        "name": {
+          "type": "string"
+        },
+        "given_name": {
+          "type": "string"
+        },
+        "family_name": {
+          "type": "string"
+        },
+        "honorific_prefix": {
+          "type": "string"
+        },
+        "honorific_suffix": {
+          "type": "string"
+        },
+        "party": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "short_name": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "organization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization_id",
+        "name",
+        "classification_canonical"
+      ],
+      "properties": {
+        "organization_id": {
+          "type": "string",
+          "description": "Stabile interne Gremien-ID"
+        },
+        "oparl_organization_id": {
+          "type": "string",
+          "description": "Originale OParl-Organization-ID oder URL"
+        },
+        "name": {
+          "type": "string"
+        },
+        "short_name": {
+          "type": "string"
+        },
+        "classification_source": {
+          "type": ["string", "null"],
+          "description": "Originalwert aus der Quelle, z. B. Organization.classification"
+        },
+        "classification_canonical": {
+          "type": "string",
+          "enum": [
+            "parlament",
+            "fraktion",
+            "ausschuss",
+            "gremium",
+            "sonstiges"
+          ]
+        },
+        "district": {
+          "type": ["string", "null"],
+          "description": "Berliner Bezirk, z. B. Mitte, Pankow"
+        },
+        "is_bvv_core_body": {
+          "type": "boolean",
+          "default": false,
+          "description": "true für die BVV selbst"
+        }
+      }
+    },
+    "membership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "membership_id",
+        "role_canonical"
+      ],
+      "properties": {
+        "membership_id": {
+          "type": "string",
+          "description": "Stabile interne Mitgliedschafts-ID"
+        },
+        "oparl_membership_id": {
+          "type": ["string", "null"],
+          "description": "Originale OParl-Membership-ID oder URL"
+        },
+        "role_source": {
+          "type": ["string", "null"],
+          "description": "Originale Rollenbezeichnung aus der Quelle, z. B. Membership.role"
+        },
+        "role_canonical": {
+          "type": "string",
+          "enum": [
+            "mitglied_bvv",
+            "vorsteher_bvv",
+            "stv_vorsteher_bvv",
+            "fraktionsvorsitz",
+            "stv_fraktionsvorsitz",
+            "fraktionsmitglied",
+            "ausschussvorsitz",
+            "stv_ausschussvorsitz",
+            "ausschussmitglied",
+            "buergerdeputierte_r",
+            "aeltestenrat_mitglied",
+            "schriftfuehrung",
+            "sonstige_funktion"
+          ]
+        },
+        "role_rank": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "description": "Optionale Hierarchisierung, z. B. 1=Leitung"
+        },
+        "label_preferred": {
+          "type": ["string", "null"],
+          "description": "Einheitliches Anzeige-Label"
+        },
+        "voting_right": {
+          "type": ["boolean", "null"],
+          "description": "Entspricht OParl Membership.votingRight, falls vorhanden/ermittelbar"
+        },
+        "on_behalf_of": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "description": "Fraktion oder andere entsendende Organisation",
+          "properties": {
+            "organization_id": {
+              "type": "string"
+            },
+            "oparl_organization_id": {
+              "type": ["string", "null"]
+            },
+            "name": {
+              "type": "string"
+            },
+            "classification_canonical": {
+              "type": "string",
+              "enum": [
+                "fraktion",
+                "partei",
+                "gremium",
+                "sonstiges"
+              ]
+            }
+          }
+        },
+        "start_date": {
+          "type": ["string", "null"],
+          "format": "date"
+        },
+        "end_date": {
+          "type": ["string", "null"],
+          "format": "date"
+        },
+        "is_active": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "berlin_specific": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "electoral_term": {
+          "type": ["string", "null"],
+          "description": "Wahlperiode, z. B. 2021-2026"
+        },
+        "committee_type": {
+          "type": ["string", "null"],
+          "enum": [
+            "fachausschuss",
+            "unterausschuss",
+            "sondergremium",
+            null
+          ]
+        },
+        "is_buergerdeputierte": {
+          "type": ["boolean", "null"]
+        },
+        "bvv_seat_type": {
+          "type": ["string", "null"],
+          "enum": [
+            "bezirksverordnete_r",
+            "buergerdeputierte_r",
+            "extern",
+            null
+          ]
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "raw_mapped",
+            "normalized",
+            "reviewed",
+            "uncertain"
+          ],
+          "default": "normalized"
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notes": {
+          "type": ["string", "null"]
+        },
+        "mapped_by_rule": {
+          "type": ["string", "null"],
+          "description": "Name der Mapping-Regel"
+        }
+      }
+    }
+  }
+}
