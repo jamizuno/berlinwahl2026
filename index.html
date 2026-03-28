@@ -631,12 +631,12 @@ const BVV_ROLE_DICTIONARY = {
   vorsteher_bvv: {
     label: "BVV-Vorsitz",
     organization_classifications_allowed: ["parlament"],
-    source_labels_common: ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV", "BV-Vorsteher/in", "BV-Vorsteherin"]
+    source_labels_common: ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV", "BV-Vorsteher/in", "BV-Vorsteherin", "Bezirksverordnetenvorsteher"]
   },
   stv_vorsteher_bvv: {
-    label: "Stv. BVV-Vorsitz",
+    label: "stellv. BVV-Vorsitz",
     organization_classifications_allowed: ["parlament"],
-    source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin"]
+    source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin", "Stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz"]
   },
   fraktionsvorsitz: {
     label: "Fraktionsvorsitz",
@@ -659,9 +659,9 @@ const BVV_ROLE_DICTIONARY = {
     source_labels_common: ["Vorsitz", "Ausschussvorsitz", "Vorsitzende", "Vorsitzender"]
   },
   stv_ausschussvorsitz: {
-    label: "Stv. Ausschussvorsitz",
+    label: "stellv. Ausschussvorsitz", 
     organization_classifications_allowed: ["ausschuss", "gremium"],
-    source_labels_common: ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz"]
+    source_labels_common: ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz", "stellv. Ausschussvorsitz", "Stv. Ausschussvorsitz", "Stellv. Ausschussvorsitz"]
   },
   ausschussmitglied: {
     label: "Ausschussmitglied",
@@ -2044,6 +2044,15 @@ function looksLikeName(value) {
   return parts.length >= 2;
 }
 
+function looksLikeDate(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(raw)) return true;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return true;
+  if (/^\d{4}$/.test(raw)) return true;
+  return false;
+}
+
 function pushUnique(list, entry) {
   const key = `${entry.name}|${entry.party}|${entry.role || entry.wahlkreis || entry.awk || entry.art || ""}`;
   if (!list._keys) list._keys = new Set();
@@ -2169,34 +2178,44 @@ function parseBvvCsvText(text) {
     skipEmptyLines: true
   });
   const entries = [];
+  const seen = new Set();
   (result.data || []).forEach(row => {
     let rawName = (row.Name || row.name || "").trim();
     let rawRole = (row["Art der Mitarbeit"] || row.Art || row.Role || row.Funktion || "").trim();
     let rawParty = (row.Herkunft || row.Partei || row.Party || "").trim();
+    let rawSince = (row.seit || row.Seit || row.since || "").trim();
 
     if (rawName === "Name") rawName = "";
 
-    const nameLooksLikeParty = looksLikeParty(rawName);
-    const roleLooksLikeName = looksLikeName(rawRole);
-    const partyLooksLikeRole = looksLikeRole(rawParty);
-    if ((nameLooksLikeParty || !rawName) && roleLooksLikeName && partyLooksLikeRole) {
-      const correctedParty = nameLooksLikeParty ? rawName : "";
-      rawName = rawRole;
-      rawRole = rawParty;
-      rawParty = correctedParty;
-    }
+    const fields = [
+      { value: rawName },
+      { value: rawRole },
+      { value: rawParty },
+      { value: rawSince }
+    ].map(field => ({ value: String(field.value || "").trim() })).filter(field => field.value);
 
-    const name = rawName.trim();
-    if (!name) return;
-    const role = rawRole.trim();
-    const partyRaw = rawParty.trim();
-    const since = (row.seit || row.Seit || row.since || "").trim();
-    entries.push({
+    const nameField = fields.find(field => looksLikeName(field.value));
+    if (!nameField) return;
+    const roleField = fields.find(field => looksLikeRole(field.value));
+    const partyField = fields.find(field => looksLikeParty(field.value));
+    const dateField = fields.find(field => looksLikeDate(field.value));
+
+    const name = nameField.value;
+    const roleRaw = roleField?.value || "Bezirksverordnete/r";
+    const partyRaw = partyField?.value || "fraktionslos";
+    const since = dateField?.value || "";
+
+    const entry = {
       name,
-      party: normalizeParty(partyRaw || "fraktionslos"),
-      role: normalizeBvvRole(role),
+      party: normalizeParty(partyRaw),
+      role: normalizeBvvRole(roleRaw),
       since
-    });
+    };
+
+    const key = `${entry.name}|${entry.party}|${entry.role}|${entry.since}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    entries.push(entry);
   });
   return entries;
 }
@@ -2592,6 +2611,19 @@ function renderPanel(context) {
         entries.forEach(entry => {
           const sinceYear = formatSinceYear(entry.since);
           const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
+          const committeeLines = [];
+          if (Array.isArray(entry.committee_memberships)) {
+            entry.committee_memberships.forEach(membership => {
+              const canonical = getBvvRoleCanonical(membership?.role);
+              if (canonical === "ausschussvorsitz" || canonical === "stv_ausschussvorsitz") {
+                const roleLabel = normalizeBvvRole(membership?.role);
+                const committeeName = (membership?.name || "").trim();
+                const committeeSuffix = committeeName ? ` · ${committeeName}` : "";
+                committeeLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
+              }
+            });
+          }
+          const committeeHtml = committeeLines.join("");
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
@@ -2599,6 +2631,7 @@ function renderPanel(context) {
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
             <div class="rep-role">${entry.role}${sinceText}</div>
+            ${committeeHtml}
           </div>`;
         });
       }

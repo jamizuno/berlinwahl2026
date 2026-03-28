@@ -8,12 +8,12 @@
     "vorsteher_bvv": {
       "label": "BVV-Vorsitz",
       "organization_classifications_allowed": ["parlament"],
-      "source_labels_common": ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV"]
+      "source_labels_common": ["Vorsteher", "BVV-Vorsteher", "Vorsteherin", "Vorsteher der BVV", "Bezirksverordnetenvorsteher"]
     },
     "stv_vorsteher_bvv": {
-      "label": "Stv. BVV-Vorsitz",
+      "label": "stellv. BVV-Vorsitz",
       "organization_classifications_allowed": ["parlament"],
-      "source_labels_common": ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher"]
+      "source_labels_common": ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "Stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz"]
     },
     "fraktionsvorsitz": {
       "label": "Fraktionsvorsitz",
@@ -36,9 +36,9 @@
       "source_labels_common": ["Vorsitz", "Ausschussvorsitz", "Vorsitzende", "Vorsitzender"]
     },
     "stv_ausschussvorsitz": {
-      "label": "Stv. Ausschussvorsitz",
+      "label": "stellv. Ausschussvorsitz",
       "organization_classifications_allowed": ["ausschuss", "gremium"],
-      "source_labels_common": ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz"]
+      "source_labels_common": ["Stellvertretender Vorsitz", "stellv. Vorsitz", "Stv. Vorsitz", "stellv. Ausschussvorsitz", "Stv. Ausschussvorsitz", "Stellv. Ausschussvorsitz"]
     },
     "ausschussmitglied": {
       "label": "Ausschussmitglied",
