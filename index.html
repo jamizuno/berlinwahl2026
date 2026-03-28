@@ -128,14 +128,8 @@
   }
 
   .sidebar-header {
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .sidebar-hint {
-    color: var(--muted);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    padding: 0;
+    border-bottom: none;
   }
 
   .district-info {
@@ -306,7 +300,7 @@
   </div>
   <div class="level-tabs">
     <button class="tab" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
-    <button class="tab active" onclick="setLevel('abgeordnetenhaus')">Abgeordnetenhaus</button>
+    <button class="tab active" onclick="setLevel('abgeordnetenhaus')">Stadt (AGH)</button>
     <button class="tab" onclick="setLevel('bundestag')">Bundestag</button>
     <button class="tab" onclick="setLevel('eu')">EU-Parlament</button>
   </div>
@@ -316,7 +310,10 @@
   <div id="map"></div>
   <div class="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-hint">Klicke in die Karte, um die gewählten Vertreter dieser Ebene zu sehen. Wähle oben die politische Ebene, um die Karte zu ändern.</div>
+      <div class="district-name-banner">
+        <div class="bezirk-nr" id="districtHeaderNr">Bezirk</div>
+        <h2 id="districtHeaderName">Auf der Karte auswählen</h2>
+      </div>
     </div>
     <div class="district-info" id="districtInfo">
       <div class="empty-state">
@@ -709,7 +706,7 @@ const wfsLayers = [
       preferredTypeNames: ["alkis_ortsteile:ortsteile"],
       pane: "pane-ortsteile",
       zIndex: 450,
-      style: { color: "#7dd492", weight: 1.2, fillOpacity: 0 },
+      style: { color: "#5b3a88", weight: 2.0, fillOpacity: 0 },
       tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
     },
     {
@@ -2095,7 +2092,27 @@ function collectBundestagEntries(context) {
   return entries;
 }
 
+function updateSidebarHeader(context) {
+  const nrEl = document.getElementById("districtHeaderNr");
+  const nameEl = document.getElementById("districtHeaderName");
+  if (!nrEl || !nameEl) return;
+
+  if (!context) {
+    nrEl.textContent = "Bezirk";
+    nameEl.textContent = "Auf der Karte auswählen";
+    return;
+  }
+
+  const bezData = context.bezirkName ? bezirkeData[context.bezirkName] : null;
+  const headerName = context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin");
+  const headerNr = context.bez || bezData?.nr;
+
+  nrEl.textContent = headerNr ? `Bezirk ${headerNr}` : "Stadtgebiet";
+  nameEl.textContent = headerName;
+}
+
 function renderPanel(context) {
+  updateSidebarHeader(context);
   if (!context) {
     document.getElementById('districtInfo').innerHTML = `
       <div class="empty-state">
@@ -2107,16 +2124,7 @@ function renderPanel(context) {
 
   const allowed = context.allowedLevels || getAllowedLevels(context.layerId);
   const levels = getEffectiveLevels(allowed);
-  const bezData = context.bezirkName ? bezirkeData[context.bezirkName] : null;
-  const headerName = context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin");
-  const headerNr = context.bez || bezData?.nr;
-
-  let html = `
-    <div class="district-name-banner">
-      ${headerNr ? `<div class="bezirk-nr">Bezirk ${headerNr}</div>` : `<div class="bezirk-nr">Stadtgebiet</div>`}
-      <h2>${headerName}</h2>
-    </div>
-    `;
+  let html = ``;
 
   for (const lvl of levels) {
     const label = levelLabels[lvl];
@@ -2143,18 +2151,15 @@ function renderPanel(context) {
         const ordered = direct.concat(lists);
         ordered.forEach(entry => {
           const isList = entry.art !== "Direkt";
-          const awkLabel = entry.awk ? `WK ${entry.awk}` : "";
           const labelText = label;
           const role = isList
             ? (() => {
               const parts = ["Landtagsabgeordnete/r (MdA)", "Listenmandat"];
               if (entry.note) parts.push(entry.note);
-              if (awkLabel) parts.push(awkLabel);
               return parts.join(" · ");
             })()
             : (() => {
               const parts = ["Landtagsabgeordnete/r (MdA)", "Direktmandat"];
-              if (awkLabel) parts.push(awkLabel);
               return parts.join(" · ");
             })();
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
@@ -2211,6 +2216,12 @@ function renderPanel(context) {
 function setLevel(level) {
   currentLevel = level;
   resetMapSelection();
+  if (activeContext) {
+    const allowed = activeContext.allowedLevels || getAllowedLevels(activeContext.layerId);
+    if (!allowed.includes(currentLevel)) {
+      activeContext = null;
+    }
+  }
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
   initGeoLayer();
