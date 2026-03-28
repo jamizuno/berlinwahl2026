@@ -604,6 +604,7 @@ let overlayControl = null;
 let aghOverlay = null;
 let selectionHighlightLayer = null;
 const wfsOverlayLayers = new Map();
+const wfsOverlayState = new Map();
 let activeContext = null;
 
   const districtByNumber = new Map();
@@ -614,6 +615,7 @@ let activeContext = null;
   const btgTooltipByBwk = new Map();
   let btgCitywide = [];
 const bvvByBezirk = new Map();
+const bvvOparlStatusByBezirk = new Map();
 const bezirkByArkis = new Map();
 const oparlApiByBezirk = new Map();
 let oparlApiLoaded = false;
@@ -831,6 +833,8 @@ const wfsLayers = [
     }
 ];
 
+const wfsLayerById = new Map(wfsLayers.map(layer => [layer.id, layer]));
+
 const layerLevelMap = {
   kieze: ["bezirk"],
   einschulbereiche: ["bezirk"],
@@ -871,6 +875,10 @@ var OpenStreetMap_DE = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.pn
 OpenStreetMap_DE.addTo(map);
 
 overlayControl = L.control.layers(null, {}, { collapsed: false }).addTo(map);
+map.on("overlayadd", (event) => {
+  const id = getOverlayIdByLayer(event.layer);
+  if (id) ensureWfsOverlayLoaded(id);
+});
 
 const wfsDefaults = {
   version: "2.0.0",
@@ -1178,6 +1186,14 @@ function getOverlayLayerById(id) {
   return wfsOverlayLayers.get(id);
 }
 
+function getOverlayIdByLayer(layer) {
+  if (!layer) return null;
+  for (const [id, overlay] of wfsOverlayLayers.entries()) {
+    if (overlay === layer) return id;
+  }
+  return null;
+}
+
 function applyLayerSelection(level) {
   const wanted = new Set(mapSelectionByLevelIds[level] || []);
   const allIds = new Set([...overlayOrder, "agh"]);
@@ -1185,6 +1201,9 @@ function applyLayerSelection(level) {
     const layer = getOverlayLayerById(id);
     if (!layer) return;
     if (wanted.has(id)) {
+      if (id !== "agh") {
+        ensureWfsOverlayLoaded(id);
+      }
       if (!map.hasLayer(layer)) layer.addTo(map);
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
@@ -1192,33 +1211,29 @@ function applyLayerSelection(level) {
   });
 }
 
-async function addWfsOverlayLayer(layerConfig) {
-  const {
-    id,
-    label,
-    url,
-    preferredTypeNames,
-    pane,
-    zIndex,
-    style,
-    tooltipProps,
-    defaultOn
-  } = layerConfig;
+function createWfsPlaceholder(layerConfig) {
+  const { id, pane, zIndex, style } = layerConfig;
+  ensurePane(pane, zIndex);
+  const baseStyle = normalizeOverlayStyle(style || {});
+  const layer = L.geoJSON([], { pane, style: baseStyle });
+  wfsOverlayLayers.set(id, layer);
+  wfsOverlayState.set(id, { status: "placeholder" });
+  return layer;
+}
 
-    const baseStyle = style || {};
-    try {
-      if (id === "btg") {
-        ensurePane(pane, zIndex);
-        const localData = await loadBtgGeoJSONFromShapefile();
-        const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
-        wfsOverlayLayers.set(id, layer);
-        if (defaultOn) layer.addTo(map);
-        console.info("BTG layer loaded from local GeoJSON (WFS disabled).");
-        return;
-      }
-
+async function loadWfsOverlayLayer(layerConfig) {
+  const { id, label, url, preferredTypeNames, pane, zIndex, style } = layerConfig;
+  const baseStyle = style || {};
+  try {
+    if (id === "btg") {
       ensurePane(pane, zIndex);
-      const typeName = await resolveTypeName(url, preferredTypeNames);
+      const localData = await loadBtgGeoJSONFromShapefile();
+      console.info("BTG layer loaded from local GeoJSON (lazy).");
+      return buildOverlayLayer(localData, layerConfig, baseStyle);
+    }
+
+    ensurePane(pane, zIndex);
+    const typeName = await resolveTypeName(url, preferredTypeNames);
     if (!typeName) throw new Error(`No WFS typename found for ${label}`);
     const featureUrl = buildWfsGetFeatureUrl(url, typeName);
     let data = null;
@@ -1230,35 +1245,58 @@ async function addWfsOverlayLayer(layerConfig) {
       const altRes = await fetch(altUrl);
       data = await altRes.json();
     }
-    const layer = buildOverlayLayer(data, layerConfig, baseStyle);
-    wfsOverlayLayers.set(id, layer);
-    if (defaultOn) layer.addTo(map);
-    if (id === "btg") {
-      console.info("BTG layer loaded from WFS.");
-    }
+    return buildOverlayLayer(data, layerConfig, baseStyle);
   } catch (err) {
     console.warn(`WFS layer failed: ${label}`, err);
     if (id === "btg") {
       try {
         ensurePane(pane, zIndex);
         const localData = await loadBtgGeoJSONFromShapefile();
-        const layer = buildOverlayLayer(localData, layerConfig, baseStyle);
-        wfsOverlayLayers.set(id, layer);
-        if (defaultOn) layer.addTo(map);
         console.info("BTG layer loaded from local GeoJSON fallback.");
-        return;
+        return buildOverlayLayer(localData, layerConfig, baseStyle);
       } catch (localErr) {
         console.warn("BTG local GeoJSON fallback failed.", localErr);
       }
     }
-    // Keep the layer in the UI list even if loading fails.
-    const fallback = L.geoJSON([], { pane, style: baseStyle });
-    wfsOverlayLayers.set(id, fallback);
+    return null;
   }
 }
 
-async function initOverlayLayers() {
-  await Promise.all(wfsLayers.map(addWfsOverlayLayer));
+function replaceWfsOverlayLayer(id, newLayer) {
+  const oldLayer = wfsOverlayLayers.get(id);
+  const wasOnMap = oldLayer ? map.hasLayer(oldLayer) : false;
+  if (oldLayer && map.hasLayer(oldLayer)) {
+    map.removeLayer(oldLayer);
+  }
+  wfsOverlayLayers.set(id, newLayer);
+  if (wasOnMap) {
+    newLayer.addTo(map);
+  }
+  rebuildOverlayControl();
+}
+
+async function ensureWfsOverlayLoaded(id) {
+  if (!id || id === "agh") return;
+  const state = wfsOverlayState.get(id) || { status: "placeholder" };
+  if (state.status === "loading" || state.status === "loaded") return;
+  const layerConfig = wfsLayerById.get(id);
+  if (!layerConfig) return;
+  wfsOverlayState.set(id, { status: "loading" });
+  try {
+    const layer = await loadWfsOverlayLayer(layerConfig);
+    if (!layer) throw new Error(`WFS layer could not be loaded for ${id}`);
+    replaceWfsOverlayLayer(id, layer);
+    wfsOverlayState.set(id, { status: "loaded" });
+  } catch (err) {
+    console.warn(`WFS overlay lazy-load failed for ${id}`, err);
+    wfsOverlayState.set(id, { status: "error" });
+  }
+}
+
+function initOverlayLayers() {
+  wfsLayers.forEach(layerConfig => {
+    createWfsPlaceholder(layerConfig);
+  });
   rebuildOverlayControl();
   applyLayerSelection(currentLevel);
 }
@@ -2163,51 +2201,73 @@ function parseBvvCsvText(text) {
   return entries;
 }
 
-async function loadBvvLists() {
-  await loadOparlApiMap();
-  const bezirke = Object.keys(bezirkeData);
-  await Promise.all(bezirke.map(async (bezirk) => {
-    const fileNameCsv = `BVV-${bezirk}.csv`;
-    const fileNameTxt = `BVV-${bezirk}.txt`;
-    const fileUrlCsv = encodeURI(`${bvvBasePath}/${fileNameCsv}`);
-    const fileUrlTxt = encodeURI(`${bvvBasePath}/${fileNameTxt}`);
-    try {
-      const oparlUrl = oparlApiByBezirk.get(bezirk);
-      if (oparlUrl && bezirk !== "Spandau") {
-        try {
-          const entries = await loadBvvFromOparl(oparlUrl, bezirk);
-          if (entries && entries.length) {
-            bvvByBezirk.set(bezirk, entries);
-            return;
-          }
-        } catch (oparlErr) {
-          console.warn(`OPARL BVV lookup failed for ${bezirk}, falling back to local file.`, oparlErr);
-        }
-      }
-      let res = await fetch(fileUrlCsv);
-      if (res.ok) {
-        const text = await res.text();
-        const entries = parseBvvCsvText(text);
-        if (entries.length) {
-          bvvByBezirk.set(bezirk, entries);
-          return;
-        }
-      }
-      res = await fetch(fileUrlTxt);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      bvvByBezirk.set(bezirk, parseBvvFile(text));
-    } catch (err) {
-      console.warn(`BVV list not found for ${bezirk}: ${fileNameCsv}`, err);
-    }
-  }));
-
+function logUnknownOparlLabels() {
   if (unknownOparlParties.size) {
     console.warn("Unrecognized BVV party labels from OPARL:", Array.from(unknownOparlParties).sort());
   }
   if (unknownOparlRoles.size) {
     console.warn("Unrecognized BVV roles from OPARL:", Array.from(unknownOparlRoles).sort());
   }
+}
+
+async function loadBvvLocalForBezirk(bezirk) {
+  const fileNameCsv = `BVV-${bezirk}.csv`;
+  const fileNameTxt = `BVV-${bezirk}.txt`;
+  const fileUrlCsv = encodeURI(`${bvvBasePath}/${fileNameCsv}`);
+  const fileUrlTxt = encodeURI(`${bvvBasePath}/${fileNameTxt}`);
+  let res = await fetch(fileUrlCsv);
+  if (res.ok) {
+    const text = await res.text();
+    const entries = parseBvvCsvText(text);
+    if (entries.length) return entries;
+  }
+  res = await fetch(fileUrlTxt);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  return parseBvvFile(text);
+}
+
+async function ensureBvvOparlForBezirk(bezirk) {
+  if (!bezirk) return;
+  const status = bvvOparlStatusByBezirk.get(bezirk);
+  if (status === "loading" || status === "loaded" || status === "skipped" || status === "error") return;
+  bvvOparlStatusByBezirk.set(bezirk, "loading");
+  try {
+    await loadOparlApiMap();
+    const oparlUrl = oparlApiByBezirk.get(bezirk);
+    if (!oparlUrl || bezirk === "Spandau") {
+      bvvOparlStatusByBezirk.set(bezirk, "skipped");
+      return;
+    }
+    const entries = await loadBvvFromOparl(oparlUrl, bezirk);
+    if (entries && entries.length) {
+      bvvByBezirk.set(bezirk, entries);
+    }
+    logUnknownOparlLabels();
+    bvvOparlStatusByBezirk.set(bezirk, "loaded");
+  } catch (err) {
+    console.warn(`OPARL BVV lookup failed for ${bezirk}.`, err);
+    bvvOparlStatusByBezirk.set(bezirk, "error");
+  } finally {
+    if (activeContext?.bezirkName === bezirk && currentLevel === "bezirk") {
+      renderPanel(activeContext);
+    }
+  }
+}
+
+async function loadBvvLists() {
+  const bezirke = Object.keys(bezirkeData);
+  await Promise.all(bezirke.map(async (bezirk) => {
+    try {
+      const entries = await loadBvvLocalForBezirk(bezirk);
+      if (entries && entries.length) {
+        bvvByBezirk.set(bezirk, entries);
+        bvvOparlStatusByBezirk.set(bezirk, "local");
+      }
+    } catch (err) {
+      console.warn(`BVV list not found for ${bezirk}.`, err);
+    }
+  }));
 }
 
 function loadBezirkArkis() {
@@ -2516,6 +2576,10 @@ function renderPanel(context) {
     return;
   }
 
+  if (currentLevel === "bezirk" && context.bezirkName) {
+    ensureBvvOparlForBezirk(context.bezirkName);
+  }
+
   const allowed = context.allowedLevels || getAllowedLevels(context.layerId);
   const levels = getEffectiveLevels(allowed);
   let html = ``;
@@ -2680,8 +2744,8 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-const RUN_BVV_PERSON_CARD_TESTS = true;
-const RUN_BVV_OPARL_TEST_BEZIRK = "Mitte";
+const RUN_BVV_PERSON_CARD_TESTS = false;
+const RUN_BVV_OPARL_TEST_BEZIRK = "";
 
 initData().then(async () => {
   initOverlayLayers();
