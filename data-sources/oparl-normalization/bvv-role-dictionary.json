@@ -15,15 +15,25 @@
       "organization_classifications_allowed": ["parlament"],
       "source_labels_common": ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "Stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz"]
     },
+    "bezirksbuergermeister": {
+      "label": "Bezirksbürgermeister/in",
+      "organization_classifications_allowed": ["parlament", "gremium", "sonstiges"],
+      "source_labels_common": ["Bezirksbürgermeister", "Bezirksbürgermeisterin", "Bezirksbürgermeister/in"]
+    },
+    "stadtrat": {
+      "label": "Stadtrat/Stadträtin",
+      "organization_classifications_allowed": ["gremium", "sonstiges", "parlament"],
+      "source_labels_common": ["Stadtrat", "Stadträtin", "Bezirksstadtrat", "Bezirksstadträtin", "Bezirksstadtrat/in", "Bezirksstadträtin/in"]
+    },
     "fraktionsvorsitz": {
       "label": "Fraktionsvorsitz",
       "organization_classifications_allowed": ["fraktion"],
       "source_labels_common": ["Vorsitz", "Fraktionsvorsitz", "Fraktionsvorsitzende", "Fraktionsvorsitzender"]
     },
     "stv_fraktionsvorsitz": {
-      "label": "Stv. Fraktionsvorsitz",
+      "label": "stellv. Fraktionsvorsitz",
       "organization_classifications_allowed": ["fraktion"],
-      "source_labels_common": ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz"]
+      "source_labels_common": ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz", "Stellv. Fraktionsvorsitz"]
     },
     "fraktionsmitglied": {
       "label": "Fraktionsmitglied",

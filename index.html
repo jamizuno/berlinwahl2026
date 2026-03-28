@@ -638,15 +638,25 @@ const BVV_ROLE_DICTIONARY = {
     organization_classifications_allowed: ["parlament"],
     source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin", "Stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz"]
   },
+  bezirksbuergermeister: {
+    label: "Bezirksbürgermeister/in",
+    organization_classifications_allowed: ["parlament", "gremium", "sonstiges"],
+    source_labels_common: ["Bezirksbürgermeister", "Bezirksbürgermeisterin", "Bezirksbürgermeister/in"]
+  },
+  stadtrat: {
+    label: "Stadtrat/Stadträtin",
+    organization_classifications_allowed: ["gremium", "sonstiges", "parlament"],
+    source_labels_common: ["Stadtrat", "Stadträtin", "Bezirksstadtrat", "Bezirksstadträtin", "Bezirksstadtrat/in", "Bezirksstadträtin/in"]
+  },
   fraktionsvorsitz: {
     label: "Fraktionsvorsitz",
     organization_classifications_allowed: ["fraktion"],
     source_labels_common: ["Vorsitz", "Fraktionsvorsitz", "Fraktionsvorsitzende", "Fraktionsvorsitzender", "Fraktionsvorsitzende/r", "Fraktionsvorsitzende Doppelspitze", "Fraktionsvorsitzender Doppelspitze"]
   },
   stv_fraktionsvorsitz: {
-    label: "Stv. Fraktionsvorsitz",
+    label: "stellv. Fraktionsvorsitz", 
     organization_classifications_allowed: ["fraktion"],
-    source_labels_common: ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz"]
+    source_labels_common: ["Stellvertretender Vorsitz", "Stv. Fraktionsvorsitz", "stellv. Fraktionsvorsitz", "Stellv. Fraktionsvorsitz"]
   },
   fraktionsmitglied: {
     label: "Fraktionsmitglied",
@@ -739,6 +749,19 @@ const BEZIRK_FALLBACK = {
   "11": "Marzahn-Hellersdorf",
   "12": "Lichtenberg"
 };
+
+const BVV_ROLE_ORDER = [
+  "vorsteher_bvv",
+  "stv_vorsteher_bvv",
+  "bezirksbuergermeister",
+  "stadtrat",
+  "fraktionsvorsitz",
+  "stv_fraktionsvorsitz",
+  "ausschussvorsitz",
+  "stv_ausschussvorsitz",
+  "mitglied_bvv",
+  "buergerdeputierte_r"
+];
 
 const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
@@ -1774,6 +1797,12 @@ function normalizeBvvRole(value) {
 function getBvvRoleCanonical(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
+  if (/^bezirksstadtrat/i.test(raw) || /^stadtrat/i.test(raw) || /^stadträtin/i.test(raw) || /^bezirksstadträtin/i.test(raw)) {
+    return "stadtrat";
+  }
+  if (/^bezirksbürgermeister/i.test(raw)) {
+    return "bezirksbuergermeister";
+  }
   const upper = normalizeRoleKey(raw);
   return BVV_ROLE_SOURCE_MAP.get(upper) || "";
 }
@@ -2608,7 +2637,17 @@ function renderPanel(context) {
     if (lvl === "bezirk") {
       const entries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
       if (entries.length > 0) {
-        entries.forEach(entry => {
+        const orderedEntries = [...entries].sort((a, b) => {
+          const roleA = getBvvRoleCanonical(a?.role);
+          const roleB = getBvvRoleCanonical(b?.role);
+          const rankA = BVV_ROLE_ORDER.indexOf(roleA);
+          const rankB = BVV_ROLE_ORDER.indexOf(roleB);
+          const scoreA = rankA === -1 ? BVV_ROLE_ORDER.length + 1 : rankA;
+          const scoreB = rankB === -1 ? BVV_ROLE_ORDER.length + 1 : rankB;
+          if (scoreA !== scoreB) return scoreA - scoreB;
+          return String(a?.name || "").localeCompare(String(b?.name || ""), "de");
+        });
+        orderedEntries.forEach(entry => {
           const sinceYear = formatSinceYear(entry.since);
           const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
           const committeeLines = [];
