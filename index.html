@@ -668,9 +668,13 @@ let activePartyFilter = null;
   const aghByAwk = new Map();
   const aghByBez = new Map();
   const btgByWkr = new Map();
-  const btgTooltipByBwk = new Map();
-  let btgCitywide = [];
+const btgTooltipByBwk = new Map();
+let btgCitywide = [];
 const bvvByBezirk = new Map();
+const aghExecutiveByBezirk = new Map();
+const aghExecutiveCitywide = [];
+const aghExecutiveNames = new Set();
+const aghExecutiveOverrideNames = new Set();
 const bvvExecutiveByBezirk = new Map();
 const bvvOparlStatusByBezirk = new Map();
 const bezirkByArkis = new Map();
@@ -839,6 +843,7 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const bvvCommitteeVariantUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-variable-schreibweisen.json";
   const oparlApiListUrl = "./data-sources/BVV-Listen_2026-Mar/APIs/Opendata-Berlin-APIs.txt";
   const bvvExecutiveCsvUrl = "./data-sources/Bezirksamt-Exekutivrollen.csv";
+  const senateExecutiveCsvUrl = "./data-sources/Senat-Exekutivrollen.csv";
   const departmentKeywordLabelsUrl = "./data-sources/department-keyword-labels.json";
   const departmentClusterLabelsUrl = "./data-sources/department-cluster-labels.json";
   const departmentKeywordToClusterUrl = "./data-sources/department-keyword-to-cluster.json";
@@ -1926,6 +1931,13 @@ function normalizeDepartmentKeyword(value) {
   return key;
 }
 
+function normalizeExecutiveBezirk(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (/^berlin(\s*\(stadtgebiet\))?$/i.test(raw)) return "Berlin";
+  return raw;
+}
+
 function parseDepartmentKeywords(value) {
   if (Array.isArray(value)) return value.map(normalizeDepartmentKeyword).filter(Boolean);
   const raw = String(value || "").trim();
@@ -2839,6 +2851,63 @@ async function loadExecutiveRoles() {
   });
 }
 
+async function loadSenateExecutiveRoles() {
+  await loadDepartmentMaps();
+  return new Promise((resolve) => {
+    Papa.parse(senateExecutiveCsvUrl, {
+      download: true,
+      header: true,
+      delimiter: ";",
+      skipEmptyLines: true,
+      complete: (result) => {
+        const seen = new Set();
+        (result.data || []).forEach(row => {
+          const bezirkRaw = String(row.Bezirk || row.bezirk || row.BEZIRK || "").trim();
+          const bezirk = normalizeExecutiveBezirk(bezirkRaw);
+          const name = String(row.Name || row.name || "").trim();
+          const roleRaw = String(row.Role || row.role || row.Rolle || row.Funktion || row.RoleRaw || "").trim();
+          if (!name || !roleRaw) return;
+          const partyRaw = String(row.Party || row.party || row.Partei || "").trim();
+          const keywordsRaw = row.department_keywords || row.department_keyword || row.DepartmentKeywords || row.DepartmentKeyword || "";
+          const clustersRaw = row.department_clusters || row.department_cluster || row.DepartmentClusters || row.DepartmentCluster || "";
+          const departmentKeywords = parseDepartmentKeywords(keywordsRaw);
+          const departmentClusters = parseDepartmentKeywords(clustersRaw);
+          const interpreted = interpretDepartment({
+            department_keywords: departmentKeywords,
+            department_clusters: departmentClusters
+          });
+          const entry = {
+            name,
+            role: roleRaw,
+            party: normalizeParty(partyRaw),
+            department_keywords: interpreted.keywords,
+            department_clusters: interpreted.clusters,
+            department_cluster_labels: interpreted.clusterLabelsRendered,
+            art: "Senat",
+            isExecutive: true
+          };
+          const key = `${bezirk}|${name}|${entry.party}|${roleRaw}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          if (bezirk && bezirk !== "Berlin") {
+            if (!aghExecutiveByBezirk.has(bezirk)) aghExecutiveByBezirk.set(bezirk, []);
+            aghExecutiveByBezirk.get(bezirk).push(entry);
+          } else {
+            aghExecutiveCitywide.push(entry);
+          }
+          const nameKey = normalizePersonName(name);
+          if (nameKey) aghExecutiveNames.add(nameKey);
+        });
+        resolve();
+      },
+      error: (err) => {
+        console.warn("Senate executive roles could not be loaded.", err);
+        resolve();
+      }
+    });
+  });
+}
+
 function loadBezirkArkis() {
   return new Promise((resolve) => {
     Papa.parse(bezirkArkisCsvUrl, {
@@ -3085,19 +3154,35 @@ function handleLayerClick(layerId, feature) {
 }
 
 function collectAghEntries(context) {
-  if (context?.awk) return aghByAwk.get(context.awk) || [];
+  const execForBezirk = context?.bezirkName ? (aghExecutiveByBezirk.get(context.bezirkName) || []) : [];
+  const execEntries = [...aghExecutiveCitywide, ...execForBezirk];
+  const execNames = new Set(execEntries.map(entry => normalizePersonName(entry?.name)).filter(Boolean));
+  const filterApiDuplicates = (list) => list.filter(entry => {
+    const key = normalizePersonName(entry?.name);
+    if (!key) return true;
+    if (execNames.has(key)) {
+      aghExecutiveOverrideNames.add(entry?.name || "");
+      return false;
+    }
+    return true;
+  });
+  if (context?.awk) {
+    const list = aghByAwk.get(context.awk) || [];
+    return [...filterApiDuplicates(list), ...execEntries];
+  }
   if (context?.bez) {
     const entries = [];
     const awks = aghByBez.get(context.bez);
     if (awks) {
       awks.forEach(awk => {
         const list = aghByAwk.get(awk) || [];
-        list.forEach(entry => pushUnique(entries, entry));
+        filterApiDuplicates(list).forEach(entry => pushUnique(entries, entry));
       });
     }
+    execEntries.forEach(entry => pushUnique(entries, entry));
     return entries;
   }
-  return [];
+  return execEntries;
 }
 
 function collectBundestagEntries(context) {
@@ -3237,18 +3322,23 @@ function renderPanel(context) {
         const lists = entries.filter(e => e.art !== "Direkt");
         const ordered = direct.concat(lists);
         ordered.forEach(entry => {
-          const isList = entry.art !== "Direkt";
+          const isExecutive = entry.isExecutive === true;
+          const isList = !isExecutive && entry.art !== "Direkt";
           const labelText = label;
-          const role = isList
-            ? (() => {
-              const parts = ["Abgeordnete/r (MdA)", "Listenmandat"];
-              if (entry.note) parts.push(entry.note);
-              return parts.join(" · ");
-            })()
-            : (() => {
-              const parts = ["Abgeordnete/r (MdA)", "Direktmandat"];
-              return parts.join(" · ");
-            })();
+          const role = isExecutive
+            ? (entry.role || "Senat")
+            : (isList
+              ? (() => {
+                const parts = ["Abgeordnete/r (MdA)", "Listenmandat"];
+                if (entry.note) parts.push(entry.note);
+                return parts.join(" · ");
+              })()
+              : (() => {
+                const parts = ["Abgeordnete/r (MdA)", "Direktmandat"];
+                return parts.join(" · ");
+              })());
+          const clusterText = getDepartmentClusterText(entry);
+          const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name-line">
@@ -3256,6 +3346,7 @@ function renderPanel(context) {
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
             <div class="rep-role">${role}</div>
+            ${clusterHtml}
           </div>`;
         });
       }
@@ -3390,10 +3481,14 @@ async function initData() {
         loadBtgTooltipCSV(),
         loadBvvLists(),
         loadExecutiveRoles(),
+        loadSenateExecutiveRoles(),
         loadBezirkArkis()
       ]);
     if (results[0].status === "rejected" || results[1].status === "rejected") {
       throw new Error("Pflichtdaten konnten nicht geladen werden.");
+    }
+    if (aghExecutiveOverrideNames.size) {
+      console.warn("AGH API entries overridden by local Senat CSV:", Array.from(aghExecutiveOverrideNames).sort());
     }
     berlinGeoJSON = await loadWahlkreiseGeoJSON();
     indexAghByBezirk(berlinGeoJSON);
