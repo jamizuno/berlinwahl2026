@@ -272,6 +272,18 @@
     font-size: 0.7rem;
     color: var(--muted);
     font-family: 'IBM Plex Mono', monospace;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .legend-item.active {
+    color: var(--text);
+  }
+
+  .legend-item.active .legend-dot {
+    box-shadow: 0 0 0 2px rgba(200, 169, 110, 0.9);
   }
 
   .legend-dot {
@@ -606,6 +618,7 @@ let selectionHighlightLayer = null;
 const wfsOverlayLayers = new Map();
 const wfsOverlayState = new Map();
 let activeContext = null;
+let activePartyFilter = null;
 
   const districtByNumber = new Map();
   const districtByName = new Map();
@@ -1865,6 +1878,29 @@ function buildBvvPersonCard(person, options) {
     since
   };
 
+  const statusRaw = String(person?.status || "").trim();
+  if (statusRaw) {
+    card.oparl_status = statusRaw;
+  }
+
+  const membershipMeta = [];
+  memberships.forEach(membership => {
+    const orgId = getOparlOrgId(membership?.organization);
+    const org = orgById?.get(orgId);
+    const orgName = (org?.shortName || org?.name || membership?.organization?.shortName || membership?.organization?.name || "").trim();
+    const roleLabel = String(membership?.role || "").trim();
+    if (!orgName && !roleLabel) return;
+    const parts = [];
+    if (orgName) parts.push(orgName);
+    if (roleLabel) parts.push(roleLabel);
+    const line = parts.join(" · ").trim();
+    if (line) membershipMeta.push(line);
+  });
+  if (membershipMeta.length > 0) {
+    const uniqueMeta = Array.from(new Set(membershipMeta));
+    if (uniqueMeta.length > 0) card.oparl_memberships = uniqueMeta;
+  }
+
   const activeCommitteeMemberships = memberships.filter(m => {
     const orgId = getOparlOrgId(m.organization);
     return committeeOrgIds?.has(orgId) && isActiveMembership(m, today);
@@ -2635,7 +2671,7 @@ function renderPanel(context) {
   for (const lvl of levels) {
     const label = levelLabels[lvl];
     if (lvl === "bezirk") {
-      const entries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
+      const entries = context.bezirkName ? filterEntriesByParty(bvvByBezirk.get(context.bezirkName) || []) : [];
       if (entries.length > 0) {
         const orderedEntries = [...entries].sort((a, b) => {
           const roleA = getBvvRoleCanonical(a?.role);
@@ -2663,6 +2699,17 @@ function renderPanel(context) {
             });
           }
           const committeeHtml = committeeLines.join("");
+          const metaLines = [];
+          if (entry.oparl_status) {
+            metaLines.push(`<div class="rep-role">Status: ${entry.oparl_status}</div>`);
+          }
+          if (Array.isArray(entry.oparl_memberships)) {
+            entry.oparl_memberships.forEach(line => {
+              const text = String(line || "").trim();
+              if (text) metaLines.push(`<div class="rep-role">${text}</div>`);
+            });
+          }
+          const metaHtml = metaLines.join("");
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
@@ -2671,11 +2718,12 @@ function renderPanel(context) {
             </div>
             <div class="rep-role">${entry.role}${sinceText}</div>
             ${committeeHtml}
+            ${metaHtml}
           </div>`;
         });
       }
     } else if (lvl === "abgeordnetenhaus") {
-      const entries = collectAghEntries(context);
+      const entries = filterEntriesByParty(collectAghEntries(context));
       if (entries.length > 0) {
         const direct = entries.filter(e => e.art === "Direkt");
         const lists = entries.filter(e => e.art !== "Direkt");
@@ -2704,7 +2752,7 @@ function renderPanel(context) {
         });
       }
     } else if (lvl === "bundestag") {
-      const entries = collectBundestagEntries(context);
+      const entries = filterEntriesByParty(collectBundestagEntries(context));
       if (entries.length > 0) {
         entries.forEach(entry => {
           const isList = entry.art !== "Direkt";
@@ -2721,7 +2769,7 @@ function renderPanel(context) {
         });
       }
     } else if (lvl === "eu") {
-      const entries = euCitywide;
+      const entries = filterEntriesByParty(euCitywide);
       if (entries.length > 0) {
         entries.forEach(entry => {
           html += `<div class="rep-card">
@@ -2770,10 +2818,41 @@ function updateLegend() {
   ];
   const legend = document.getElementById('legend');
   legend.innerHTML = parties.map(p => `
-      <div class="legend-item">
+      <button class="legend-item${activePartyFilter === p ? " active" : ""}" data-party="${p}" type="button">
         <div class="legend-dot" style="background:${partyColors[p]}"></div>
         ${p}
-      </div>`).join('');
+      </button>`).join('');
+}
+
+function matchesPartyFilter(party) {
+  if (!activePartyFilter) return true;
+  const normalized = normalizeParty(party || "");
+  if (activePartyFilter === "Andere") {
+    return normalized === "Andere" || !STANDARD_PARTIES.has(normalized);
+  }
+  return normalized === activePartyFilter;
+}
+
+function filterEntriesByParty(entries) {
+  if (!activePartyFilter) return entries;
+  return entries.filter(entry => matchesPartyFilter(entry?.party));
+}
+
+function setPartyFilter(party) {
+  activePartyFilter = activePartyFilter === party ? null : party;
+  updateLegend();
+  renderPanel(activeContext);
+}
+
+const legendEl = document.getElementById('legend');
+if (legendEl) {
+  legendEl.addEventListener('click', (event) => {
+    const button = event.target.closest('.legend-item');
+    if (!button) return;
+    const party = button.dataset.party;
+    if (!party) return;
+    setPartyFilter(party);
+  });
 }
 
 async function initData() {
