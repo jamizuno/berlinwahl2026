@@ -224,11 +224,11 @@
   .rep-role {
     font-size: 0.75rem;
     color: var(--muted);
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .meta-toggle {
-    margin-top: 4px;
+    margin-top: 2px;
     background: transparent;
     border: none;
     color: var(--muted);
@@ -624,7 +624,7 @@ const mapScopeByLevel = {
 };
 
 const mapSelectionByLevelIds = {
-  bezirk: ["bezirke"],
+  bezirk: ["bezirke", "ortsteile"],
   abgeordnetenhaus: ["agh", "bezirke"],
   bundestag: ["btg", "eu"],
   eu: ["eu"]
@@ -659,6 +659,7 @@ const oparlApiByBezirk = new Map();
 let oparlApiLoaded = false;
 const unknownOparlParties = new Set();
 const unknownOparlRoles = new Set();
+const unknownCommitteeLabels = new Set();
 
 const BVV_ROLE_DICTIONARY = {
   mitglied_bvv: {
@@ -808,6 +809,8 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
   const euCsvUrl = "./data-sources/EU_2025_by_Landesliste_truth.csv";
   const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
+  const bvvCommitteeStandardUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-standardisiert.json";
+  const bvvCommitteeVariantUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-variable-schreibweisen.json";
   const oparlApiListUrl = "./data-sources/BVV-Listen_2026-Mar/APIs/Opendata-Berlin-APIs.txt";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
@@ -856,7 +859,7 @@ const wfsLayers = [
       url: "https://gdi.berlin.de/services/wfs/alkis_ortsteile",
       preferredTypeNames: ["alkis_ortsteile:ortsteile"],
       pane: "pane-ortsteile",
-      zIndex: 450,
+      zIndex: 425,
       style: { color: "#5b3a88", weight: 2.0, fillOpacity: 0 },
       tooltipProps: ["NAME", "OT_NAME", "BEZIRK", "name", "ortsteil", "bezeichnung", "ot_name", "ot", "ortsteilname", "ortsteil_name", "bezirk"]
     },
@@ -867,7 +870,7 @@ const wfsLayers = [
       preferredTypeNames: ["alkis_bezirke:bezirksgrenzen"],
       pane: "pane-bezirke",
       zIndex: 430,
-      style: { color: "#5b3a88", weight: 2.4, fillOpacity: 0 },
+      style: { color: "#5b3a88", weight: 2.4, fillOpacity: 0, highlightColor: "#3b0b6b", highlightFillColor: "#5a189a" },
       tooltipProps: ["name", "bezirk", "bezeichnung"],
       defaultOn: true
     },
@@ -935,7 +938,7 @@ var OpenStreetMap_DE = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.pn
 });
 OpenStreetMap_DE.addTo(map);
 
-overlayControl = L.control.layers(null, {}, { collapsed: false }).addTo(map);
+overlayControl = L.control.layers(null, {}, { collapsed: true }).addTo(map);
 map.on("overlayadd", (event) => {
   const id = getOverlayIdByLayer(event.layer);
   if (id) ensureWfsOverlayLoaded(id);
@@ -1228,7 +1231,7 @@ function rebuildOverlayControl() {
   if (overlayControl) {
     map.removeControl(overlayControl);
   }
-  overlayControl = L.control.layers(null, {}, { collapsed: false }).addTo(map);
+  overlayControl = L.control.layers(null, {}, { collapsed: true }).addTo(map);
 
   const labelById = new Map();
   wfsLayers.forEach(layer => labelById.set(layer.id, layer.label));
@@ -1706,6 +1709,151 @@ function orgLooksLikeCommittee(org) {
   return name.includes("ausschuss");
 }
 
+let committeeDataLoaded = false;
+let committeeStandards = [];
+const committeeByShort = new Map();
+const committeeVariantToShort = new Map();
+let committeeNormalizedList = [];
+
+function normalizeCommitteeKey(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function buildCommitteeKeyVariants(value) {
+  const base = normalizeCommitteeKey(value);
+  const compact = base.replace(/\s+/g, "");
+  const variants = [];
+  if (base) variants.push(base);
+  if (compact && compact !== base) variants.push(compact);
+  return variants;
+}
+
+function registerCommitteeVariant(label, short) {
+  if (!label || !short) return;
+  if (committeeByShort.size && !committeeByShort.has(short)) return;
+  buildCommitteeKeyVariants(label).forEach(key => {
+    if (!committeeVariantToShort.has(key)) {
+      committeeVariantToShort.set(key, short);
+    }
+  });
+}
+
+function buildCommitteeMaps(standards, variants) {
+  committeeStandards = Array.isArray(standards) ? standards : [];
+  committeeByShort.clear();
+  committeeVariantToShort.clear();
+  committeeNormalizedList = [];
+
+  committeeStandards.forEach(entry => {
+    if (!entry || !entry.short) return;
+    committeeByShort.set(entry.short, entry);
+    registerCommitteeVariant(entry.short, entry.short);
+    registerCommitteeVariant(entry.name, entry.short);
+    registerCommitteeVariant(entry.slug, entry.short);
+    committeeNormalizedList.push({
+      entry,
+      keyShort: normalizeCommitteeKey(entry.short).replace(/\s+/g, ""),
+      keyName: normalizeCommitteeKey(entry.name).replace(/\s+/g, "")
+    });
+  });
+
+  if (variants && typeof variants === "object") {
+    Object.entries(variants).forEach(([key, short]) => {
+      registerCommitteeVariant(key, short);
+    });
+  }
+}
+
+async function loadCommitteeMaps() {
+  if (committeeDataLoaded) return;
+  try {
+    const [standardRes, variantRes] = await Promise.all([
+      fetch(bvvCommitteeStandardUrl),
+      fetch(bvvCommitteeVariantUrl)
+    ]);
+    const standards = standardRes.ok ? await standardRes.json() : [];
+    const variants = variantRes.ok ? await variantRes.json() : {};
+    buildCommitteeMaps(standards, variants);
+  } catch (err) {
+    console.warn("BVV committee normalization data could not be loaded.", err);
+  }
+  committeeDataLoaded = true;
+}
+
+function resolveCommitteeByPrefix(label) {
+  const key = normalizeCommitteeKey(label).replace(/\s+/g, "");
+  if (!key || key.length > 6) return null;
+  const matches = committeeNormalizedList.filter(item =>
+    item.keyShort.startsWith(key) || item.keyName.startsWith(key)
+  );
+  return matches.length === 1 ? matches[0].entry : null;
+}
+
+function resolveCommitteeFromLabels(labels) {
+  const list = Array.isArray(labels) ? labels : [];
+  for (const label of list) {
+    if (!label) continue;
+    const variants = buildCommitteeKeyVariants(label);
+    for (const key of variants) {
+      const short = committeeVariantToShort.get(key);
+      if (short && committeeByShort.has(short)) {
+        return committeeByShort.get(short);
+      }
+    }
+    const prefixMatch = resolveCommitteeByPrefix(label);
+    if (prefixMatch) return prefixMatch;
+  }
+  return null;
+}
+
+function getCommitteeLabels(membership, org) {
+  const labels = [];
+  const orgShort = org?.shortName || org?.short || "";
+  const orgName = org?.name || "";
+  const membershipOrg = membership?.organization || {};
+  const membershipShort = membershipOrg?.shortName || membershipOrg?.short || "";
+  const membershipName = membershipOrg?.name || "";
+  [orgShort, orgName, membershipShort, membershipName].forEach(value => {
+    const v = String(value || "").trim();
+    if (v) labels.push(v);
+  });
+  return labels;
+}
+
+function formatCommitteeShort(committeeInfo) {
+  if (!committeeInfo) return "";
+  const short = String(committeeInfo.short || committeeInfo.name || "").trim();
+  if (!short) return "";
+  const emoji = String(committeeInfo.emoji || "").trim();
+  return emoji ? `${emoji} ${short}` : short;
+}
+
+function isLikelyCommitteeLabel(label) {
+  const raw = String(label || "").trim();
+  if (!raw) return false;
+  if (/\s/.test(raw)) return false;
+  const compact = raw.replace(/[.\-]/g, "");
+  if (compact.length < 2 || compact.length > 12) return false;
+  if (!/[A-Za-zÄÖÜäöüß]/.test(compact)) return false;
+  return true;
+}
+
+function trackUnknownCommitteeLabel(label) {
+  const raw = String(label || "").trim();
+  if (!raw) return;
+  if (!isLikelyCommitteeLabel(raw)) return;
+  const variants = buildCommitteeKeyVariants(raw);
+  const mapped = variants.some(key => committeeVariantToShort.has(key));
+  if (mapped) return;
+  unknownCommitteeLabels.add(raw);
+}
+
 function getOparlOrgId(value) {
   if (!value) return "";
   if (typeof value === "string") return value;
@@ -1757,6 +1905,7 @@ async function loadOparlApiMap() {
 }
 
 async function loadBvvFromOparl(systemUrl, bezirkName) {
+  await loadCommitteeMaps();
   const sysRes = await fetch(systemUrl);
   if (!sysRes.ok) throw new Error(`OPARL system ${sysRes.status} for ${systemUrl}`);
   const system = await sysRes.json();
@@ -1914,13 +2063,19 @@ function buildBvvPersonCard(person, options) {
     const orgId = getOparlOrgId(membership?.organization);
     const org = orgById?.get(orgId);
     const orgName = (org?.shortName || org?.name || membership?.organization?.shortName || membership?.organization?.name || "").trim();
+    const committeeInfo = resolveCommitteeFromLabels(getCommitteeLabels(membership, org));
+    const orgLabel = committeeInfo ? formatCommitteeShort(committeeInfo) : orgName;
     const roleLabel = String(membership?.role || "").trim();
-    if (!orgName && !roleLabel) return;
+    if (!orgLabel && !roleLabel) return;
+    const committeeLike = orgLooksLikeCommittee(org) || /ausschuss|unterausschuss|beirat|kommission/i.test(orgName) || /ausschuss|unterausschuss|beirat|kommission/i.test(roleLabel);
+    if (!committeeInfo && committeeLike) {
+      trackUnknownCommitteeLabel(orgName || roleLabel);
+    }
     const parts = [];
-    if (orgName) parts.push(orgName);
+    if (orgLabel) parts.push(orgLabel);
     if (roleLabel) parts.push(roleLabel);
     const line = parts.join(" · ").trim();
-    if (line) membershipMeta.push({ org: orgName, role: roleLabel, text: line });
+    if (line) membershipMeta.push({ org: orgLabel, role: roleLabel, text: line, committee: committeeInfo });
   });
   if (membershipMeta.length > 0) {
     const uniqueMap = new Map();
@@ -1937,9 +2092,32 @@ function buildBvvPersonCard(person, options) {
     return committeeOrgIds?.has(orgId) && isActiveMembership(m, today);
   });
   if (activeCommitteeMemberships.length > 0) {
-    card.committee_memberships = activeCommitteeMemberships
-      .map(m => buildMembershipCard(m, orgById?.get(getOparlOrgId(m.organization))))
+    const committeeCards = activeCommitteeMemberships
+      .map(m => {
+        const org = orgById?.get(getOparlOrgId(m.organization));
+        const membershipCard = buildMembershipCard(m, org);
+        const committeeInfo = resolveCommitteeFromLabels(getCommitteeLabels(m, org));
+        if (committeeInfo) {
+          membershipCard.committee = committeeInfo;
+          if (committeeInfo.name) membershipCard.name = committeeInfo.name;
+          membershipCard.short = committeeInfo.short;
+          membershipCard.committeeLabel = formatCommitteeShort(committeeInfo);
+        } else {
+          trackUnknownCommitteeLabel(membershipCard.name);
+        }
+        return membershipCard;
+      })
       .filter(m => Object.keys(m).length > 0);
+
+    const uniqueCommitteeMap = new Map();
+    committeeCards.forEach(item => {
+      const label = (item.short || item.name || "").trim();
+      const roleKey = String(item.role || "").trim();
+      const key = `${label}|${roleKey}`;
+      if (!uniqueCommitteeMap.has(key)) uniqueCommitteeMap.set(key, item);
+    });
+
+    card.committee_memberships = Array.from(uniqueCommitteeMap.values());
     if (card.committee_memberships.length === 0) {
       delete card.committee_memberships;
     }
@@ -2322,6 +2500,9 @@ function logUnknownOparlLabels() {
   }
   if (unknownOparlRoles.size) {
     console.warn("Unrecognized BVV roles from OPARL:", Array.from(unknownOparlRoles).sort());
+  }
+  if (unknownCommitteeLabels.size) {
+    console.warn("Unmapped BVV committee labels from OPARL:", Array.from(unknownCommitteeLabels).sort());
   }
 }
 
@@ -2725,7 +2906,7 @@ function renderPanel(context) {
               const canonical = getBvvRoleCanonical(membership?.role);
               if (canonical === "ausschussvorsitz" || canonical === "stv_ausschussvorsitz") {
                 const roleLabel = normalizeBvvRole(membership?.role);
-                const committeeName = (membership?.name || "").trim();
+                const committeeName = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
                 const committeeSuffix = committeeName ? ` · ${committeeName}` : "";
                 metaLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
               }
