@@ -228,21 +228,23 @@
   }
 
   .meta-toggle {
-    margin-top: 6px;
+    margin-top: 4px;
     background: transparent;
     border: none;
-    color: var(--accent);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 0;
+    text-align: left;
+    width: 100%;
   }
 
   .meta-toggle-arrow {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     line-height: 1;
   }
 
@@ -2717,7 +2719,7 @@ function renderPanel(context) {
           const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
           const isFactionChair = entry.faction_membership && getBvvRoleCanonical(entry.faction_membership.role) === "fraktionsvorsitz";
           const displayRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
-          const committeeLines = [];
+          const metaLines = [];
           if (Array.isArray(entry.committee_memberships)) {
             entry.committee_memberships.forEach(membership => {
               const canonical = getBvvRoleCanonical(membership?.role);
@@ -2725,12 +2727,10 @@ function renderPanel(context) {
                 const roleLabel = normalizeBvvRole(membership?.role);
                 const committeeName = (membership?.name || "").trim();
                 const committeeSuffix = committeeName ? ` · ${committeeName}` : "";
-                committeeLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
+                metaLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
               }
             });
           }
-          const committeeHtml = committeeLines.join("");
-          const metaLines = [];
           if (entry.oparl_status) {
             metaLines.push(`<div class="rep-role">Status: ${entry.oparl_status}</div>`);
           }
@@ -2748,7 +2748,7 @@ function renderPanel(context) {
           }
           const metaId = `bvv-meta-${context.bezirkName || "bezirk"}-${entryIndex}`;
           const metaHtml = metaLines.length
-            ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">Details anzeigen</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${metaLines.join("")}</div>`
+            ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">${displayRole}${sinceText}</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${metaLines.join("")}</div>`
             : "";
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
@@ -2756,8 +2756,7 @@ function renderPanel(context) {
               <div class="rep-name">${entry.name}</div>
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
-            <div class="rep-role">${displayRole}${sinceText}</div>
-            ${committeeHtml}
+            ${metaLines.length ? "" : `<div class="rep-role">${displayRole}${sinceText}</div>`}
             ${metaHtml}
           </div>`;
         });
@@ -2896,7 +2895,7 @@ if (legendEl) {
 }
 
 const districtInfoEl = document.getElementById('districtInfo');
-if (districtInfoEl) {
+  if (districtInfoEl) {
   districtInfoEl.addEventListener('click', (event) => {
     const button = event.target.closest('.meta-toggle');
     if (!button) return;
@@ -2908,8 +2907,6 @@ if (districtInfoEl) {
     panel.style.display = isOpen ? "none" : "block";
     const arrow = button.querySelector('.meta-toggle-arrow');
     if (arrow) arrow.textContent = isOpen ? "▸" : "▾";
-    const label = button.querySelector('.meta-toggle-label');
-    if (label) label.textContent = isOpen ? "Details anzeigen" : "Details ausblenden";
     button.setAttribute('aria-expanded', isOpen ? "false" : "true");
   });
 }
