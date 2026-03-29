@@ -671,13 +671,21 @@ let activePartyFilter = null;
   const btgTooltipByBwk = new Map();
   let btgCitywide = [];
 const bvvByBezirk = new Map();
+const bvvExecutiveByBezirk = new Map();
 const bvvOparlStatusByBezirk = new Map();
 const bezirkByArkis = new Map();
 const oparlApiByBezirk = new Map();
 let oparlApiLoaded = false;
+let oparlApiLoading = null;
 const unknownOparlParties = new Set();
 const unknownOparlRoles = new Set();
 const unknownCommitteeLabels = new Set();
+
+let departmentKeywordLabels = {};
+let departmentClusterLabels = {};
+let departmentKeywordToCluster = {};
+let departmentMapsLoaded = false;
+let departmentMapsLoading = null;
 
 const BVV_ROLE_DICTIONARY = {
   mitglied_bvv: {
@@ -830,6 +838,10 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const bvvCommitteeStandardUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-standardisiert.json";
   const bvvCommitteeVariantUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-variable-schreibweisen.json";
   const oparlApiListUrl = "./data-sources/BVV-Listen_2026-Mar/APIs/Opendata-Berlin-APIs.txt";
+  const bvvExecutiveCsvUrl = "./data-sources/Bezirksamt-Exekutivrollen.csv";
+  const departmentKeywordLabelsUrl = "./data-sources/department-keyword-labels.json";
+  const departmentClusterLabelsUrl = "./data-sources/department-cluster-labels.json";
+  const departmentKeywordToClusterUrl = "./data-sources/department-keyword-to-cluster.json";
   const bezirkArkisCsvUrl = "./data-sources/bezirke_arkis.csv";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
   const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
@@ -1896,24 +1908,127 @@ function getOparlOrgId(value) {
   return value.id || "";
 }
 
+function normalizeOparlBezirkName(value) {
+  let name = String(value || "").trim();
+  if (!name) return "";
+  name = name.replace(/^Berlin[-\s]*/i, "").trim();
+  if (/^Fr\.\s*-?\s*Kreuzberg$/i.test(name)) {
+    return "Friedrichshain-Kreuzberg";
+  }
+  return name;
+}
+
+function normalizeDepartmentKeyword(value) {
+  let key = String(value || "").trim().toLowerCase();
+  if (!key) return "";
+  key = key.replace(/\s+/g, "_");
+  key = key.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+  return key;
+}
+
+function parseDepartmentKeywords(value) {
+  if (Array.isArray(value)) return value.map(normalizeDepartmentKeyword).filter(Boolean);
+  const raw = String(value || "").trim();
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.map(normalizeDepartmentKeyword).filter(Boolean);
+    }
+  } catch (_) {
+    // fallthrough to delimiter-based parsing
+  }
+  return raw
+    .split(/[,;|]/)
+    .map(normalizeDepartmentKeyword)
+    .filter(Boolean);
+}
+
+async function loadDepartmentMaps() {
+  if (departmentMapsLoaded) return;
+  if (departmentMapsLoading) return departmentMapsLoading;
+  departmentMapsLoading = Promise.all([
+    fetch(departmentKeywordLabelsUrl).then(res => res.ok ? res.json() : {}),
+    fetch(departmentClusterLabelsUrl).then(res => res.ok ? res.json() : {}),
+    fetch(departmentKeywordToClusterUrl).then(res => res.ok ? res.json() : {})
+  ]).then(([keywordLabels, clusterLabels, keywordToCluster]) => {
+    departmentKeywordLabels = keywordLabels || {};
+    departmentClusterLabels = clusterLabels || {};
+    departmentKeywordToCluster = keywordToCluster || {};
+    departmentMapsLoaded = true;
+    departmentMapsLoading = null;
+  }).catch((err) => {
+    console.warn("Department label maps could not be loaded.", err);
+    departmentKeywordLabels = {};
+    departmentClusterLabels = {};
+    departmentKeywordToCluster = {};
+    departmentMapsLoaded = true;
+    departmentMapsLoading = null;
+  });
+  return departmentMapsLoading;
+}
+
+function interpretDepartment(person) {
+  const keywords = (person?.department_keywords || []).map(normalizeDepartmentKeyword).filter(Boolean);
+  const clusters = Array.isArray(person?.department_clusters) && person.department_clusters.length > 0
+    ? person.department_clusters
+    : [...new Set(
+        keywords
+          .map((k) => departmentKeywordToCluster[k])
+          .filter(Boolean)
+      )];
+
+  return {
+    keywords,
+    keywordLabelsRendered: keywords.map((k) => departmentKeywordLabels[k] ?? k),
+    clusters,
+    clusterLabelsRendered: clusters.map((c) => departmentClusterLabels[c] ?? c)
+  };
+}
+
+function getDepartmentClusterText(entry) {
+  if (!entry) return "";
+  const rawKeywords = Array.isArray(entry.department_keywords) ? entry.department_keywords : [];
+  const rawClusters = Array.isArray(entry.department_clusters) ? entry.department_clusters : [];
+  const keywords = rawKeywords.map(normalizeDepartmentKeyword).filter(Boolean);
+  const clusters = rawClusters.length > 0
+    ? rawClusters
+    : [...new Set(
+        keywords
+          .map((k) => departmentKeywordToCluster[k])
+          .filter(Boolean)
+      )];
+  const labels = clusters.map((c) => departmentClusterLabels[c] ?? c).filter(Boolean);
+  return labels.join(" · ");
+}
+
 async function fetchOparlPaged(url) {
+  const MAX_PAGES = 100;
+  let pageCount = 0;
   let next = url;
   const all = [];
-  while (next) {
-    const res = await fetch(next);
-    if (!res.ok) throw new Error(`OPARL ${res.status} for ${next}`);
-    const payload = await res.json();
-    if (Array.isArray(payload.data)) {
-      all.push(...payload.data);
+  while (next && pageCount++ < MAX_PAGES) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const res = await fetch(next, { signal: controller.signal });
+      if (!res.ok) throw new Error(`OPARL ${res.status} for ${next}`);
+      const payload = await res.json();
+      if (Array.isArray(payload.data)) {
+        all.push(...payload.data);
+      }
+      next = payload.links?.next || null;
+    } finally {
+      clearTimeout(timer);
     }
-    next = payload.links?.next || null;
   }
   return all;
 }
 
 async function loadOparlApiMap() {
   if (oparlApiLoaded) return oparlApiByBezirk;
-  return new Promise((resolve) => {
+  if (oparlApiLoading) return oparlApiLoading;
+  oparlApiLoading = new Promise((resolve) => {
     Papa.parse(oparlApiListUrl, {
       download: true,
       header: true,
@@ -1924,20 +2039,23 @@ async function loadOparlApiMap() {
           const bez = normalizeBez(row.BEZ || row.bez || row.Bez);
           const api = (row["OPARL-API"] || row.OPARL || row.oparl || "").trim();
           if (!api) return;
-          const nameFromDistrict = bez ? districtByNumber.get(bez)?.name : null;
-          const name = nameFromDistrict || BEZIRK_FALLBACK[bez] || "";
+          const nameFromRow = normalizeOparlBezirkName(row["Wahlkreis-Name"] || row["Wahlkreisname"] || row.Name || row.name);
+          const name = nameFromRow || BEZIRK_FALLBACK[bez] || "";
           if (name) oparlApiByBezirk.set(name, api);
         });
         oparlApiLoaded = true;
+        oparlApiLoading = null;
         resolve(oparlApiByBezirk);
       },
       error: (err) => {
         console.warn("OPARL API list could not be loaded.", err);
         oparlApiLoaded = true;
+        oparlApiLoading = null;
         resolve(oparlApiByBezirk);
       }
     });
   });
+  return oparlApiLoading;
 }
 
 async function loadBvvFromOparl(systemUrl, bezirkName) {
@@ -1983,7 +2101,8 @@ async function loadBvvFromOparl(systemUrl, bezirkName) {
       bvvOrgIds,
       factionOrgIds,
       committeeOrgIds,
-      today
+      today,
+      bezirkName
     });
     if (card) entries.push(card);
   });
@@ -2017,6 +2136,14 @@ function normalizeBvvRole(value) {
   return raw;
 }
 
+function applyBezirkRoleOverride(roleLabel, bezirkName) {
+  if (!roleLabel) return roleLabel;
+  if (bezirkName === "Reinickendorf" && roleLabel === "BVV-Vorsitz") {
+    return "Vorsteherin";
+  }
+  return roleLabel;
+}
+
 function getBvvRoleCanonical(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
@@ -2047,7 +2174,8 @@ function buildBvvPersonCard(person, options) {
     bvvOrgIds,
     factionOrgIds,
     committeeOrgIds,
-    today = new Date()
+    today = new Date(),
+    bezirkName = ""
   } = options || {};
 
   const memberships = Array.isArray(person?.membership) ? person.membership : [];
@@ -2073,6 +2201,10 @@ function buildBvvPersonCard(person, options) {
 
   const name = (person?.name || [person?.givenName, person?.familyName].filter(Boolean).join(" ")).trim();
   if (!name) return null;
+  const rawRole = String(bvvMembership?.role || "").trim();
+  if (isKnownBvvOparlExclusion({ name, role: rawRole, bezirkName })) {
+    return null;
+  }
   trackUnknownOparlRole(bvvMembership?.role);
   const role = normalizeBvvRole(bvvMembership?.role);
   const since = (bvvMembership?.startDate || "").trim();
@@ -2170,6 +2302,19 @@ function buildBvvPersonCard(person, options) {
   }
 
   return card;
+}
+
+function isKnownBvvOparlExclusion({ name, role, bezirkName }) {
+  if (!name) return false;
+  const normalizedBezirk = String(bezirkName || "").trim();
+  const normalizedName = String(name || "").trim();
+  const normalizedRole = String(role || "").trim();
+  if (normalizedBezirk === "Lichtenberg" && /stefan\s+bley/i.test(normalizedName)) {
+    if (/schulsportweikultfm/i.test(normalizedRole) && /(bzstr|bezirksstadtrat|stadtrat)/i.test(normalizedRole)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function runBvvPersonCardTests() {
@@ -2645,6 +2790,55 @@ async function loadBvvLists() {
   }));
 }
 
+async function loadExecutiveRoles() {
+  await loadDepartmentMaps();
+  return new Promise((resolve) => {
+    Papa.parse(bvvExecutiveCsvUrl, {
+      download: true,
+      header: true,
+      delimiter: ";",
+      skipEmptyLines: true,
+      complete: (result) => {
+        const seen = new Set();
+        (result.data || []).forEach(row => {
+          const bezirk = String(row.Bezirk || row.bezirk || row.BEZIRK || "").trim();
+          const name = String(row.Name || row.name || "").trim();
+          const roleRaw = String(row.Role || row.role || row.Rolle || row.Funktion || row.RoleRaw || "").trim();
+          if (!bezirk || !name || !roleRaw) return;
+          const partyRaw = String(row.Party || row.party || row.Partei || "").trim();
+          const keywordsRaw = row.department_keywords || row.department_keyword || row.DepartmentKeywords || row.DepartmentKeyword || "";
+          const clustersRaw = row.department_clusters || row.department_cluster || row.DepartmentClusters || row.DepartmentCluster || "";
+          const departmentKeywords = parseDepartmentKeywords(keywordsRaw);
+          const departmentClusters = parseDepartmentKeywords(clustersRaw);
+          const interpreted = interpretDepartment({
+            department_keywords: departmentKeywords,
+            department_clusters: departmentClusters
+          });
+          const entry = {
+            bezirk,
+            name,
+            role: roleRaw,
+            party: normalizeParty(partyRaw),
+            department_keywords: interpreted.keywords,
+            department_clusters: interpreted.clusters,
+            department_cluster_labels: interpreted.clusterLabelsRendered
+          };
+          const key = `${bezirk}|${name}|${entry.party}|${roleRaw}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          if (!bvvExecutiveByBezirk.has(bezirk)) bvvExecutiveByBezirk.set(bezirk, []);
+          bvvExecutiveByBezirk.get(bezirk).push(entry);
+        });
+        resolve();
+      },
+      error: (err) => {
+        console.warn("Executive roles could not be loaded.", err);
+        resolve();
+      }
+    });
+  });
+}
+
 function loadBezirkArkis() {
   return new Promise((resolve) => {
     Papa.parse(bezirkArkisCsvUrl, {
@@ -2962,7 +3156,9 @@ function renderPanel(context) {
   for (const lvl of levels) {
     const label = levelLabels[lvl];
     if (lvl === "bezirk") {
-      const entries = context.bezirkName ? filterEntriesByParty(bvvByBezirk.get(context.bezirkName) || []) : [];
+      const baseEntries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
+      const executiveEntries = context.bezirkName ? (bvvExecutiveByBezirk.get(context.bezirkName) || []) : [];
+      const entries = context.bezirkName ? filterEntriesByParty([...baseEntries, ...executiveEntries]) : [];
       if (entries.length > 0) {
         const orderedEntries = [...entries].sort((a, b) => {
           const roleA = getBvvRoleCanonical(a?.role);
@@ -2978,7 +3174,8 @@ function renderPanel(context) {
           const sinceYear = formatSinceYear(entry.since);
           const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
           const isFactionChair = entry.faction_membership && getBvvRoleCanonical(entry.faction_membership.role) === "fraktionsvorsitz";
-          const displayRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
+          const baseRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
+          const displayRole = applyBezirkRoleOverride(baseRole, context.bezirkName);
           const metaLines = [];
           if (Array.isArray(entry.committee_memberships)) {
             entry.committee_memberships.forEach(membership => {
@@ -3019,6 +3216,8 @@ function renderPanel(context) {
           const metaHtml = metaLines.length
             ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">${displayRole}${sinceText}</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${metaLines.join("")}</div>`
             : "";
+          const clusterText = getDepartmentClusterText(entry);
+          const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
@@ -3027,6 +3226,7 @@ function renderPanel(context) {
             </div>
             ${metaLines.length ? "" : `<div class="rep-role">${displayRole}${sinceText}</div>`}
             ${metaHtml}
+            ${clusterHtml}
           </div>`;
         });
       }
@@ -3189,6 +3389,7 @@ async function initData() {
         loadEuCSV(),
         loadBtgTooltipCSV(),
         loadBvvLists(),
+        loadExecutiveRoles(),
         loadBezirkArkis()
       ]);
     if (results[0].status === "rejected" || results[1].status === "rejected") {

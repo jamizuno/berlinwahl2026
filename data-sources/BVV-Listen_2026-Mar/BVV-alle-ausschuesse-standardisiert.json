@@ -210,6 +210,13 @@
     "category": "erweitert"
   },
   {
+    "name": "Ausschuss für Sondermittel der BVV",
+    "short": "SoM",
+    "emoji": "🪙",
+    "slug": "sondermittel",
+    "category": "erweitert"
+  },
+  {
     "name": "Unterausschuss Pandemie",
     "short": "UA-Pandemie",
     "emoji": "🦠",
