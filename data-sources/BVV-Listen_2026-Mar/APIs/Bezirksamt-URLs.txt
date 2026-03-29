@@ -1,0 +1,13 @@
+Bezirk;URL Bezirksamt-Kollegium
+Mitte;https://www.berlin.de/ba-mitte/politik-und-verwaltung/bezirksamt/
+Friedrichshain-Kreuzberg;https://www.berlin.de/ba-friedrichshain-kreuzberg/politik-und-verwaltung/bezirksamt/
+Pankow;https://www.berlin.de/ba-pankow/politik-und-verwaltung/bezirksamt/
+Charlottenburg-Wilmersdorf;https://www.berlin.de/ba-charlottenburg-wilmersdorf/politik/bezirksamt/
+Spandau;https://www.berlin.de/ba-spandau/politik-und-verwaltung/bezirksamt/das-kollegium/
+Steglitz-Zehlendorf;https://www.berlin.de/ba-steglitz-zehlendorf/politik-und-verwaltung/bezirksamt/
+Tempelhof-Schöneberg;https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/bezirksamt/das-kollegium/
+Neukölln;https://www.berlin.de/ba-neukoelln/politik-und-verwaltung/bezirksamt/
+Treptow-Köpenick;https://www.berlin.de/ba-treptow-koepenick/politik-und-verwaltung/bezirksamt/artikel.5752.php
+Marzahn-Hellersdorf;https://www.berlin.de/ba-marzahn-hellersdorf/politik-und-verwaltung/bezirksamt/kollegium/
+Lichtenberg;https://www.berlin.de/ba-lichtenberg/politik-und-verwaltung/bezirksamt/
+Reinickendorf;https://www.berlin.de/ba-reinickendorf/politik-und-verwaltung/bezirksamt/
