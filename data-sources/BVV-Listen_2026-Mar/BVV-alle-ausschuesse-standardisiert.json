@@ -1,0 +1,268 @@
+[
+  {
+    "name": "Bezirksverordnetenversammlung",
+    "short": "BVV",
+    "emoji": "🏛️",
+    "slug": "bvv",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Ältestenrat",
+    "short": "ÄR",
+    "emoji": "🧓",
+    "slug": "aeltestenrat",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Vorstand der BVV",
+    "short": "VORST",
+    "emoji": "📋",
+    "slug": "vorstand",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Hauptausschuss",
+    "short": "HA",
+    "emoji": "🧭",
+    "slug": "hauptausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Rechnungsprüfungsausschuss",
+    "short": "RPA",
+    "emoji": "🔍",
+    "slug": "rechnungspruefung",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Jugendhilfeausschuss",
+    "short": "JHA",
+    "emoji": "👶",
+    "slug": "jugendhilfe",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Eingaben und Beschwerden",
+    "short": "E&B",
+    "emoji": "📨",
+    "slug": "eingaben_beschwerden",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Geschäftsordnung",
+    "short": "GO",
+    "emoji": "📜",
+    "slug": "geschaeftsordnung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Haushalt und Personal",
+    "short": "HHP",
+    "emoji": "💰",
+    "slug": "haushalt_personal",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Stadtentwicklung und Wohnen",
+    "short": "StadtEntw",
+    "emoji": "🏗️",
+    "slug": "stadtentwicklung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Verkehr und Ordnung",
+    "short": "VerkOrd",
+    "emoji": "🚦",
+    "slug": "verkehr_ordnung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Umwelt, Natur, Grünflächen und Klimaschutz",
+    "short": "Umwelt",
+    "emoji": "🌱",
+    "slug": "umwelt",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Schule",
+    "short": "Schule",
+    "emoji": "🏫",
+    "slug": "schule",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Sport",
+    "short": "Sport",
+    "emoji": "⚽",
+    "slug": "sport",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Kultur und Weiterbildung",
+    "short": "Kultur",
+    "emoji": "🎭",
+    "slug": "kultur",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Soziales, Arbeit und Gesundheit",
+    "short": "SozGes",
+    "emoji": "❤️",
+    "slug": "soziales_gesundheit",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Wirtschaft und Tourismus",
+    "short": "Wirt",
+    "emoji": "📈",
+    "slug": "wirtschaft",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Verwaltung und Bürgerdienste",
+    "short": "Verw",
+    "emoji": "🗂️",
+    "slug": "verwaltung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Partizipation, Migration und Integration",
+    "short": "PartInt",
+    "emoji": "🌍",
+    "slug": "partizipation_integration",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Diversity, Gleichstellung und Antidiskriminierung",
+    "short": "Diversity",
+    "emoji": "🏳️‍🌈",
+    "slug": "diversity",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Gesundheit",
+    "short": "Gesund",
+    "emoji": "🩺",
+    "slug": "gesundheit",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Bildung, Schule und Kultur",
+    "short": "BildKult",
+    "emoji": "📚",
+    "slug": "bildung_kultur",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Schule und Sport",
+    "short": "SchuleSport",
+    "emoji": "🏫⚽",
+    "slug": "schule_sport",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Soziales und Teilhabe",
+    "short": "SozTeil",
+    "emoji": "🤝",
+    "slug": "soziales_teilhabe",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Klima-, Umwelt- und Naturschutz",
+    "short": "Klima",
+    "emoji": "🌍",
+    "slug": "klima",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Bauen, Stadtentwicklung und Facility Management",
+    "short": "BauenFM",
+    "emoji": "🏗️",
+    "slug": "bauen_facility",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Liegenschaften und IT",
+    "short": "LiegIT",
+    "emoji": "💻",
+    "slug": "liegenschaften_it",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Ordnung, Straßen und Tiefbau",
+    "short": "OrdStr",
+    "emoji": "🚧",
+    "slug": "ordnung_strassen",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Mobilität und Wirtschaft",
+    "short": "MobWirt",
+    "emoji": "🚗📈",
+    "slug": "mobilitaet_wirtschaft",
+    "category": "erweitert"
+  },
+  {
+    "name": "Ausschuss für Weiterbildung und Städtepartnerschaften",
+    "short": "Weiterb",
+    "emoji": "🌐",
+    "slug": "weiterbildung",
+    "category": "erweitert"
+  },
+  {
+    "name": "Unterausschuss Pandemie",
+    "short": "UA-Pandemie",
+    "emoji": "🦠",
+    "slug": "ua_pandemie",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Haushaltsplanung (Jugendhilfeausschuss)",
+    "short": "AG-HH-JHA",
+    "emoji": "💰",
+    "slug": "ag_haushalt_jha",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Jugendhilfeplanung",
+    "short": "AG-JHP",
+    "emoji": "👶",
+    "slug": "ag_jugendhilfeplanung",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Geschäftsordnung",
+    "short": "AG-GO",
+    "emoji": "📜",
+    "slug": "ag_geschaeftsordnung",
+    "category": "untergremium"
+  },
+  {
+    "name": "Beirat für Menschen mit Behinderung",
+    "short": "BR-Beh",
+    "emoji": "♿",
+    "slug": "beirat_behinderung",
+    "category": "beirat"
+  },
+  {
+    "name": "Beirat für Partizipation und Integration",
+    "short": "BR-PartInt",
+    "emoji": "🌍",
+    "slug": "beirat_partizipation",
+    "category": "beirat"
+  },
+  {
+    "name": "Spielplatzkommission",
+    "short": "SPK",
+    "emoji": "🛝",
+    "slug": "spielplatzkommission",
+    "category": "kommission"
+  },
+  {
+    "name": "Gedenktafelkommission",
+    "short": "GTK",
+    "emoji": "🪧",
+    "slug": "gedenktafelkommission",
+    "category": "kommission"
+  }
+]
