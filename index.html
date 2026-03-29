@@ -227,6 +227,29 @@
     margin-top: 4px;
   }
 
+  .meta-toggle {
+    margin-top: 6px;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+  }
+
+  .meta-toggle-arrow {
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+
+  .rep-meta {
+    margin-top: 4px;
+  }
+
     .party-CDU { background: rgba(43,47,54,0.45); color: #eef2f7; border: 1px solid rgba(120,130,145,0.5); }
     .party-SPD { background: rgba(212,38,60,0.25); color: #f08090; border: 1px solid rgba(212,38,60,0.4); }
     .party-Grüne { background: rgba(58,140,78,0.25); color: #7dd492; border: 1px solid rgba(58,140,78,0.4); }
@@ -1885,6 +1908,7 @@ function buildBvvPersonCard(person, options) {
 
   const membershipMeta = [];
   memberships.forEach(membership => {
+    if (!isActiveMembership(membership, today)) return;
     const orgId = getOparlOrgId(membership?.organization);
     const org = orgById?.get(orgId);
     const orgName = (org?.shortName || org?.name || membership?.organization?.shortName || membership?.organization?.name || "").trim();
@@ -1894,10 +1918,15 @@ function buildBvvPersonCard(person, options) {
     if (orgName) parts.push(orgName);
     if (roleLabel) parts.push(roleLabel);
     const line = parts.join(" · ").trim();
-    if (line) membershipMeta.push(line);
+    if (line) membershipMeta.push({ org: orgName, role: roleLabel, text: line });
   });
   if (membershipMeta.length > 0) {
-    const uniqueMeta = Array.from(new Set(membershipMeta));
+    const uniqueMap = new Map();
+    membershipMeta.forEach(item => {
+      if (!item?.text) return;
+      if (!uniqueMap.has(item.text)) uniqueMap.set(item.text, item);
+    });
+    const uniqueMeta = Array.from(uniqueMap.values());
     if (uniqueMeta.length > 0) card.oparl_memberships = uniqueMeta;
   }
 
@@ -2683,9 +2712,11 @@ function renderPanel(context) {
           if (scoreA !== scoreB) return scoreA - scoreB;
           return String(a?.name || "").localeCompare(String(b?.name || ""), "de");
         });
-        orderedEntries.forEach(entry => {
+        orderedEntries.forEach((entry, entryIndex) => {
           const sinceYear = formatSinceYear(entry.since);
           const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
+          const isFactionChair = entry.faction_membership && getBvvRoleCanonical(entry.faction_membership.role) === "fraktionsvorsitz";
+          const displayRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
           const committeeLines = [];
           if (Array.isArray(entry.committee_memberships)) {
             entry.committee_memberships.forEach(membership => {
@@ -2704,19 +2735,28 @@ function renderPanel(context) {
             metaLines.push(`<div class="rep-role">Status: ${entry.oparl_status}</div>`);
           }
           if (Array.isArray(entry.oparl_memberships)) {
-            entry.oparl_memberships.forEach(line => {
-              const text = String(line || "").trim();
-              if (text) metaLines.push(`<div class="rep-role">${text}</div>`);
+            entry.oparl_memberships.forEach(item => {
+              const text = typeof item === "string" ? item : (item?.text || "");
+              const roleText = typeof item === "string" ? text.split(" · ").slice(1).join(" · ") : (item?.role || "");
+              const normalizedRole = String(roleText || "").toLowerCase();
+              if (/bezirksverordnet/.test(normalizedRole)) return;
+              if (/fraktionsvorsitz/.test(normalizedRole)) return;
+              if (/fraktionsmitglied/.test(normalizedRole)) return;
+              const safeText = String(text || "").trim();
+              if (safeText) metaLines.push(`<div class="rep-role">${safeText}</div>`);
             });
           }
-          const metaHtml = metaLines.join("");
+          const metaId = `bvv-meta-${context.bezirkName || "bezirk"}-${entryIndex}`;
+          const metaHtml = metaLines.length
+            ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">Details anzeigen</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${metaLines.join("")}</div>`
+            : "";
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
             </div>
-            <div class="rep-role">${entry.role}${sinceText}</div>
+            <div class="rep-role">${displayRole}${sinceText}</div>
             ${committeeHtml}
             ${metaHtml}
           </div>`;
@@ -2733,12 +2773,12 @@ function renderPanel(context) {
           const labelText = label;
           const role = isList
             ? (() => {
-              const parts = ["Landtagsabgeordnete/r (MdA)", "Listenmandat"];
+              const parts = ["Abgeordnete/r (MdA)", "Listenmandat"];
               if (entry.note) parts.push(entry.note);
               return parts.join(" · ");
             })()
             : (() => {
-              const parts = ["Landtagsabgeordnete/r (MdA)", "Direktmandat"];
+              const parts = ["Abgeordnete/r (MdA)", "Direktmandat"];
               return parts.join(" · ");
             })();
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
@@ -2852,6 +2892,25 @@ if (legendEl) {
     const party = button.dataset.party;
     if (!party) return;
     setPartyFilter(party);
+  });
+}
+
+const districtInfoEl = document.getElementById('districtInfo');
+if (districtInfoEl) {
+  districtInfoEl.addEventListener('click', (event) => {
+    const button = event.target.closest('.meta-toggle');
+    if (!button) return;
+    const targetId = button.dataset.target;
+    if (!targetId) return;
+    const panel = document.getElementById(targetId);
+    if (!panel) return;
+    const isOpen = panel.style.display === "block";
+    panel.style.display = isOpen ? "none" : "block";
+    const arrow = button.querySelector('.meta-toggle-arrow');
+    if (arrow) arrow.textContent = isOpen ? "▸" : "▾";
+    const label = button.querySelector('.meta-toggle-label');
+    if (label) label.textContent = isOpen ? "Details anzeigen" : "Details ausblenden";
+    button.setAttribute('aria-expanded', isOpen ? "false" : "true");
   });
 }
 
