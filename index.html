@@ -717,7 +717,7 @@ const BVV_ROLE_DICTIONARY = {
   stv_vorsteher_bvv: {
     label: "stellv. BVV-Vorsitz",
     organization_classifications_allowed: ["parlament"],
-    source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin", "Stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz"]
+    source_labels_common: ["Stellvertretender Vorsteher", "Stv. Vorsteher", "stellv. Vorsteher", "stellv. Vorsteherin", "Stellv. Bezirksverordnetenvorsteher", "stellv. Bezirksverordnetenvorsteher", "stellv. BV-Vorsteher/in", "Stv. BVV-Vorsitz", "Stellv. BVV-Vorsitz", "stellv. Vorsteherin der BVV"]
   },
   bezirksbuergermeister: {
     label: "Bezirksbürgermeister/in",
@@ -2160,6 +2160,32 @@ function normalizeBvvRole(value) {
   return raw;
 }
 
+function normalizeRoleMatchText(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss");
+}
+
+function isBezirksamtRole(value) {
+  const text = normalizeRoleMatchText(value);
+  if (!text) return false;
+  if (text.includes("bezirksbuergermeister")) return true;
+  if (text.startsWith("stadtrat") || text.startsWith("bezirksstadtrat")) return true;
+  return false;
+}
+
+function isSenateRole(value) {
+  const text = normalizeRoleMatchText(value);
+  if (!text) return false;
+  if (text.includes("regierender buergermeister") || text.includes("regierende buergermeisterin")) return true;
+  if (text.includes("senator")) return true;
+  return false;
+}
+
 function applyBezirkRoleOverride(roleLabel, bezirkName) {
   if (!roleLabel) return roleLabel;
   if (bezirkName === "Reinickendorf" && roleLabel === "BVV-Vorsitz") {
@@ -2209,6 +2235,13 @@ function buildBvvPersonCard(person, options) {
   });
   if (!activeBvv.length) return null;
   const bvvMembership = pickLatestMembership(activeBvv);
+  const leadershipMembership = pickLatestMembership(
+    activeBvv.filter(m => {
+      const canonical = getBvvRoleCanonical(m.role);
+      return canonical === "vorsteher_bvv" || canonical === "stv_vorsteher_bvv";
+    })
+  );
+  const primaryBvvMembership = leadershipMembership || bvvMembership;
 
   const activeFaction = memberships.filter(m => {
     const orgId = getOparlOrgId(m.organization);
@@ -2229,9 +2262,9 @@ function buildBvvPersonCard(person, options) {
   if (isKnownBvvOparlExclusion({ name, role: rawRole, bezirkName })) {
     return null;
   }
-  trackUnknownOparlRole(bvvMembership?.role);
-  const role = normalizeBvvRole(bvvMembership?.role);
-  const since = (bvvMembership?.startDate || "").trim();
+  trackUnknownOparlRole(primaryBvvMembership?.role);
+  const role = normalizeBvvRole(primaryBvvMembership?.role);
+  const since = (primaryBvvMembership?.startDate || "").trim();
   const normalizedParty = normalizeParty(partyLabel || "fraktionslos");
   if (!STANDARD_PARTIES.has(normalizedParty)) {
     unknownOparlParties.add(partyLabel || normalizedParty || "unbekannt");
@@ -3258,8 +3291,10 @@ function renderPanel(context) {
       const entries = context.bezirkName ? filterEntriesByParty([...baseEntries, ...executiveEntries]) : [];
       if (entries.length > 0) {
         const orderedEntries = [...entries].sort((a, b) => {
-          const roleA = getBvvRoleCanonical(a?.role);
-          const roleB = getBvvRoleCanonical(b?.role);
+          const isFactionChairA = a?.faction_membership && getBvvRoleCanonical(a.faction_membership.role) === "fraktionsvorsitz";
+          const isFactionChairB = b?.faction_membership && getBvvRoleCanonical(b.faction_membership.role) === "fraktionsvorsitz";
+          const roleA = isFactionChairA ? "fraktionsvorsitz" : getBvvRoleCanonical(a?.role);
+          const roleB = isFactionChairB ? "fraktionsvorsitz" : getBvvRoleCanonical(b?.role);
           const rankA = BVV_ROLE_ORDER.indexOf(roleA);
           const rankB = BVV_ROLE_ORDER.indexOf(roleB);
           const scoreA = rankA === -1 ? BVV_ROLE_ORDER.length + 1 : rankA;
@@ -3273,6 +3308,7 @@ function renderPanel(context) {
           const isFactionChair = entry.faction_membership && getBvvRoleCanonical(entry.faction_membership.role) === "fraktionsvorsitz";
           const baseRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
           const displayRole = applyBezirkRoleOverride(baseRole, context.bezirkName);
+          const labelText = isBezirksamtRole(normalizeBvvRole(entry.role)) ? "Bezirk (Bezirksamt)" : label;
           const metaLines = [];
           if (Array.isArray(entry.committee_memberships)) {
             entry.committee_memberships.forEach(membership => {
@@ -3316,7 +3352,7 @@ function renderPanel(context) {
           const clusterText = getDepartmentClusterText(entry);
           const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
           html += `<div class="rep-card">
-            <div class="rep-level">${label}</div>
+            <div class="rep-level">${labelText}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
               <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
@@ -3339,7 +3375,7 @@ function renderPanel(context) {
           const isExecutive = entry.isExecutive === true;
           const isList = !isExecutive && entry.art !== "Direkt";
           const isExecDivider = executives.length > 0 && execStartIndex > 0 && index === execStartIndex;
-          const labelText = label;
+          const labelText = isExecutive && isSenateRole(entry.role) ? "Senat Berlin" : label;
           const role = isExecutive
             ? (entry.role || "Senat")
             : (isList
