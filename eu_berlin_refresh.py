@@ -1,6 +1,7 @@
 import csv
 import datetime as dt
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -178,6 +179,15 @@ def is_target_list(electoral_list):
     return TARGET_LIST_LABEL.lower() in label
 
 
+def is_berlin_residence(residence):
+    if not residence:
+        return False
+    text = str(residence).strip().lower()
+    if not text:
+        return False
+    return re.search(r"\bberlin\b", text) is not None
+
+
 def main():
     today = dt.date.today()
 
@@ -203,6 +213,7 @@ def main():
     full_rows = []
     truth_rows = []
     filtered_out = 0
+    berlin_residence_count = 0
 
     for idx, item in enumerate(active, start=1):
         if idx % 50 == 0:
@@ -210,9 +221,7 @@ def main():
 
         electoral_data = item.get("electoral_data") or {}
         electoral_list = electoral_data.get("electoral_list") or {}
-        if not is_target_list(electoral_list):
-            filtered_out += 1
-            continue
+        is_berlin_list = is_target_list(electoral_list)
 
         politician_ref = item.get("politician") or {}
         politician_id = politician_ref.get("id")
@@ -220,6 +229,13 @@ def main():
         if politician_id and politician is None:
             politician = safe_request_json(f"/politicians/{politician_id}", label="politician").get("data", {})
             politician_cache[politician_id] = politician
+        residence = (politician or {}).get("residence") or ""
+        is_berlin_res = is_berlin_residence(residence)
+        if not (is_berlin_list or is_berlin_res):
+            filtered_out += 1
+            continue
+        if is_berlin_res and not is_berlin_list:
+            berlin_residence_count += 1
 
         party = (politician or {}).get("party") or {}
         party_id = party.get("id")
@@ -264,6 +280,8 @@ def main():
             "party_name": party_details.get("label") if party_details else party.get("label", ""),
             "party_short_name": party_short,
             "faction": resolve_fraction_label(item.get("fraction_membership") or [], today),
+            "residence": residence,
+            "berlin_residence": is_berlin_res,
             "electoral_district_id": "",
             "electoral_district_label": "",
             "electoral_list": electoral_list.get("label") or "",
@@ -280,9 +298,13 @@ def main():
             "wikidata_id": politician.get("qid_wikidata") if politician else "",
         })
 
+        list_label = electoral_list.get("label") or TARGET_LIST_LABEL
+        if is_berlin_res and not is_berlin_list:
+            list_label = f"Wohnsitz Berlin · {list_label}"
+
         truth_rows.append({
             "AWK": "",
-            "Wahlkreis": electoral_list.get("label") or TARGET_LIST_LABEL,
+            "Wahlkreis": list_label,
             "MdA_2025": full_name,
             "party_short_name": party_short,
             "politician_id": politician_id or "",
@@ -323,6 +345,8 @@ def main():
         "party_name",
         "party_short_name",
         "faction",
+        "residence",
+        "berlin_residence",
         "electoral_district_id",
         "electoral_district_label",
         "electoral_list",
@@ -377,7 +401,8 @@ def main():
     print(f"Wrote full CSV: {FULL_OUT}")
     print(f"Wrote truth CSV: {TRUTH_OUT}")
     print(f"Filtered out (non-Landesliste Berlin): {filtered_out}")
-    print(f"Rows retained for Landesliste Berlin: {len(truth_rows)}")
+    print(f"Rows retained for Berlin list or Berlin residence: {len(truth_rows)}")
+    print(f"Rows added by Berlin residence: {berlin_residence_count}")
 
 
 if __name__ == "__main__":

@@ -227,6 +227,24 @@
     margin-top: 2px;
   }
 
+  .abbr-toggle {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .abbr-toggle .abbr-long {
+    display: none;
+  }
+
+  .abbr-toggle:hover .abbr-short {
+    display: none;
+  }
+
+  .abbr-toggle:hover .abbr-long {
+    display: inline;
+  }
+
   .meta-toggle {
     margin-top: 2px;
     background: transparent;
@@ -807,7 +825,7 @@ const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
 const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
   const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
-  const euCsvUrl = "./data-sources/EU_2025_by_Landesliste_truth.csv";
+  const euCsvUrl = "./data-sources/EU_2025_parlamentarians_combined.csv";
   const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
   const bvvCommitteeStandardUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-standardisiert.json";
   const bvvCommitteeVariantUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-variable-schreibweisen.json";
@@ -1834,6 +1852,24 @@ function formatCommitteeShort(committeeInfo) {
   return emoji ? `${emoji} ${short}` : short;
 }
 
+function formatCommitteeLong(committeeInfo) {
+  if (!committeeInfo) return "";
+  const name = String(committeeInfo.name || "").trim();
+  if (!name) return "";
+  const emoji = String(committeeInfo.emoji || "").trim();
+  return emoji ? `${emoji} ${name}` : name;
+}
+
+function renderCommitteeAbbrev(shortLabel, committeeInfo) {
+  const shortText = String(shortLabel || "").trim();
+  if (!shortText) return "";
+  const longText = committeeInfo ? formatCommitteeLong(committeeInfo) : "";
+  if (longText && longText !== shortText) {
+    return `<span class="abbr-toggle"><span class="abbr-short">${shortText}</span><span class="abbr-long">${longText}</span></span>`;
+  }
+  return shortText;
+}
+
 function isLikelyCommitteeLabel(label) {
   const raw = String(label || "").trim();
   if (!raw) return false;
@@ -2327,6 +2363,33 @@ function looksLikeDate(value) {
   return false;
 }
 
+function normalizePersonName(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function mergeBvvPartyFromLocal(oparlEntries = [], localEntries = []) {
+  if (!Array.isArray(oparlEntries) || !Array.isArray(localEntries)) return oparlEntries;
+  const localPartyByName = new Map();
+  localEntries.forEach(entry => {
+    const key = normalizePersonName(entry?.name);
+    if (!key) return;
+    const party = normalizeParty(entry?.party || "");
+    if (!party || party === "fraktionslos" || party === "Andere") return;
+    if (!localPartyByName.has(key)) localPartyByName.set(key, party);
+  });
+  oparlEntries.forEach(entry => {
+    const key = normalizePersonName(entry?.name);
+    if (!key) return;
+    const localParty = localPartyByName.get(key);
+    if (!localParty) return;
+    const currentParty = normalizeParty(entry?.party || "");
+    if (!STANDARD_PARTIES.has(currentParty) || currentParty === "fraktionslos") {
+      entry.party = localParty;
+    }
+  });
+  return oparlEntries;
+}
+
 function pushUnique(list, entry) {
   const key = `${entry.name}|${entry.party}|${entry.role || entry.wahlkreis || entry.awk || entry.art || ""}`;
   if (!list._keys) list._keys = new Set();
@@ -2384,7 +2447,21 @@ function pushUnique(list, entry) {
             if (!name) return;
             const party = normalizeParty(row.party_short_name || row.party_name || row.Party || row.Partei || "");
             const listLabel = (row.Wahlkreis || row.electoral_list || "").trim();
-            const role = listLabel ? `EU-Parlament (${listLabel})` : "EU-Parlament";
+            const berlinFlag = String(row.berlin_residence || "").trim().toLowerCase();
+            const isBerlinRes = ["true", "1", "yes", "ja"].includes(berlinFlag);
+            const listType = (row.berlin_list_type || "").trim();
+            const connection = (row.berlin_connection || "").trim();
+            const roleParts = [];
+            if (isBerlinRes) roleParts.push("Wohnsitz Berlin");
+            if (listLabel) roleParts.push(listLabel);
+            if (listType) {
+              const lowerParts = roleParts.map(part => part.toLowerCase());
+              const listLower = listType.toLowerCase();
+              const hasListType = lowerParts.some(part => part.includes(listLower));
+              if (!hasListType) roleParts.push(listType);
+            }
+            if (connection) roleParts.push(connection);
+            const role = roleParts.length ? `EU-Parlament (${roleParts.join(" · ")})` : "EU-Parlament";
             list.push({ name, party, role, art: "Liste" });
           });
           euCitywide = list;
@@ -2535,8 +2612,10 @@ async function ensureBvvOparlForBezirk(bezirk) {
       bvvOparlStatusByBezirk.set(bezirk, "skipped");
       return;
     }
+    const localEntries = bvvByBezirk.get(bezirk) || [];
     const entries = await loadBvvFromOparl(oparlUrl, bezirk);
     if (entries && entries.length) {
+      mergeBvvPartyFromLocal(entries, localEntries);
       bvvByBezirk.set(bezirk, entries);
     }
     logUnknownOparlLabels();
@@ -2906,8 +2985,9 @@ function renderPanel(context) {
               const canonical = getBvvRoleCanonical(membership?.role);
               if (canonical === "ausschussvorsitz" || canonical === "stv_ausschussvorsitz") {
                 const roleLabel = normalizeBvvRole(membership?.role);
-                const committeeName = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
-                const committeeSuffix = committeeName ? ` · ${committeeName}` : "";
+                const committeeShort = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
+                const committeeDisplay = committeeShort ? renderCommitteeAbbrev(committeeShort, membership?.committee) : "";
+                const committeeSuffix = committeeDisplay ? ` · ${committeeDisplay}` : "";
                 metaLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
               }
             });
@@ -2917,14 +2997,22 @@ function renderPanel(context) {
           }
           if (Array.isArray(entry.oparl_memberships)) {
             entry.oparl_memberships.forEach(item => {
-              const text = typeof item === "string" ? item : (item?.text || "");
-              const roleText = typeof item === "string" ? text.split(" · ").slice(1).join(" · ") : (item?.role || "");
+              const isString = typeof item === "string";
+              const text = isString ? item : (item?.text || "");
+              const parts = String(text || "").split(" · ");
+              const orgText = isString ? (parts[0] || "") : (item?.org || "");
+              const roleText = isString ? parts.slice(1).join(" · ") : (item?.role || "");
               const normalizedRole = String(roleText || "").toLowerCase();
               if (/bezirksverordnet/.test(normalizedRole)) return;
               if (/fraktionsvorsitz/.test(normalizedRole)) return;
               if (/fraktionsmitglied/.test(normalizedRole)) return;
-              const safeText = String(text || "").trim();
-              if (safeText) metaLines.push(`<div class="rep-role">${safeText}</div>`);
+              const committeeInfo = item?.committee || (orgText && isLikelyCommitteeLabel(orgText) ? resolveCommitteeFromLabels([orgText]) : null);
+              const orgDisplay = committeeInfo ? renderCommitteeAbbrev(orgText, committeeInfo) : String(orgText || "").trim();
+              const lineParts = [];
+              if (orgDisplay) lineParts.push(orgDisplay);
+              if (roleText) lineParts.push(roleText);
+              const line = lineParts.join(" · ").trim();
+              if (line) metaLines.push(`<div class="rep-role">${line}</div>`);
             });
           }
           const metaId = `bvv-meta-${context.bezirkName || "bezirk"}-${entryIndex}`;
