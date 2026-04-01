@@ -116,6 +116,30 @@
       grid-template-rows: auto auto 1fr;
     }
 
+    .legal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+      padding: 8px 32px;
+      background: #121722;
+      border-bottom: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .legal-bar a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .legal-bar a:hover {
+      color: var(--accent);
+    }
+
     header {
       padding: 18px 32px;
       border-bottom: 1px solid var(--border);
@@ -542,6 +566,10 @@
 </head>
 
 <body>
+  <div class="legal-bar">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+  </div>
 
   <header>
     <div class="header-title">
@@ -3090,6 +3118,26 @@
       return parseBvvFile(text);
     }
 
+    async function ensureBvvLocalForBezirk(bezirk) {
+      if (!bezirk) return;
+      const existing = bvvByBezirk.get(bezirk);
+      if (Array.isArray(existing) && existing.length) return;
+      try {
+        const entries = await loadBvvLocalForBezirk(bezirk);
+        if (entries && entries.length) {
+          bvvByBezirk.set(bezirk, entries);
+          if (!bvvOparlStatusByBezirk.has(bezirk)) {
+            bvvOparlStatusByBezirk.set(bezirk, "local");
+          }
+          if (activeContext?.bezirkName === bezirk && currentLevel === "bezirk") {
+            renderPanel(activeContext);
+          }
+        }
+      } catch (err) {
+        console.warn(`BVV list fallback not found for ${bezirk}.`, err);
+      }
+    }
+
     async function ensureBvvOparlForBezirk(bezirk) {
       if (!bezirk) return;
       const status = bvvOparlStatusByBezirk.get(bezirk);
@@ -3107,12 +3155,16 @@
         if (entries && entries.length) {
           mergeBvvPartyFromLocal(entries, localEntries);
           bvvByBezirk.set(bezirk, entries);
+        } else if (localEntries.length) {
+          bvvOparlStatusByBezirk.set(bezirk, "local");
+          return;
         }
         logUnknownOparlLabels();
         bvvOparlStatusByBezirk.set(bezirk, "loaded");
       } catch (err) {
         console.warn(`OPARL BVV lookup failed for ${bezirk}.`, err);
         bvvOparlStatusByBezirk.set(bezirk, "error");
+        await ensureBvvLocalForBezirk(bezirk);
       } finally {
         if (activeContext?.bezirkName === bezirk && currentLevel === "bezirk") {
           renderPanel(activeContext);
@@ -3480,6 +3532,24 @@
         if (layerId !== "bezirke") context.awk = awk;
       }
 
+      if (context.bezirkName) {
+        const trimmed = String(context.bezirkName).trim();
+        if (/^\d+$/.test(trimmed)) {
+          const mappedName = districtByNumber.get(normalizeBez(trimmed));
+          if (mappedName) context.bezirkName = mappedName;
+        }
+      }
+
+      if (context.bez && !context.bezirkName) {
+        const mappedName = districtByNumber.get(context.bez);
+        if (mappedName) context.bezirkName = mappedName;
+      }
+
+      if (context.bezirkName && !context.bez) {
+        const meta = districtByName.get(context.bezirkName);
+        if (meta?.bez) context.bez = meta.bez;
+      }
+
       return context;
     }
 
@@ -3590,6 +3660,7 @@
 
       if (currentLevel === "bezirk" && context.bezirkName) {
         ensureBvvOparlForBezirk(context.bezirkName);
+        ensureBvvLocalForBezirk(context.bezirkName);
       }
 
       const allowed = context.allowedLevels || getAllowedLevels(context.layerId);

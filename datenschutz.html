@@ -16,13 +16,55 @@
     }
 
     body {
+      margin: 0;
       background: var(--bg);
       color: var(--text);
       font-family: 'IBM Plex Sans', sans-serif;
       line-height: 1.6;
+    }
+
+    .legal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 32px;
+      background: #121722;
+      border-bottom: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .legal-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      text-decoration: none;
+    }
+
+    .legal-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .legal-bar a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .legal-bar a:hover {
+      color: var(--accent);
+    }
+
+    .page {
       max-width: 800px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 50px 20px 70px;
     }
 
     h1 {
@@ -68,8 +110,17 @@
 </head>
 
 <body>
-  <a href="index.html" class="back-link">← Zurück zur Karte</a>
-  <h1>Datenschutzerklärung</h1>
+  <div class="legal-bar">
+    <a class="legal-title" href="index.html">Berlin Admin</a>
+    <div class="legal-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <a href="index.html" class="back-link">← Zurück zur Karte</a>
+    <h1>Datenschutzerklärung</h1>
 
   <h2>1. Datenschutz auf einen Blick</h2>
   <p>Diese Datenschutzerklärung informiert Sie über die Art, den Umfang und den Zweck der Erhebung und Verwendung
@@ -166,7 +217,7 @@
       }
     });
   </script>
-
+  </div>
 </body>
 
 </html>
