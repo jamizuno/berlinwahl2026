@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impressum – Berlin Admin</title>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #161a22;
+      --border: #252b38;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --accent: #c8a96e;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 1.2rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    .placeholder {
+      background: rgba(200, 169, 110, 0.1);
+      border: 1px dashed var(--accent);
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .scr-prot {
+      unicode-bidi: bidi-override;
+      direction: rtl;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="index.html" class="back-link">← Zurück zur Karte</a>
+  <h1>Impressum</h1>
+
+  <h2>Angaben gemäß § 5 TMG</h2>
+  <div class="placeholder">
+    <span class="scr-prot">[emaN rhib]</span><br>
+    <span class="scr-prot">[tfirhcsnA erhI]</span><br>
+    <span class="scr-prot">[trO ,ZLP]</span>
+  </div>
+
+  <h2>Kontakt</h2>
+  <div class="placeholder">
+    E-Mail: <span class="mail-prot" data-u="[user]" data-d="[domain]" data-t="[tld]"></span><br>
+    Telefon: <span class="scr-prot">[lanoitpO]</span>
+  </div>
+
+  <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+  <div class="placeholder">
+    <span class="scr-prot">[emaN rhib]</span><br>
+    <span class="scr-prot">[tfirhcsnA erhI]</span>
+  </div>
+
+  <h2>Haftung für Inhalte</h2>
+  <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
+    verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder
+    gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige
+    Tätigkeit hinweisen.</p>
+
+  <h2>Haftung für Links</h2>
+  <p>Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb
+    können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets
+    der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Reconstruct emails
+      document.querySelectorAll(".mail-prot").forEach(el => {
+        const u = el.getAttribute("data-u");
+        const d = el.getAttribute("data-d");
+        const t = el.getAttribute("data-t");
+        if (u && d && t) {
+          const email = u + "@" + d + "." + t;
+          el.textContent = email;
+          // Optional: make it clickable only on interaction
+          el.style.cursor = "pointer";
+          el.onclick = () => { window.location.href = "mailto:" + email; };
+        } else {
+          el.textContent = "[Bitte E-Mail in data-Attributen pflegen]";
+        }
+      });
+    });
+  </script>
+
+  <style>
+    /* Styling für die geschützten E-Mail-Links */
+    .email-link {
+      color: var(--accent2);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .email-link:hover {
+      opacity: 0.8;
+    }
+  </style>
+
+  <script>
+    // Globaler Schutz vor E-Mail-Scraping
+    document.addEventListener('click', function (e) {
+      const el = e.target.closest('.email-link');
+      if (!el) return;
+
+      const u = el.getAttribute('data-u');
+      const d = el.getAttribute('data-d');
+      const t = el.getAttribute('data-t') || 'de';
+
+      if (u && d) {
+        const email = u + '@' + d + '.' + t;
+        window.location.href = 'mailto:' + email;
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>

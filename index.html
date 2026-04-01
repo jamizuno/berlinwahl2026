@@ -3907,6 +3907,39 @@
       }
     });
   </script>
+
+  <style>
+    /* Styling für die geschützten E-Mail-Links */
+    .email-link {
+      color: var(--accent2);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .email-link:hover {
+      opacity: 0.8;
+    }
+  </style>
+
+  <script>
+    // Globaler Schutz vor E-Mail-Scraping
+    document.addEventListener('click', function (e) {
+      const el = e.target.closest('.email-link');
+      if (!el) return;
+
+      const u = el.getAttribute('data-u');
+      const d = el.getAttribute('data-d');
+      const t = el.getAttribute('data-t') || 'de';
+
+      if (u && d) {
+        const email = u + '@' + d + '.' + t;
+        window.location.href = 'mailto:' + email;
+      }
+    });
+  </script>
+
+
 </body>
 
 </html>
