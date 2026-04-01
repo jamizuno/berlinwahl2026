@@ -1834,6 +1834,11 @@
         .replace(/ß/g, "ss");
     }
 
+    function applyBezirkRoleOverride(role, bezirkName) {
+      // Placeholder for district-specific role override logic
+      return role;
+    }
+
     function isBezirksamtRole(value) {
       const text = normalizeRoleMatchText(value);
       if (!text) return false;
