@@ -858,6 +858,8 @@
       const rawName = pickProp(feature, ["name", "bezirk", "bezeichnung", "bezirkname", "bezirk_name", "gen"]);
       if (rawName) {
         const trimmed = String(rawName).trim();
+        const canonical = getCanonicalBezirkName(trimmed);
+        if (canonical) return canonical;
         if (trimmed && !/^\d+$/.test(trimmed)) return trimmed;
         const codeFromName = normalizeArkis(trimmed);
         const mapped = bezirkByArkis.get(codeFromName);
@@ -869,7 +871,7 @@
         const mapped = bezirkByArkis.get(normalized);
         if (mapped) return mapped;
       }
-      return rawName ? String(rawName).trim() : null;
+      return rawName ? (getCanonicalBezirkName(String(rawName).trim()) || String(rawName).trim()) : null;
     }
 
     function getBtgTooltip(feature) {
@@ -907,6 +909,52 @@
       if (lookup[raw]) return lookup[raw];
       if (raw.startsWith("Berlin-")) return raw.replace(/^Berlin-/, "").trim();
       return raw;
+    }
+
+    function normalizeBezirkKey(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^bezirk\s+/i, "")
+        .replace(/^berlin[-\s]*/i, "")
+        .replace(/fr\.\s*-?\s*kreuzberg/g, "friedrichshain-kreuzberg")
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/[^a-z0-9]+/g, "");
+    }
+
+    function getCanonicalBezirkName(value, bez) {
+      const normalizedBez = normalizeBez(bez);
+      if (normalizedBez) {
+        const fromDistrictMap = districtByNumber.get(normalizedBez)?.name;
+        if (fromDistrictMap) return fromDistrictMap;
+        if (BEZIRK_FALLBACK[normalizedBez]) return BEZIRK_FALLBACK[normalizedBez];
+      }
+
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+
+      const arkisCode = normalizeArkis(raw);
+      if (arkisCode) {
+        const fromArkis = bezirkByArkis.get(arkisCode);
+        if (fromArkis) return fromArkis;
+      }
+
+      const key = normalizeBezirkKey(raw);
+      if (!key) return "";
+
+      for (const name of Object.keys(bezirkeData)) {
+        if (normalizeBezirkKey(name) === key) return name;
+      }
+
+      return "";
+    }
+
+    function getContextBezirkName(context) {
+      if (!context) return "";
+      return getCanonicalBezirkName(context.bezirkName, context.bez);
     }
 
     function rebuildOverlayControl() {
@@ -1579,10 +1627,7 @@
       let name = String(value || "").trim();
       if (!name) return "";
       name = name.replace(/^Berlin[-\s]*/i, "").trim();
-      if (/^Fr\.\s*-?\s*Kreuzberg$/i.test(name)) {
-        return "Friedrichshain-Kreuzberg";
-      }
-      return name;
+      return getCanonicalBezirkName(name) || name;
     }
 
     function normalizeDepartmentKeyword(value) {
@@ -1597,7 +1642,7 @@
       const raw = String(value || "").trim();
       if (!raw) return "";
       if (/^berlin(\s*\(stadtgebiet\))?$/i.test(raw)) return "Berlin";
-      return raw;
+      return getCanonicalBezirkName(raw) || raw;
     }
 
     function parseDepartmentKeywords(value) {
@@ -2526,7 +2571,7 @@
           if (!bvvOparlStatusByBezirk.has(bezirk)) {
             bvvOparlStatusByBezirk.set(bezirk, "local");
           }
-          if (activeContext?.bezirkName === bezirk && currentLevel === "bezirk") {
+          if (getContextBezirkName(activeContext) === bezirk && currentLevel === "bezirk") {
             renderPanel(activeContext);
           }
         }
@@ -2563,7 +2608,7 @@
         bvvOparlStatusByBezirk.set(bezirk, "error");
         await ensureBvvLocalForBezirk(bezirk);
       } finally {
-        if (activeContext?.bezirkName === bezirk && currentLevel === "bezirk") {
+        if (getContextBezirkName(activeContext) === bezirk && currentLevel === "bezirk") {
           renderPanel(activeContext);
         }
       }
@@ -2956,7 +3001,8 @@
     }
 
     function collectAghEntries(context) {
-      const execForBezirk = context?.bezirkName ? (aghExecutiveByBezirk.get(context.bezirkName) || []) : [];
+      const bezirkName = getContextBezirkName(context);
+      const execForBezirk = bezirkName ? (aghExecutiveByBezirk.get(bezirkName) || []) : [];
       const execEntries = [...aghExecutiveCitywide, ...execForBezirk];
       const mdANamesInContext = (() => {
         const s = new Set();
@@ -3031,8 +3077,11 @@
         return;
       }
 
-      const bezData = context.bezirkName ? bezirkeData[context.bezirkName] : null;
-      const headerName = context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin");
+      const canonicalBezirkName = getContextBezirkName(context);
+      const bezData = canonicalBezirkName ? bezirkeData[canonicalBezirkName] : null;
+      const headerName = currentLevel === "bezirk"
+        ? (canonicalBezirkName || context.bezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin"))
+        : (context.bezirkName || canonicalBezirkName || (context.layerId === "eu" ? "Berlin (Stadtgebiet)" : "Berlin"));
       const headerNr = context.bez || bezData?.nr;
       const wkLabel = (currentLevel === "abgeordnetenhaus" && context.awk) ? `WK ${context.awk}` : "";
 
@@ -3055,9 +3104,11 @@
         return;
       }
 
-      if (currentLevel === "bezirk" && context.bezirkName) {
-        ensureBvvOparlForBezirk(context.bezirkName);
-        ensureBvvLocalForBezirk(context.bezirkName);
+      const bezirkName = getContextBezirkName(context);
+
+      if (currentLevel === "bezirk" && bezirkName) {
+        ensureBvvOparlForBezirk(bezirkName);
+        ensureBvvLocalForBezirk(bezirkName);
       }
 
       const allowed = context.allowedLevels || getAllowedLevels(context.layerId);
@@ -3067,9 +3118,9 @@
       for (const lvl of levels) {
         const label = levelLabels[lvl];
         if (lvl === "bezirk") {
-          const baseEntries = context.bezirkName ? (bvvByBezirk.get(context.bezirkName) || []) : [];
-          const executiveEntries = context.bezirkName ? (bvvExecutiveByBezirk.get(context.bezirkName) || []) : [];
-          const entries = context.bezirkName ? filterEntriesByParty([...baseEntries, ...executiveEntries]) : [];
+          const baseEntries = bezirkName ? (bvvByBezirk.get(bezirkName) || []) : [];
+          const executiveEntries = bezirkName ? (bvvExecutiveByBezirk.get(bezirkName) || []) : [];
+          const entries = bezirkName ? filterEntriesByParty([...baseEntries, ...executiveEntries]) : [];
           if (entries.length > 0) {
             const orderedEntries = [...entries].sort((a, b) => {
               const isFactionChairA = a?.faction_membership && getBvvRoleCanonical(a.faction_membership.role) === "fraktionsvorsitz";
@@ -3090,7 +3141,7 @@
               const sinceText = sinceYear ? ` · seit ${sinceYear}` : "";
               const isFactionChair = entry.faction_membership && getBvvRoleCanonical(entry.faction_membership.role) === "fraktionsvorsitz";
               const baseRole = isFactionChair ? "Fraktionsvorsitzende/r" : entry.role;
-              const displayRole = applyBezirkRoleOverride(baseRole, context.bezirkName);
+              const displayRole = applyBezirkRoleOverride(baseRole, bezirkName);
               const labelText = isBezirksamtRole(normalizeBvvRole(entry.role)) ? "Bezirk (Bezirksamt)" : label;
               const metaLines = [];
               if (Array.isArray(entry.committee_memberships)) {
@@ -3128,7 +3179,7 @@
                   if (line) metaLines.push(`<div class="rep-role">${line}</div>`);
                 });
               }
-              const metaId = `bvv-meta-${context.bezirkName || "bezirk"}-${entryIndex}`;
+              const metaId = `bvv-meta-${bezirkName || "bezirk"}-${entryIndex}`;
               const metaHtml = metaLines.length
                 ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">${displayRole}${sinceText}</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${metaLines.join("")}</div>`
                 : "";
