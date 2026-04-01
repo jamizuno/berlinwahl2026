@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Berlin Admin – Gewählte Vertreter nach Wahlkreis</title>
 
-  <link <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/proj4@2.9.0/dist/proj4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -113,7 +113,7 @@
       height: 100vh;
       overflow: hidden;
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto auto 1fr;
     }
 
     header {
@@ -1671,6 +1671,18 @@
 
     function partyClassName(value) {
       return String(value || "").trim().replace(/\s+/g, "-");
+    }
+
+    function normalizePartyLabel(value) {
+      const normalized = normalizeParty(value);
+      return normalized || "parteilos";
+    }
+
+    function normalizePartyFilterValue(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      if (raw === "Andere") return "Andere";
+      return normalizePartyLabel(raw);
     }
 
     function normalizeArkis(value) {
@@ -3654,11 +3666,12 @@
                 : "";
               const clusterText = getDepartmentClusterText(entry);
               const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
+              const partyLabel = normalizePartyLabel(entry.party);
               html += `<div class="rep-card">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
-              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+              <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             ${metaLines.length ? "" : `<div class="rep-role">${displayRole}${sinceText}</div>`}
             ${metaHtml}
@@ -3695,11 +3708,12 @@
               const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
               const nameDisplay = entry.mdaSenatMask ? MDA_SENAT_MASK_TEXT : entry.name;
               const nameClass = entry.mdaSenatMask ? "rep-name mda-senat-mask" : "rep-name";
+              const partyLabel = normalizePartyLabel(entry.party);
               html += `<div class="rep-card agh-entry${isList ? " list-entry" : ""}${isExecDivider ? " exec-divider" : ""}">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name-line">
               <div class="${nameClass}">${nameDisplay}</div>
-              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+              <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">${role}</div>
             ${clusterHtml}
@@ -3712,11 +3726,12 @@
             entries.forEach(entry => {
               const isList = entry.art !== "Direkt";
               const mandateLine = buildBtgMandateLine(entry);
+              const partyLabel = normalizePartyLabel(entry.party);
               html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
-              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+              <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">Bundestagsabgeordnete/r</div>
             <div class="rep-role">${mandateLine}</div>
@@ -3727,11 +3742,12 @@
           const entries = filterEntriesByParty(euCitywide);
           if (entries.length > 0) {
             entries.forEach(entry => {
+              const partyLabel = normalizePartyLabel(entry.party);
               html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
               <div class="rep-name">${entry.name}</div>
-              <span class="rep-party party-${partyClassName(entry.party)}">${entry.party}</span>
+              <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">${entry.role}</div>
           </div>`;
@@ -3781,11 +3797,12 @@
 
     function matchesPartyFilter(party) {
       if (!activePartyFilter) return true;
-      const normalized = normalizeParty(party || "");
-      if (activePartyFilter === "Andere") {
+      const filter = normalizePartyFilterValue(activePartyFilter);
+      const normalized = normalizePartyLabel(party || "");
+      if (filter === "Andere") {
         return normalized === "Andere" || !STANDARD_PARTIES.has(normalized);
       }
-      return normalized === activePartyFilter;
+      return normalized === filter;
     }
 
     function filterEntriesByParty(entries) {
@@ -3794,7 +3811,8 @@
     }
 
     function setPartyFilter(party) {
-      activePartyFilter = activePartyFilter === party ? null : party;
+      const filter = normalizePartyFilterValue(party);
+      activePartyFilter = activePartyFilter === filter ? null : filter;
       updateLegend();
       renderPanel(activeContext);
     }
