@@ -3155,6 +3155,7 @@
               const isList = !isExecutive && entry.art !== "Direkt";
               const isExecDivider = executives.length > 0 && execStartIndex > 0 && index === execStartIndex;
               const labelText = isExecutive && isSenateRole(entry.role) ? "Senat Berlin" : label;
+              const partyLabel = normalizePartyLabel(entry.party);
               const role = isExecutive
                 ? (entry.role || "Senat")
                 : (isList
@@ -3238,8 +3239,12 @@
           activeContext = null;
         }
       }
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
+      document.querySelectorAll('.tab').forEach(t => {
+        t.classList.remove('active');
+        if (t.textContent.trim() === ({'bezirk':'Bezirk (BVV)','abgeordnetenhaus':'Stadt (AGH)','bundestag':'Bundestag','eu':'EU-Parlament'}[level] || '')) {
+          t.classList.add('active');
+        }
+      });
       initGeoLayer();
       applyLayerSelection(currentLevel);
       updateLegend();
