@@ -2,7 +2,7 @@ Wahlkreis-Name,BEZ,OPARL-API
 Berlin-Mitte,01,https://www.sitzungsdienst-mitte.de/oi/oparl/1.0/system.asp
 Berlin-Pankow,02,https://www.sitzungsdienst-pankow.de/oi/oparl/1.0/system.asp
 Berlin-Reinickendorf,03,https://www.sitzungsdienst-reinickendorf.de/oi/oparl/1.0/system.asp
-Berlin-Spandau,04,
+Berlin-Spandau,04,https://www.sitzungsdienst-spandau.de/oi/oparl/1.0/system.asp
 Berlin-Steglitz-Zehlendorf,05,https://www.sitzungsdienst-steglitz-zehlendorf.de/oi/oparl/1.0/system.asp
 Berlin-Charlottenburg-Wilmersdorf,06,https://www.sitzungsdienst-charlottenburg-wilmersdorf.de/oi/oparl/1.0/system.asp
 Berlin-Tempelhof-Schöneberg,07,https://www.sitzungsdienst-tempelhof-schoeneberg.de/oi/oparl/1.0/system.asp

@@ -266,10 +266,92 @@
     "category": "kommission"
   },
   {
+    "emoji": "🦠",
+    "slug": "ua_pandemie",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Haushaltsplanung (Jugendhilfeausschuss)",
+    "short": "AG-HH-JHA",
+    "emoji": "💰",
+    "slug": "ag_haushalt_jha",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Jugendhilfeplanung",
+    "short": "AG-JHP",
+    "emoji": "👶",
+    "slug": "ag_jugendhilfeplanung",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG Geschäftsordnung",
+    "short": "AG-GO",
+    "emoji": "📜",
+    "slug": "ag_geschaeftsordnung",
+    "category": "untergremium"
+  },
+  {
+    "name": "Beirat für Menschen mit Behinderung",
+    "short": "BR-Beh",
+    "emoji": "♿",
+    "slug": "beirat_behinderung",
+    "category": "beirat"
+  },
+  {
+    "name": "Beirat für Partizipation und Integration",
+    "short": "BR-PartInt",
+    "emoji": "🌍",
+    "slug": "beirat_partizipation",
+    "category": "beirat"
+  },
+  {
+    "name": "Spielplatzkommission",
+    "short": "SPK",
+    "emoji": "🛝",
+    "slug": "spielplatzkommission",
+    "category": "kommission"
+  },
+  {
     "name": "Gedenktafelkommission",
     "short": "GTK",
     "emoji": "🪧",
     "slug": "gedenktafelkommission",
     "category": "kommission"
+  },
+  {
+    "name": "Ausschuss für Arbeit, Soziales, Gesundheit, Teilhabe und Inklusion (B)",
+    "short": "ASGTI-b",
+    "emoji": "❤️",
+    "slug": "asgti",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Haushalt, Personal, Verwaltung, Immobilien und Gleichstellung (B)",
+    "short": "HhPVIG-b",
+    "emoji": "💰",
+    "slug": "hhpvig",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Geschäftsordnungsausschuss (B)",
+    "short": "GO-b",
+    "emoji": "📜",
+    "slug": "go_b",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Stadtentwicklung, Bauen und Umwelt- und Naturschutz (B)",
+    "short": "StaBUm-b",
+    "emoji": "🏗️",
+    "slug": "stabum",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Schule (B)",
+    "short": "Schul-b",
+    "emoji": "🏫",
+    "slug": "schule_b",
+    "category": "kernausschuss"
   }
 ]
