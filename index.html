@@ -366,7 +366,7 @@
       font-weight: 400;
       font-style: italic;
       color: var(--accent);
-      font-size: 0.92rem;
+      font-size: 0.75rem;
       line-height: 1.4;
     }
 
@@ -3535,14 +3535,14 @@
       if (context.bezirkName) {
         const trimmed = String(context.bezirkName).trim();
         if (/^\d+$/.test(trimmed)) {
-          const mappedName = districtByNumber.get(normalizeBez(trimmed));
-          if (mappedName) context.bezirkName = mappedName;
+          const mapped = districtByNumber.get(normalizeBez(trimmed));
+          if (mapped?.name) context.bezirkName = mapped.name;
         }
       }
 
       if (context.bez && !context.bezirkName) {
-        const mappedName = districtByNumber.get(context.bez);
-        if (mappedName) context.bezirkName = mappedName;
+        const mapped = districtByNumber.get(context.bez);
+        if (mapped?.name) context.bezirkName = mapped.name;
       }
 
       if (context.bezirkName && !context.bez) {
@@ -3777,15 +3777,18 @@
                   })());
               const clusterText = getDepartmentClusterText(entry);
               const clusterHtml = clusterText ? `<div class="rep-role rep-department">${clusterText}</div>` : "";
-              const nameDisplay = entry.mdaSenatMask ? MDA_SENAT_MASK_TEXT : entry.name;
-              const nameClass = entry.mdaSenatMask ? "rep-name mda-senat-mask" : "rep-name";
-              const partyLabel = normalizePartyLabel(entry.party);
+              const nameDisplay = entry.name;
+              const nameClass = "rep-name";
+              const senatNoteHtml = entry.mdaSenatMask
+                ? `<div class="rep-name mda-senat-mask">${entry.name} aus diesem Wahlkreis wurde nach der Wahl in den Senat berufen.</div>`
+                : "";
               html += `<div class="rep-card agh-entry${isList ? " list-entry" : ""}${isExecDivider ? " exec-divider" : ""}">
             <div class="rep-level">${labelText}</div>
             <div class="rep-name-line">
               <div class="${nameClass}">${nameDisplay}</div>
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
+            ${senatNoteHtml}
             <div class="rep-role">${role}</div>
             ${clusterHtml}
           </div>`;
