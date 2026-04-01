@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Berlin Wählt – Gewählte Vertreter nach Bezirk</title>
+<title>Berlin Admin – Gewählte Vertreter nach Wahlkreis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -362,8 +362,8 @@
 
 <header>
   <div class="header-title">
-    <h1>Berlin Wählt</h1>
-    <span class="subtitle">Gewählte Vertreter nach Bezirk</span>
+    <h1>Berlin Admin</h1>
+    <span class="subtitle">Gewählte Vertreter nach Wahlkreis</span>
   </div>
   <div class="level-tabs">
     <button class="tab" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
@@ -378,14 +378,14 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <div class="district-name-banner">
-        <div class="bezirk-nr" id="districtHeaderNr">Bezirk</div>
+        <div class="bezirk-nr" id="districtHeaderNr">Wahlkreis</div>
         <h2 id="districtHeaderName">Auf der Karte auswählen</h2>
       </div>
     </div>
     <div class="district-info" id="districtInfo">
       <div class="empty-state">
         <div class="empty-icon">🗺️</div>
-        <div class="empty-text">Bezirk auf der Karte auswählen</div>
+        <div class="empty-text">Wahlkreis auf der Karte auswählen</div>
       </div>
     </div>
     <div class="legend" id="legend"></div>
@@ -395,7 +395,7 @@
 
 <script>
 // -----------------------------------------------------------------------
-// DATA: Berlin 12 Bezirke with elected representatives
+// DATA: Berlin 12 Bezirke with elected representatives (fictional demo names, not real persons)
 // Sources: Landeswahlleiter Berlin, Bundeswahlleiter, Europawahlleiter
 // -----------------------------------------------------------------------
 const bezirkeData = {
@@ -403,228 +403,228 @@ const bezirkeData = {
     nr: "01",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Ephraim Gothe",
+      buergermeister: "Max Mustermann",
       party: "SPD",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Stefan Evers", party: "CDU", role: "Direktmandat WK 01 – Mitte" },
-      { name: "Timur Husein", party: "CDU", role: "Direktmandat WK 02 – Tiergarten/Wedding" },
+      { name: "Erika Mustermann", party: "CDU", role: "Direktmandat WK 01 – Mitte" },
+      { name: "Felix Beispiel", party: "CDU", role: "Direktmandat WK 02 – Tiergarten/Wedding" },
     ],
     bundestag: [
-      { name: "Klaus-Dieter Gröhler", party: "CDU", role: "Direktmandat WK 75 – Berlin-Mitte" },
+      { name: "Thomas Muster", party: "CDU", role: "Direktmandat WK 75 – Berlin-Mitte" },
     ],
     eu: [
-      { name: "Monika Hohlmeier", party: "CDU", role: "Europäisches Parlament (Berlin-Liste)" },
+      { name: "Laura Listeneintrag", party: "CDU", role: "Europäisches Parlament (Berlin-Liste)" },
     ]
   },
   "Friedrichshain-Kreuzberg": {
     nr: "02",
     color: "#3a8c4e",
     bezirk: {
-      buergermeister: "Clara Herrmann",
+      buergermeister: "Paula Platzhalter",
       party: "Grüne",
       role: "Bezirksbürgermeisterin"
     },
     abgeordnetenhaus: [
-      { name: "Bettina Jarasch", party: "Grüne", role: "Direktmandat WK 05 – Friedrichshain" },
-      { name: "Vasili Franco", party: "Grüne", role: "Direktmandat WK 06 – Kreuzberg" },
+      { name: "Anna Musterfrau", party: "Grüne", role: "Direktmandat WK 05 – Friedrichshain" },
+      { name: "Ben Beispiel", party: "Grüne", role: "Direktmandat WK 06 – Kreuzberg" },
     ],
     bundestag: [
-      { name: "Canan Bayram", party: "Grüne", role: "Direktmandat WK 83 – Friedrichshain-Kreuzberg" },
+      { name: "Clara Charakter", party: "Grüne", role: "Direktmandat WK 83 – Friedrichshain-Kreuzberg" },
     ],
     eu: [
-      { name: "Terry Reintke", party: "Grüne", role: "Europäisches Parlament (Grüne Liste)" },
+      { name: "Doris Demo", party: "Grüne", role: "Europäisches Parlament (Grüne Liste)" },
     ]
   },
   "Pankow": {
     nr: "03",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Matthias Köhne",
+      buergermeister: "Norbert Namensvorschlag",
       party: "SPD",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Jörn Oltmann", party: "CDU", role: "Direktmandat WK 07 – Prenzlauer Berg Ost" },
-      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 08 – Prenzlauer Berg West" },
+      { name: "Egon Exemplar", party: "CDU", role: "Direktmandat WK 07 – Prenzlauer Berg Ost" },
+      { name: "Frida Fiktiv", party: "CDU", role: "Direktmandat WK 08 – Prenzlauer Berg West" },
     ],
     bundestag: [
-      { name: "Klaus Mindrup", party: "SPD", role: "Direktmandat WK 84 – Pankow" },
+      { name: "Günter Geübt", party: "SPD", role: "Direktmandat WK 84 – Pankow" },
     ],
     eu: [
-      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+      { name: "Hanna Hinweis", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
     ]
   },
   "Charlottenburg-Wilmersdorf": {
     nr: "04",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Arne Herz",
+      buergermeister: "Ingo Illustration",
       party: "CDU",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Klaus-Peter von Lüdeke", party: "CDU", role: "Direktmandat WK 10 – Charlottenburg Nord" },
-      { name: "Stefan Förster", party: "FDP", role: "Direktmandat WK 11 – Charlottenburg Süd" },
+      { name: "Julia Jolie", party: "CDU", role: "Direktmandat WK 10 – Charlottenburg Nord" },
+      { name: "Kevin Konstrukt", party: "FDP", role: "Direktmandat WK 11 – Charlottenburg Süd" },
     ],
     bundestag: [
-      { name: "Klaus-Dieter Gröhler", party: "CDU", role: "WK 77 – Charlottenburg-Wilmersdorf" },
+      { name: "Lars Layout", party: "CDU", role: "WK 77 – Charlottenburg-Wilmersdorf" },
     ],
     eu: [
-      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+      { name: "Monika Muster", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
     ]
   },
   "Spandau": {
     nr: "05",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Carsten Röding",
+      buergermeister: "Nina Namenslos",
       party: "CDU",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Rainer Tempel", party: "CDU", role: "Direktmandat WK 14 – Spandau Ost" },
-      { name: "Mario Czaja", party: "CDU", role: "Direktmandat WK 15 – Spandau West" },
+      { name: "Oskar Ordnung", party: "CDU", role: "Direktmandat WK 14 – Spandau Ost" },
+      { name: "Petra Probe", party: "CDU", role: "Direktmandat WK 15 – Spandau West" },
     ],
     bundestag: [
-      { name: "Kai Wegner", party: "CDU", role: "WK 75 – Spandau / Charlottenburg Nord" },
+      { name: "Quentin Quelle", party: "CDU", role: "WK 75 – Spandau / Charlottenburg Nord" },
     ],
     eu: [
-      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+      { name: "Rita Referenz", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
     ]
   },
   "Steglitz-Zehlendorf": {
     nr: "06",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Maren Schellenberg",
+      buergermeister: "Sabine Schein",
       party: "Grüne",
       role: "Bezirksbürgermeisterin"
     },
     abgeordnetenhaus: [
-      { name: "Cornelia Seibeld", party: "CDU", role: "Direktmandat WK 17 – Steglitz" },
-      { name: "Michael Braun", party: "CDU", role: "Direktmandat WK 18 – Zehlendorf" },
+      { name: "Timo Textbaustein", party: "CDU", role: "Direktmandat WK 17 – Steglitz" },
+      { name: "Ute Übung", party: "CDU", role: "Direktmandat WK 18 – Zehlendorf" },
     ],
     bundestag: [
-      { name: "Jan-Marco Luczak", party: "CDU", role: "WK 82 – Steglitz-Zehlendorf" },
+      { name: "Viktor Vorlage", party: "CDU", role: "WK 82 – Steglitz-Zehlendorf" },
     ],
     eu: [
-      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+      { name: "Waltraud Werte", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
     ]
   },
   "Tempelhof-Schöneberg": {
     nr: "07",
     color: "#3a8c4e",
     bezirk: {
-      buergermeister: "Tobias Dollase",
+      buergermeister: "Xaver Xenon",
       party: "CDU",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Jörg Stroedter", party: "SPD", role: "Direktmandat WK 20 – Schöneberg Nord" },
-      { name: "Burkard Dregger", party: "CDU", role: "Direktmandat WK 21 – Tempelhof" },
+      { name: "Yvonne Ypsilon", party: "SPD", role: "Direktmandat WK 20 – Schöneberg Nord" },
+      { name: "Zoe Zahl", party: "CDU", role: "Direktmandat WK 21 – Tempelhof" },
     ],
     bundestag: [
-      { name: "Franziska Giffey", party: "SPD", role: "WK 81 – Tempelhof-Schöneberg" },
+      { name: "Andreas Anker", party: "SPD", role: "WK 81 – Tempelhof-Schöneberg" },
     ],
     eu: [
-      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+      { name: "Birgit Beleg", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
     ]
   },
   "Neukölln": {
     nr: "08",
     color: "#d4263c",
     bezirk: {
-      buergermeister: "Martin Hikel",
+      buergermeister: "Christian Charakter",
       party: "SPD",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Falko Liecke", party: "CDU", role: "Direktmandat WK 23 – Neukölln Nord" },
-      { name: "Joschka Langenbrinck", party: "SPD", role: "Direktmandat WK 24 – Neukölln Süd" },
+      { name: "Denise Daten", party: "CDU", role: "Direktmandat WK 23 – Neukölln Nord" },
+      { name: "Emil Entwurf", party: "SPD", role: "Direktmandat WK 24 – Neukölln Süd" },
     ],
     bundestag: [
-      { name: "Hakan Demir", party: "SPD", role: "WK 86 – Neukölln" },
+      { name: "Fabian Formular", party: "SPD", role: "WK 86 – Neukölln" },
     ],
     eu: [
-      { name: "Katarina Barley", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
+      { name: "Gisela Graphik", party: "SPD", role: "Europäisches Parlament (SPD-Liste)" },
     ]
   },
   "Treptow-Köpenick": {
     nr: "09",
     color: "#9b2ecf",
     bezirk: {
-      buergermeister: "Oliver Igel",
+      buergermeister: "Heike Hinweis",
       party: "SPD",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Harald Moritz", party: "Grüne", role: "Direktmandat WK 26 – Treptow" },
-      { name: "Kristian Ronneburg", party: "Linke", role: "Direktmandat WK 27 – Köpenick" },
+      { name: "Iris Idee", party: "Grüne", role: "Direktmandat WK 26 – Treptow" },
+      { name: "Jan Jargon", party: "Linke", role: "Direktmandat WK 27 – Köpenick" },
     ],
     bundestag: [
-      { name: "Gesine Lötzsch", party: "Linke", role: "WK 87 – Treptow-Köpenick" },
+      { name: "Katrin Katalog", party: "Linke", role: "WK 87 – Treptow-Köpenick" },
     ],
     eu: [
-      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+      { name: "Lutz Linie", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
     ]
   },
   "Marzahn-Hellersdorf": {
     nr: "10",
     color: "#9b2ecf",
     bezirk: {
-      buergermeister: "Gordon Lemm",
+      buergermeister: "Marta Modell",
       party: "SPD",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Tino Schopf", party: "SPD", role: "Direktmandat WK 29 – Marzahn Nord" },
-      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 30 – Hellersdorf" },
+      { name: "Nils Notiz", party: "SPD", role: "Direktmandat WK 29 – Marzahn Nord" },
+      { name: "Olga Objekt", party: "CDU", role: "Direktmandat WK 30 – Hellersdorf" },
     ],
     bundestag: [
-      { name: "Petra Pau", party: "Linke", role: "WK 88 – Marzahn-Hellersdorf" },
+      { name: "Pia Probe", party: "Linke", role: "WK 88 – Marzahn-Hellersdorf" },
     ],
     eu: [
-      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+      { name: "Quinn Qualität", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
     ]
   },
   "Lichtenberg": {
     nr: "11",
     color: "#9b2ecf",
     bezirk: {
-      buergermeister: "Martin Schaefer",
+      buergermeister: "Ralf Raster",
       party: "CDU",
       role: "Bezirksbürgermeister"
     },
     abgeordnetenhaus: [
-      { name: "Danny Freymark", party: "CDU", role: "Direktmandat WK 32 – Lichtenberg Nord" },
-      { name: "Niklas Schrader", party: "Linke", role: "Direktmandat WK 33 – Lichtenberg Süd" },
+      { name: "Sina Schablone", party: "CDU", role: "Direktmandat WK 32 – Lichtenberg Nord" },
+      { name: "Tobias Typ", party: "Linke", role: "Direktmandat WK 33 – Lichtenberg Süd" },
     ],
     bundestag: [
-      { name: "Gregor Gysi", party: "Linke", role: "WK 89 – Lichtenberg" },
+      { name: "Ulla Urliste", party: "Linke", role: "WK 89 – Lichtenberg" },
     ],
     eu: [
-      { name: "Özlem Alev Demirel", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
+      { name: "Volker Vorschau", party: "Linke", role: "Europäisches Parlament (Linke-Liste)" },
     ]
   },
   "Reinickendorf": {
     nr: "12",
     color: "#2563a8",
     bezirk: {
-      buergermeister: "Uwe Brockhausen",
+      buergermeister: "Werner Werte",
       party: "SPD",
       role: "Bezirksbürgermeister (komm.)"
     },
     abgeordnetenhaus: [
-      { name: "Frank Balzer", party: "CDU", role: "Direktmandat WK 35 – Reinickendorf Ost" },
-      { name: "Burkard Dregger", party: "CDU", role: "Direktmandat WK 36 – Reinickendorf West" },
+      { name: "Xenia Xenon", party: "CDU", role: "Direktmandat WK 35 – Reinickendorf Ost" },
+      { name: "Yannik Ypsilon", party: "CDU", role: "Direktmandat WK 36 – Reinickendorf West" },
     ],
     bundestag: [
-      { name: "Monika Grütters", party: "CDU", role: "WK 76 – Reinickendorf" },
+      { name: "Zara Zeile", party: "CDU", role: "WK 76 – Reinickendorf" },
     ],
     eu: [
-      { name: "Dennis Radtke", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
+      { name: "Alex Abgleich", party: "CDU", role: "Europäisches Parlament (CDU-Liste)" },
     ]
   }
 };
@@ -844,9 +844,9 @@ const BVV_ROLE_ORDER = [
   "buergerdeputierte_r"
 ];
 
-const districtCsvUrl = "./Bundestagswahl 2025 in Berlin nach Wahlbezirken/Berlin_Bezirk_W2_Sieger.csv";
-const wahlkreiseShpUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.shp";
-const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
+const districtCsvUrl = "./data-sources/Berlin_Bezirk_W2_Sieger.csv";
+const wahlkreiseShpUrl = "./data-sources/RBS_OD_Wahlkreise_AH2021/AWK_AH21_25833.shp";
+const wahlkreiseDbfUrl = "./data-sources/RBS_OD_Wahlkreise_AH2021/AWK_AH21_25833.dbf";
   const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
   const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
   const euCsvUrl = "./data-sources/EU_2025_parlamentarians_combined.csv";
@@ -863,6 +863,18 @@ const wahlkreiseDbfUrl = "./RBS_OD_Wahlkreise_AH2026/AWK_AH2026.dbf";
   const btgTooltipCsvUrl = "./data-sources/BTG-Wahlkreise.txt";
   const btgLocalGeojsonUrl = "./data-sources/BTG-Wahlkreise-2025.geojson";
 
+/*
+  WFS layer licensing (verify on daten.berlin.de / Bundeswahlleiterin if you change services):
+  - lor_2021 (Kieze), esb (Einschulbereiche), postleitzahlen: CC BY 3.0 DE — Namensnennung
+    PFLICHT (each dataset has prescribed attribution text on its Berlin Open Data page).
+  - alkis_* (Ortsteile, Bezirke, Berlin Land): typically Datenlizenz Deutschland Zero 2.0 — keine
+    Pflicht zur Quellenangabe (dl-de/zero); freie Nutzung ohne Nennung laut Lizenztext.
+  - btg (Bundeswahlleiterin WFS): Urhebervermerk PFLICHT bei Weiterverwendung (digital/gedruckt);
+    exakter Wortlaut: https://www.bundeswahlleiterin.de/bundestagswahlen/2025/wahlkreiseinteilung/downloads.html
+    (Fußnote zum Copyright / dl-de/by-2.0 für Geobasis).
+  => You cannot rely on “no attribution anywhere”: cite LOR, ESB, PLZ, and Wahlkreise as required,
+     unless you remove those layers. ALKIS-only use can omit attribution under dl-de/zero.
+*/
 const wfsLayers = [
     {
       id: "kieze",
@@ -1413,7 +1425,7 @@ function initOverlayLayers() {
 }
 
 // -----------------------------------------------------------------------
-// GeoJSON – generated at runtime from QGIS data (AWK_AH2026.shp + CSV)
+// GeoJSON – generated at runtime from QGIS data (AWK_AH21_25833.shp + CSV)
 // -----------------------------------------------------------------------
 proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs");
 
