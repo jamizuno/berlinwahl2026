@@ -25,11 +25,30 @@
       <h1>Berlin Admin</h1>
       <span class="subtitle">Gewählte Vertreter nach Wahlkreis</span>
     </div>
-    <div class="level-tabs">
-      <button class="tab" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
-      <button class="tab active" onclick="setLevel('abgeordnetenhaus')">Stadt (AGH)</button>
-      <button class="tab" onclick="setLevel('bundestag')">Bundestag</button>
-      <button class="tab" onclick="setLevel('eu')">EU-Parlament</button>
+    <div class="header-controls">
+      <div class="level-tabs">
+        <button class="tab" data-level="bezirk" onclick="setLevel('bezirk')">Bezirk (BVV)</button>
+        <button class="tab" data-level="bezirksamt" onclick="setLevel('bezirksamt')">Bezirk (Amt)</button>
+        <button class="tab active" data-level="abgeordnetenhaus" onclick="setLevel('abgeordnetenhaus')">Stadt (AGH)</button>
+        <button class="tab" data-level="senat" onclick="setLevel('senat')">Stadt (Senat)</button>
+        <button class="tab" data-level="bundestag" onclick="setLevel('bundestag')">Bundestag</button>
+        <button class="tab" data-level="eu" onclick="setLevel('eu')">EU-Parlament</button>
+      </div>
+      <div class="header-search" id="headerSearch">
+        <div class="search-shell">
+          <input
+            class="search-input"
+            id="topSearchInput"
+            type="search"
+            placeholder="Politiker/in oder Ausschuss suchen"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Politikerinnen, Politiker oder Ausschüsse suchen"
+          />
+          <button class="search-clear" id="topSearchClear" type="button" aria-label="Suche löschen">×</button>
+        </div>
+        <div class="search-results" id="topSearchResults" hidden></div>
+      </div>
     </div>
   </header>
 

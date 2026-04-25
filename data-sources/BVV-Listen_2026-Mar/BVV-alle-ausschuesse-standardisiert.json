@@ -15,7 +15,7 @@
   },
   {
     "name": "Vorstand der BVV",
-    "short": "VORST",
+    "short": "VOR",
     "emoji": "📋",
     "slug": "vorstand",
     "category": "zentrales_gremium"
@@ -56,7 +56,7 @@
     "category": "kernausschuss"
   },
   {
-    "name": "Ausschuss für Haushalt und Personal",
+    "name": "Ausschuss für Finanzen und Personal",
     "short": "HHP",
     "emoji": "💰",
     "slug": "haushalt_personal",
@@ -64,15 +64,15 @@
   },
   {
     "name": "Ausschuss für Stadtentwicklung und Wohnen",
-    "short": "StadtEntw",
+    "short": "BAU",
     "emoji": "🏗️",
     "slug": "stadtentwicklung",
     "category": "kernausschuss"
   },
   {
     "name": "Ausschuss für Verkehr und Ordnung",
-    "short": "VerkOrd",
-    "emoji": "🚦",
+    "short": "Verkehr",
+    "emoji": "🚗",
     "slug": "verkehr_ordnung",
     "category": "kernausschuss"
   },
@@ -106,8 +106,8 @@
   },
   {
     "name": "Ausschuss für Soziales, Arbeit und Gesundheit",
-    "short": "SozGes",
-    "emoji": "❤️",
+    "short": "Sozial",
+    "emoji": "🤝",
     "slug": "soziales_gesundheit",
     "category": "kernausschuss"
   },
@@ -127,14 +127,14 @@
   },
   {
     "name": "Ausschuss für Partizipation, Migration und Integration",
-    "short": "PartInt",
+    "short": "PEI",
     "emoji": "🌍",
     "slug": "partizipation_integration",
     "category": "kernausschuss"
   },
   {
     "name": "Ausschuss für Diversity, Gleichstellung und Antidiskriminierung",
-    "short": "Diversity",
+    "short": "DEI",
     "emoji": "🏳️‍🌈",
     "slug": "diversity",
     "category": "erweitert"
@@ -148,8 +148,8 @@
   },
   {
     "name": "Ausschuss für Bildung, Schule und Kultur",
-    "short": "BildKult",
-    "emoji": "📚",
+    "short": "SchuleKultur",
+    "emoji": "🏫🎭",
     "slug": "bildung_kultur",
     "category": "erweitert"
   },
@@ -161,13 +161,6 @@
     "category": "erweitert"
   },
   {
-    "name": "Ausschuss für Soziales und Teilhabe",
-    "short": "SozTeil",
-    "emoji": "🤝",
-    "slug": "soziales_teilhabe",
-    "category": "erweitert"
-  },
-  {
     "name": "Ausschuss für Klima-, Umwelt- und Naturschutz",
     "short": "Klima",
     "emoji": "🌍",
@@ -175,24 +168,10 @@
     "category": "erweitert"
   },
   {
-    "name": "Ausschuss für Bauen, Stadtentwicklung und Facility Management",
-    "short": "BauenFM",
-    "emoji": "🏗️",
-    "slug": "bauen_facility",
-    "category": "erweitert"
-  },
-  {
     "name": "Ausschuss für Liegenschaften und IT",
-    "short": "LiegIT",
+    "short": "ImmoIT",
     "emoji": "💻",
     "slug": "liegenschaften_it",
-    "category": "erweitert"
-  },
-  {
-    "name": "Ausschuss für Ordnung, Straßen und Tiefbau",
-    "short": "OrdStr",
-    "emoji": "🚧",
-    "slug": "ordnung_strassen",
     "category": "erweitert"
   },
   {
@@ -200,13 +179,6 @@
     "short": "MobWirt",
     "emoji": "🚗📈",
     "slug": "mobilitaet_wirtschaft",
-    "category": "erweitert"
-  },
-  {
-    "name": "Ausschuss für Weiterbildung und Städtepartnerschaften",
-    "short": "Weiterb",
-    "emoji": "🌐",
-    "slug": "weiterbildung",
     "category": "erweitert"
   },
   {
@@ -225,7 +197,7 @@
   },
   {
     "name": "AG Haushaltsplanung (Jugendhilfeausschuss)",
-    "short": "AG-HH-JHA",
+    "short": "AG-HHP",
     "emoji": "💰",
     "slug": "ag_haushalt_jha",
     "category": "untergremium"
@@ -239,7 +211,7 @@
   },
   {
     "name": "AG Geschäftsordnung",
-    "short": "AG-GO",
+    "short": "GO",
     "emoji": "📜",
     "slug": "ag_geschaeftsordnung",
     "category": "untergremium"
@@ -271,8 +243,8 @@
     "category": "untergremium"
   },
   {
-    "name": "AG Haushaltsplanung (Jugendhilfeausschuss)",
-    "short": "AG-HH-JHA",
+    "name": "AG Haushaltsplanung",
+    "short": "AG-JHP",
     "emoji": "💰",
     "slug": "ag_haushalt_jha",
     "category": "untergremium"
@@ -286,7 +258,7 @@
   },
   {
     "name": "AG Geschäftsordnung",
-    "short": "AG-GO",
+    "short": "GO",
     "emoji": "📜",
     "slug": "ag_geschaeftsordnung",
     "category": "untergremium"
@@ -300,7 +272,7 @@
   },
   {
     "name": "Beirat für Partizipation und Integration",
-    "short": "BR-PartInt",
+    "short": "BR-PEI",
     "emoji": "🌍",
     "slug": "beirat_partizipation",
     "category": "beirat"
@@ -321,37 +293,289 @@
   },
   {
     "name": "Ausschuss für Arbeit, Soziales, Gesundheit, Teilhabe und Inklusion (B)",
-    "short": "ASGTI-b",
-    "emoji": "❤️",
+    "short": "SozialPEI",
+    "emoji": "🤝🌍",
     "slug": "asgti",
     "category": "kernausschuss"
   },
   {
     "name": "Ausschuss für Haushalt, Personal, Verwaltung, Immobilien und Gleichstellung (B)",
-    "short": "HhPVIG-b",
+    "short": "HHP+",
     "emoji": "💰",
     "slug": "hhpvig",
     "category": "kernausschuss"
   },
   {
-    "name": "Geschäftsordnungsausschuss (B)",
-    "short": "GO-b",
-    "emoji": "📜",
-    "slug": "go_b",
-    "category": "kernausschuss"
-  },
-  {
     "name": "Ausschuss für Stadtentwicklung, Bauen und Umwelt- und Naturschutz (B)",
-    "short": "StaBUm-b",
-    "emoji": "🏗️",
+    "short": "BAU&Umwelt",
+    "emoji": "🏗️🌱",
     "slug": "stabum",
     "category": "kernausschuss"
   },
   {
-    "name": "Ausschuss für Schule (B)",
-    "short": "Schul-b",
-    "emoji": "🏫",
-    "slug": "schule_b",
+    "name": "Ausschuss für Diversity und Antidiskriminierung",
+    "short": "DivAn",
+    "emoji": "🏳️‍🌈",
+    "slug": "diversity_antidiskriminierung",
     "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Kultur und Bildung",
+    "short": "KuBi",
+    "emoji": "🎭",
+    "slug": "kultur_bildung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Petitionen, Beteiligung und Geschäftsordnung",
+    "short": "PBGO",
+    "emoji": "📨",
+    "slug": "petitionen_beteiligung_geschaeftsordnung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Personal, Haushalt, Investitionen, Rechnungsprüfung und Wirtschaftsförderung",
+    "short": "PHIRW",
+    "emoji": "💰",
+    "slug": "personal_haushalt_investitionen_rechnungspruefung_wirtschaft",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Umwelt- und Naturschutz, Grünflächen und Klimaschutz",
+    "short": "UGK",
+    "emoji": "🌱",
+    "slug": "umwelt_naturschutz_gruenflaechen_klimaschutz",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Verwaltung, Bürgerdienste, Digitalisierung und Facility Management",
+    "short": "VBDFM",
+    "emoji": "🗂️",
+    "slug": "verwaltung_buergerdienste_digitalisierung_facility_management",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Partizipation und Integration",
+    "short": "PartInt",
+    "emoji": "🌍",
+    "slug": "partizipation_integration_ohne_migration",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Straßen, Grünflächen und Ordnungsangelegenheiten (B)",
+    "short": "SGO",
+    "emoji": "🛣️",
+    "slug": "strassen_gruenflaechen_ordnungsangelegenheiten",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Wirtschaftsförderung, Tourismus und Bürgerdienste (B)",
+    "short": "WTB",
+    "emoji": "📈",
+    "slug": "wirtschaftsfoerderung_tourismus_buergerdienste",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Haushalt, Personal und Diversity",
+    "short": "HH",
+    "emoji": "💰",
+    "slug": "haushalt_personal_diversity",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Umwelt, Grünflächen, Natur- und Klimaschutz",
+    "short": "Um",
+    "emoji": "🌱",
+    "slug": "umwelt_gruenflaechen_natur_klimaschutz",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Bildung und Kultur",
+    "short": "BiKu",
+    "emoji": "🏫🎭",
+    "slug": "bildung_kultur",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Bürgerdienste",
+    "short": "Büd",
+    "emoji": "🗂️",
+    "slug": "buergerdienste",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Frauen*, Gleichstellung, Queer",
+    "short": "FrGlQ",
+    "emoji": "🏳️‍🌈",
+    "slug": "frauen_gleichstellung_queer",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Grünanlagen, Natur, Umwelt",
+    "short": "GNU",
+    "emoji": "🌱",
+    "slug": "gruenanlagen_natur_umwelt",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Gebäude, Wirtschaft, Inklusion, Verwaltungsmodernisierung, Digitalisierung",
+    "short": "GWIVD",
+    "emoji": "🗂️",
+    "slug": "gebaeude_wirtschaft_inklusion_verwaltungsmodernisierung_digitalisierung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Haushalt, Personal, Europa, Klima",
+    "short": "HHPEK",
+    "emoji": "💰",
+    "slug": "haushalt_personal_europa_klima",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Mobilität, Verkehr, Ordnung",
+    "short": "MVO",
+    "emoji": "🚗",
+    "slug": "mobilitaet_verkehr_ordnung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Schulausschuss",
+    "short": "Sch",
+    "emoji": "🏫",
+    "slug": "schulausschuss",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Soziales, Pflege, Arbeit, Senior*innen",
+    "short": "SozPAS",
+    "emoji": "🤝",
+    "slug": "soziales_pflege_arbeit_senioren",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Unregelmäßigkeiten",
+    "short": "Unreg",
+    "emoji": "❗",
+    "slug": "unregelmaessigkeiten",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Bürgerdienste, Soziales, Senioren und demographischen Wandel",
+    "short": "BDSSdW",
+    "emoji": "🤝",
+    "slug": "buergerdienste_soziales_senioren_demographischer_wandel",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Facility Management",
+    "short": "FM",
+    "emoji": "🏗️",
+    "slug": "facility_management",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Frauen-, Queer- und Inklusionspolitik",
+    "short": "FrQ",
+    "emoji": "🏳️‍🌈",
+    "slug": "frauen_queer_inklusionspolitik",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Ordnung, Grün, Umwelt und Klimaschutz",
+    "short": "OGUK",
+    "emoji": "🌱",
+    "slug": "ordnung_gruen_umwelt_klimaschutz",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Straßen und Verkehr",
+    "short": "StV",
+    "emoji": "🚗",
+    "slug": "strassen_verkehr",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Wirtschaft",
+    "short": "Wi",
+    "emoji": "📈",
+    "slug": "wirtschaft_allgemein",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Ordnung",
+    "short": "Ord",
+    "emoji": "⚖️",
+    "slug": "ordnung_allgemein",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Gleichstellung",
+    "short": "Gls",
+    "emoji": "🏳️‍🌈",
+    "slug": "gleichstellung",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Klima- und Umweltschutz",
+    "short": "KlimaUm",
+    "emoji": "🌍",
+    "slug": "klima_umweltschutz",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Soziales & Teilhabe",
+    "short": "SozTeilh",
+    "emoji": "🤝",
+    "slug": "soziales_teilhabe",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Gesundheit und Sport",
+    "short": "GesSport",
+    "emoji": "🩺⚽",
+    "slug": "gesundheit_sport",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Weiterbildung, Kultur",
+    "short": "WeitKul",
+    "emoji": "🎭",
+    "slug": "weiterbildung_kultur",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "Ausschuss für Haushalt, Gender Budgeting, Personal und Liegenschaften",
+    "short": "HaushA",
+    "emoji": "💰",
+    "slug": "haushalt_gender_budgeting_personal_liegenschaften",
+    "category": "kernausschuss"
+  },
+  {
+    "name": "AG \"Ehrenrat\"",
+    "short": "AG-ER",
+    "emoji": "🧭",
+    "slug": "ag_ehrenrat",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG \"Geschäftsordnung BVV\"",
+    "short": "GO-IX",
+    "emoji": "📜",
+    "slug": "ag_geschaeftsordnung_bvv",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG \"BVV Live\"",
+    "short": "Liv",
+    "emoji": "🎥",
+    "slug": "ag_bvv_live",
+    "category": "untergremium"
+  },
+  {
+    "name": "AG \"Tag des Engagements\"",
+    "short": "Eng",
+    "emoji": "🤝",
+    "slug": "ag_tag_des_engagements",
+    "category": "untergremium"
   }
 ]
