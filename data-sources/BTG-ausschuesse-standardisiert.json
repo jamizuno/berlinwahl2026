@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Ausschuss für Arbeit und Soziales",
+    "short": "ArbSoz",
+    "emoji": "🤝",
+    "slug": "arbeit-und-soziales",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Bildung, Familie, Senioren, Frauen und Jugend",
+    "short": "BFSFJ",
+    "emoji": "👶",
+    "slug": "bildung-familie-senioren-frauen-jugend",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für die Angelegenheiten der Europäischen Union",
+    "short": "EU",
+    "emoji": "🇪🇺",
+    "slug": "angelegenheiten-der-europaeischen-union",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Digitales und Staatsmodernisierung",
+    "short": "Digi",
+    "emoji": "💻",
+    "slug": "digitales-und-staatsmodernisierung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Forschung, Technologie, Raumfahrt und Technikfolgenabschätzung",
+    "short": "Forsch",
+    "emoji": "🔬",
+    "slug": "forschung-technologie-raumfahrt-technikfolgenabschaetzung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Gesundheit",
+    "short": "Gesund",
+    "emoji": "🩺",
+    "slug": "gesundheit",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Kultur und Medien",
+    "short": "Kultur",
+    "emoji": "🎭",
+    "slug": "kultur-und-medien",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Landwirtschaft, Ernährung und Heimat",
+    "short": "Landw",
+    "emoji": "🌾",
+    "slug": "landwirtschaft-ernaehrung-heimat",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Recht und Verbraucherschutz",
+    "short": "Recht",
+    "emoji": "📜",
+    "slug": "recht-und-verbraucherschutz",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Tourismus",
+    "short": "Tour",
+    "emoji": "🧳",
+    "slug": "tourismus",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Umwelt, Klimaschutz, Naturschutz und nukleare Sicherheit",
+    "short": "Umwelt",
+    "emoji": "🌱",
+    "slug": "umwelt-klimaschutz-naturschutz-nukleare-sicherheit",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Wirtschaft und Energie",
+    "short": "Wirt",
+    "emoji": "💼",
+    "slug": "wirtschaft-und-energie",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Wohnen, Stadtentwicklung, Bauwesen und Kommunen",
+    "short": "Wohnen",
+    "emoji": "🏗️",
+    "slug": "wohnen-stadtentwicklung-bauwesen-kommunen",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Auswärtiger Ausschuss",
+    "short": "Ausw",
+    "emoji": "🌍",
+    "slug": "auswaertiger-ausschuss",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Enquete-Kommission „Aufarbeitung der Corona-Pandemie und Lehren für zukünftige pandemische Ereignisse“",
+    "short": "Enquete",
+    "emoji": "🦠",
+    "slug": "enquete-corona-pandemie",
+    "category": "sondergremium"
+  },
+  {
+    "name": "Finanzausschuss",
+    "short": "Fin",
+    "emoji": "💶",
+    "slug": "finanzausschuss",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Haushaltsausschuss",
+    "short": "HH",
+    "emoji": "🧭",
+    "slug": "haushaltsausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Innenausschuss",
+    "short": "Innen",
+    "emoji": "🛡️",
+    "slug": "innenausschuss",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Parlamentarischer Beirat für nachhaltige Entwicklung und Zukunftsfragen",
+    "short": "Beirat",
+    "emoji": "🌿",
+    "slug": "beirat-nachhaltige-entwicklung-zukunftsfragen",
+    "category": "beirat"
+  },
+  {
+    "name": "Petitionsausschuss",
+    "short": "Pet",
+    "emoji": "📨",
+    "slug": "petitionsausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Rechnungsprüfungsausschuss",
+    "short": "RPA",
+    "emoji": "🔍",
+    "slug": "rechnungspruefungsausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Unterausschuss zu Fragen der Europäischen Union",
+    "short": "UAEU",
+    "emoji": "🇪🇺",
+    "slug": "unterausschuss-europaeische-union",
+    "category": "unterausschuss"
+  },
+  {
+    "name": "Verkehrsausschuss",
+    "short": "Verkehr",
+    "emoji": "🚗",
+    "slug": "verkehrsausschuss",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Wahlausschuss",
+    "short": "Wahl",
+    "emoji": "🗳️",
+    "slug": "wahlausschuss",
+    "category": "sondergremium"
+  }
+]

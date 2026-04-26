@@ -264,7 +264,7 @@ const mapScopeByLevel = {
   bezirk: ["Kieze (LOR)", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
   bezirksamt: ["Kieze (LOR)", "Einschulbereiche", "Postleitzahlen", "Ortsteile", "Bezirke"],
   abgeordnetenhaus: ["Abgeordnetenhaus WK", "Ortsteile", "Bezirke"],
-  senat: ["Abgeordnetenhaus WK", "Ortsteile", "Bezirke"],
+  senat: ["Berlin (Land)", "Ortsteile", "Bezirke"],
   bundestag: ["Bundestag WK", "Berlin (Land)"],
   eu: ["Berlin (Land)"]
 };
@@ -273,7 +273,7 @@ const mapSelectionByLevelIds = {
   bezirk: ["bezirke", "ortsteile"],
   bezirksamt: ["bezirke", "ortsteile"],
   abgeordnetenhaus: ["agh", "bezirke"],
-  senat: ["agh", "bezirke"],
+  senat: ["eu"],
   bundestag: ["btg", "eu"],
   eu: ["eu"]
 };
@@ -392,7 +392,19 @@ const BVV_ROLE_DICTIONARY = {
   ausschussmitglied: {
     label: "Ausschussmitglied",
     organization_classifications_allowed: ["ausschuss", "gremium"],
-    source_labels_common: ["Mitglied"]
+    source_labels_common: ["Mitglied", "Ausschussmitglied BV"]
+  },
+  stv_ausschussmitglied: {
+    label: "stellv. Ausschussmitglied",
+    organization_classifications_allowed: ["ausschuss", "gremium"],
+    source_labels_common: [
+      "stellv. Ausschussmitglied",
+      "Stellv. Ausschussmitglied",
+      "Stv. Ausschussmitglied",
+      "stellv. Ausschussmitglied BV",
+      "Stellv. Ausschussmitglied BV",
+      "Stv. Ausschussmitglied BV"
+    ]
   },
   buergerdeputierte_r: {
     label: "Bürgerdeputierte/r",
@@ -494,7 +506,11 @@ const districtCsvUrl = "./data-sources/Berlin_Bezirk_W2_Sieger.csv";
 const wahlkreiseShpUrl = "./data-sources/RBS_OD_Wahlkreise_AH2021/AWK_AH21_25833.shp";
 const wahlkreiseDbfUrl = "./data-sources/RBS_OD_Wahlkreise_AH2021/AWK_AH21_25833.dbf";
 const aghCsvUrl = "./data-sources/AGH_2025_by_wahlkreis_truth.csv";
+const aghCommitteeStandardUrl = "./data-sources/AGH-ausschuesse-standardisiert.json";
+const aghCommitteeVariantUrl = "./data-sources/AGH-ausschuesse-variable-schreibweisen.json";
 const btgCsvUrl = "./data-sources/BTG_2025_by_wahlkreis_truth.csv";
+const btgCommitteeStandardUrl = "./data-sources/BTG-ausschuesse-standardisiert.json";
+const btgCommitteeVariantUrl = "./data-sources/BTG-ausschuesse-variable-schreibweisen.json";
 const euCsvUrl = "./data-sources/EU_2025_parlamentarians_combined.csv";
 const bvvBasePath = "./data-sources/BVV-Listen_2026-Mar";
 const bvvCommitteeStandardUrl = "./data-sources/BVV-Listen_2026-Mar/BVV-alle-ausschuesse-standardisiert.json";
@@ -1304,7 +1320,7 @@ function loadDistrictCSV() {
 }
 
 function loadAghCSV() {
-  return new Promise((resolve, reject) => {
+  return loadAghCommitteeMaps().then(() => new Promise((resolve, reject) => {
     Papa.parse(aghCsvUrl, {
       download: true,
       header: true,
@@ -1321,14 +1337,191 @@ function loadAghCSV() {
           const mandateType = String(row.mandate_type || row.mandate_won || "").toLowerCase();
           const art = mandateType === "constituency" ? "Direkt" : "Liste";
           const note = (row.info || row.Hinweis || "").trim();
+          const committeeMemberships = parseAghCommitteeMemberships(row);
+          const entry = { name, party, wahlkreis, percent, art, note, awk };
+          const officialWebsite = normalizePoliticianLinkUrl(row.official_website || row.website || row.SourceURL || "");
+          if (officialWebsite) entry.website = officialWebsite;
+          if (committeeMemberships.length > 0) entry.committee_memberships = committeeMemberships;
           if (!aghByAwk.has(awk)) aghByAwk.set(awk, []);
-          aghByAwk.get(awk).push({ name, party, wahlkreis, percent, art, note, awk });
+          aghByAwk.get(awk).push(entry);
         });
         resolve();
       },
       error: (err) => reject(err)
     });
+  }));
+}
+
+function parsePipeList(value) {
+  return String(value || "")
+    .split(/\s*\|\s*/)
+    .map(part => String(part || "").trim())
+    .filter(Boolean);
+}
+
+function parseJsonArrayField(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+const AGH_COMMITTEE_ROLE_LABELS = {
+  chairperson: "Ausschussvorsitz",
+  vice_chairperson: "stellv. Ausschussvorsitz",
+  foreperson: "Obmann/-frau",
+  spokesperson: "Sprecher/in",
+  alternate_spokesperson: "stellv. Sprecher/in",
+  secretary: "Schriftführung",
+  alternate_secretary: "stellv. Schriftführung",
+  advisory_member: "Beratendes Mitglied",
+  eligible_member: "Mitwirkungsberechtigtes Mitglied",
+  member: "Ausschussmitglied",
+  alternate_member: "stellv. Ausschussmitglied",
+  rapporteur: "Berichterstatter/in"
+};
+
+const AGH_COMMITTEE_ROLE_RANK = {
+  "Ausschussvorsitz": 11,
+  "stellv. Ausschussvorsitz": 10,
+  "Obmann/-frau": 9,
+  "Sprecher/in": 8,
+  "stellv. Sprecher/in": 7,
+  "Schriftführung": 6,
+  "stellv. Schriftführung": 5,
+  "Berichterstatter/in": 4,
+  "Beratendes Mitglied": 3,
+  "Mitwirkungsberechtigtes Mitglied": 2,
+  "Ausschussmitglied": 1,
+  "stellv. Ausschussmitglied": 0
+};
+
+function normalizeAghCommitteeRole(value, additionalRoles) {
+  const key = String(value || "").trim().toLowerCase();
+  if (key && AGH_COMMITTEE_ROLE_LABELS[key]) return AGH_COMMITTEE_ROLE_LABELS[key];
+  const additional = Array.isArray(additionalRoles) ? additionalRoles : (additionalRoles ? [additionalRoles] : []);
+  const lowerAdditional = additional.map(item => String(item || "").trim().toLowerCase()).filter(Boolean);
+  if (lowerAdditional.includes("spokesperson")) return AGH_COMMITTEE_ROLE_LABELS.spokesperson;
+  if (lowerAdditional.includes("alternate_spokesperson")) return AGH_COMMITTEE_ROLE_LABELS.alternate_spokesperson;
+  return "Ausschussmitglied";
+}
+
+function buildAghCommitteeMembership(label, roleLabel) {
+  const committeeInfo = resolveAghCommitteeFromLabels([label]);
+  const membership = {
+    name: committeeInfo?.name || String(label || "").trim(),
+    role: roleLabel || "Ausschussmitglied"
+  };
+  if (committeeInfo) {
+    membership.committee = committeeInfo;
+    membership.short = committeeInfo.short;
+    membership.committeeLabel = formatCommitteeShort(committeeInfo);
+  }
+  return membership;
+}
+
+function buildBtgCommitteeMembership(label, roleLabel) {
+  const committeeInfo = resolveBtgCommitteeFromLabels([label]);
+  const membership = {
+    name: committeeInfo?.name || String(label || "").trim(),
+    role: roleLabel || "Ausschussmitglied"
+  };
+  if (committeeInfo) {
+    membership.committee = committeeInfo;
+    membership.short = committeeInfo.short;
+    membership.committeeLabel = formatCommitteeShort(committeeInfo);
+  }
+  return membership;
+}
+
+function parseAghCommitteeMemberships(row) {
+  const memberships = [];
+  const rawStructured = parseJsonArrayField(
+    row.committee_memberships_json ||
+    row.committee_memberships ||
+    row.CommitteeMembershipsJson
+  );
+
+  if (rawStructured.length > 0) {
+    rawStructured.forEach(item => {
+      const label = String(item?.committee || item?.label || item?.committee_label || "").trim();
+      if (!label) return;
+      const roleLabel = normalizeAghCommitteeRole(item?.committee_role || item?.role, item?.committee_roles_additional);
+      memberships.push(buildAghCommitteeMembership(label, roleLabel));
+    });
+  } else {
+    const committees = parsePipeList(row.committees || row.committee || row.Committees);
+    const spokespersonCommittees = new Set(parsePipeList(row.spokesperson_role || row.spokesperson || row.SpokespersonRole));
+    committees.forEach(label => {
+      const roleLabel = spokespersonCommittees.has(label) ? "Sprecher/in" : "Ausschussmitglied";
+      memberships.push(buildAghCommitteeMembership(label, roleLabel));
+    });
+    spokespersonCommittees.forEach(label => {
+      const labelKey = normalizeCommitteeKey(label);
+      if (memberships.some(item => normalizeCommitteeKey(item?.committee?.name || item?.name || "") === labelKey)) return;
+      memberships.push(buildAghCommitteeMembership(label, "Sprecher/in"));
+    });
+  }
+
+  const uniqueByCommittee = new Map();
+  memberships.forEach(item => {
+    const key = normalizeCommitteeKey(item?.committee?.name || item?.name || item?.short || "");
+    if (!key) return;
+    const current = uniqueByCommittee.get(key);
+    const nextRank = AGH_COMMITTEE_ROLE_RANK[item.role] ?? -1;
+    const currentRank = current ? (AGH_COMMITTEE_ROLE_RANK[current.role] ?? -1) : -1;
+    if (!current || nextRank > currentRank) {
+      uniqueByCommittee.set(key, item);
+    }
   });
+  return Array.from(uniqueByCommittee.values());
+}
+
+function parseBtgCommitteeMemberships(row) {
+  const memberships = [];
+  const rawStructured = parseJsonArrayField(
+    row.committee_memberships_json ||
+    row.committee_memberships ||
+    row.CommitteeMembershipsJson
+  );
+
+  if (rawStructured.length > 0) {
+    rawStructured.forEach(item => {
+      const label = String(item?.committee || item?.label || item?.committee_label || "").trim();
+      if (!label) return;
+      const roleLabel = normalizeAghCommitteeRole(item?.committee_role || item?.role, item?.committee_roles_additional);
+      memberships.push(buildBtgCommitteeMembership(label, roleLabel));
+    });
+  } else {
+    const committees = parsePipeList(row.committees || row.committee || row.Committees);
+    const spokespersonCommittees = new Set(parsePipeList(row.spokesperson_role || row.spokesperson || row.SpokespersonRole));
+    committees.forEach(label => {
+      const roleLabel = spokespersonCommittees.has(label) ? "Sprecher/in" : "Ausschussmitglied";
+      memberships.push(buildBtgCommitteeMembership(label, roleLabel));
+    });
+    spokespersonCommittees.forEach(label => {
+      const labelKey = normalizeCommitteeKey(label);
+      if (memberships.some(item => normalizeCommitteeKey(item?.committee?.name || item?.name || "") === labelKey)) return;
+      memberships.push(buildBtgCommitteeMembership(label, "Sprecher/in"));
+    });
+  }
+
+  const uniqueByCommittee = new Map();
+  memberships.forEach(item => {
+    const key = normalizeCommitteeKey(item?.committee?.name || item?.name || item?.short || "");
+    if (!key) return;
+    const current = uniqueByCommittee.get(key);
+    const nextRank = AGH_COMMITTEE_ROLE_RANK[item.role] ?? -1;
+    const currentRank = current ? (AGH_COMMITTEE_ROLE_RANK[current.role] ?? -1) : -1;
+    if (!current || nextRank > currentRank) {
+      uniqueByCommittee.set(key, item);
+    }
+  });
+  return Array.from(uniqueByCommittee.values());
 }
 
 function normalizeWkr(value) {
@@ -1497,11 +1690,20 @@ function orgLooksLikeCommittee(org) {
   return name.includes("ausschuss");
 }
 
-let committeeDataLoaded = false;
-let committeeStandards = [];
-const committeeByShort = new Map();
-const committeeVariantToShort = new Map();
-let committeeNormalizedList = [];
+function createCommitteeRegistry() {
+  return {
+    dataLoaded: false,
+    loading: null,
+    standards: [],
+    byShort: new Map(),
+    variantToShort: new Map(),
+    normalizedList: []
+  };
+}
+
+const bvvCommitteeRegistry = createCommitteeRegistry();
+const aghCommitteeRegistry = createCommitteeRegistry();
+const btgCommitteeRegistry = createCommitteeRegistry();
 
 function normalizeCommitteeKey(value) {
   return String(value || "")
@@ -1523,29 +1725,29 @@ function buildCommitteeKeyVariants(value) {
   return variants;
 }
 
-function registerCommitteeVariant(label, short) {
+function registerCommitteeVariantInRegistry(registry, label, short) {
   if (!label || !short) return;
-  if (committeeByShort.size && !committeeByShort.has(short)) return;
+  if (registry.byShort.size && !registry.byShort.has(short)) return;
   buildCommitteeKeyVariants(label).forEach(key => {
-    if (!committeeVariantToShort.has(key)) {
-      committeeVariantToShort.set(key, short);
+    if (!registry.variantToShort.has(key)) {
+      registry.variantToShort.set(key, short);
     }
   });
 }
 
-function buildCommitteeMaps(standards, variants) {
-  committeeStandards = Array.isArray(standards) ? standards : [];
-  committeeByShort.clear();
-  committeeVariantToShort.clear();
-  committeeNormalizedList = [];
+function buildCommitteeMapsInRegistry(registry, standards, variants) {
+  registry.standards = Array.isArray(standards) ? standards : [];
+  registry.byShort.clear();
+  registry.variantToShort.clear();
+  registry.normalizedList = [];
 
-  committeeStandards.forEach(entry => {
+  registry.standards.forEach(entry => {
     if (!entry || !entry.short) return;
-    committeeByShort.set(entry.short, entry);
-    registerCommitteeVariant(entry.short, entry.short);
-    registerCommitteeVariant(entry.name, entry.short);
-    registerCommitteeVariant(entry.slug, entry.short);
-    committeeNormalizedList.push({
+    registry.byShort.set(entry.short, entry);
+    registerCommitteeVariantInRegistry(registry, entry.short, entry.short);
+    registerCommitteeVariantInRegistry(registry, entry.name, entry.short);
+    registerCommitteeVariantInRegistry(registry, entry.slug, entry.short);
+    registry.normalizedList.push({
       entry,
       keyShort: normalizeCommitteeKey(entry.short).replace(/\s+/g, ""),
       keyName: normalizeCommitteeKey(entry.name).replace(/\s+/g, "")
@@ -1554,51 +1756,103 @@ function buildCommitteeMaps(standards, variants) {
 
   if (variants && typeof variants === "object") {
     Object.entries(variants).forEach(([key, short]) => {
-      registerCommitteeVariant(key, short);
+      registerCommitteeVariantInRegistry(registry, key, short);
     });
   }
 }
 
-async function loadCommitteeMaps() {
-  if (committeeDataLoaded) return;
-  try {
-    const [standardRes, variantRes] = await Promise.all([
-      fetch(bvvCommitteeStandardUrl),
-      fetch(bvvCommitteeVariantUrl)
-    ]);
-    const standards = standardRes.ok ? await standardRes.json() : [];
-    const variants = variantRes.ok ? await variantRes.json() : {};
-    buildCommitteeMaps(standards, variants);
-  } catch (err) {
-    console.warn("BVV committee normalization data could not be loaded.", err);
-  }
-  committeeDataLoaded = true;
+function buildCommitteeMaps(standards, variants) {
+  buildCommitteeMapsInRegistry(bvvCommitteeRegistry, standards, variants);
 }
 
-function resolveCommitteeByPrefix(label) {
+async function loadCommitteeMapsForRegistry(registry, standardUrl, variantUrl, warningLabel) {
+  if (registry.dataLoaded) return;
+  if (registry.loading) return registry.loading;
+  registry.loading = (async () => {
+    try {
+      const [standardRes, variantRes] = await Promise.all([
+        fetch(standardUrl),
+        fetch(variantUrl)
+      ]);
+      const standards = standardRes.ok ? await standardRes.json() : [];
+      const variants = variantRes.ok ? await variantRes.json() : {};
+      buildCommitteeMapsInRegistry(registry, standards, variants);
+    } catch (err) {
+      console.warn(`${warningLabel} committee normalization data could not be loaded.`, err);
+    }
+    registry.dataLoaded = true;
+    registry.loading = null;
+  })();
+  return registry.loading;
+}
+
+async function loadCommitteeMaps() {
+  return loadCommitteeMapsForRegistry(
+    bvvCommitteeRegistry,
+    bvvCommitteeStandardUrl,
+    bvvCommitteeVariantUrl,
+    "BVV"
+  );
+}
+
+async function loadAghCommitteeMaps() {
+  return loadCommitteeMapsForRegistry(
+    aghCommitteeRegistry,
+    aghCommitteeStandardUrl,
+    aghCommitteeVariantUrl,
+    "AGH"
+  );
+}
+
+async function loadBtgCommitteeMaps() {
+  return loadCommitteeMapsForRegistry(
+    btgCommitteeRegistry,
+    btgCommitteeStandardUrl,
+    btgCommitteeVariantUrl,
+    "BTG"
+  );
+}
+
+function resolveCommitteeByPrefixInRegistry(registry, label) {
   const key = normalizeCommitteeKey(label).replace(/\s+/g, "");
   if (!key || key.length > 6) return null;
-  const matches = committeeNormalizedList.filter(item =>
+  const matches = registry.normalizedList.filter(item =>
     item.keyShort.startsWith(key) || item.keyName.startsWith(key)
   );
   return matches.length === 1 ? matches[0].entry : null;
 }
 
-function resolveCommitteeFromLabels(labels) {
+function resolveCommitteeFromLabelsInRegistry(registry, labels) {
   const list = Array.isArray(labels) ? labels : [];
   for (const label of list) {
     if (!label) continue;
     const variants = buildCommitteeKeyVariants(label);
     for (const key of variants) {
-      const short = committeeVariantToShort.get(key);
-      if (short && committeeByShort.has(short)) {
-        return committeeByShort.get(short);
+      const short = registry.variantToShort.get(key);
+      if (short && registry.byShort.has(short)) {
+        return registry.byShort.get(short);
       }
     }
-    const prefixMatch = resolveCommitteeByPrefix(label);
+    const prefixMatch = resolveCommitteeByPrefixInRegistry(registry, label);
     if (prefixMatch) return prefixMatch;
   }
   return null;
+}
+
+function resolveCommitteeByPrefix(label) {
+  return resolveCommitteeByPrefixInRegistry(bvvCommitteeRegistry, label);
+}
+
+function resolveCommitteeFromLabels(labels) {
+  return resolveCommitteeFromLabelsInRegistry(bvvCommitteeRegistry, labels);
+}
+
+function resolveAghCommitteeFromLabels(labels) {
+  return resolveCommitteeFromLabelsInRegistry(aghCommitteeRegistry, labels);
+}
+
+function resolveBtgCommitteeFromLabels(labels) {
+  return resolveCommitteeFromLabelsInRegistry(btgCommitteeRegistry, labels);
 }
 
 function getCommitteeLabels(membership, org) {
@@ -1641,6 +1895,15 @@ function renderCommitteeAbbrev(shortLabel, committeeInfo) {
   return shortText;
 }
 
+function formatMembershipMetaText(primaryLabel, roleLabel) {
+  const parts = [];
+  const primary = String(primaryLabel || "").trim();
+  const role = String(roleLabel || "").trim();
+  if (primary) parts.push(primary);
+  if (role) parts.push(role);
+  return parts.join(" · ").trim();
+}
+
 function isLikelyCommitteeLabel(label) {
   const raw = String(label || "").trim();
   if (!raw) return false;
@@ -1656,7 +1919,7 @@ function trackUnknownCommitteeLabel(label) {
   if (!raw) return;
   if (!isLikelyCommitteeLabel(raw)) return;
   const variants = buildCommitteeKeyVariants(raw);
-  const mapped = variants.some(key => committeeVariantToShort.has(key));
+  const mapped = variants.some(key => bvvCommitteeRegistry.variantToShort.has(key));
   if (mapped) return;
   unknownCommitteeLabels.add(raw);
 }
@@ -2305,6 +2568,61 @@ function runBvvPersonCardTests() {
   assert(card9, "Test 10: card should exist");
   assert(Array.isArray(card9.oparl_memberships) && card9.oparl_memberships.some(item => item?.role === "Bezirksverordnete"), "Test 10: committee role BV should render as Bezirksverordnete");
 
+  // 11) Tempelhof-style committee role variants should drop the trailing BV suffix
+  const person10 = {
+    name: "Test Committee Role Variants",
+    membership: [
+      ...baseMemberships,
+      { organization: "comm", role: "Ausschussmitglied BV", startDate: "2022-01-01" },
+      { organization: "comm", role: "stellv. Ausschussmitglied BV", startDate: "2022-01-02" }
+    ]
+  };
+  const card10 = buildBvvPersonCard(person10, { orgById, bvvOrgIds, factionOrgIds, committeeOrgIds, today });
+  assert(card10, "Test 11: card should exist");
+  assert(Array.isArray(card10.oparl_memberships) && card10.oparl_memberships.some(item => item?.role === "Ausschussmitglied"), "Test 11: Ausschussmitglied BV should normalize to Ausschussmitglied");
+  assert(Array.isArray(card10.oparl_memberships) && card10.oparl_memberships.some(item => item?.role === "stellv. Ausschussmitglied"), "Test 11: stellv. Ausschussmitglied BV should normalize to stellv. Ausschussmitglied");
+
+  // 12) committee meta text should render committee first, then role
+  assert(formatMembershipMetaText("📨 E&B", "Ausschussvorsitz") === "📨 E&B · Ausschussvorsitz", "Test 12: committee meta text should render committee first");
+
+  // 13) AGH fallback committee parsing should mark spokesperson committees distinctly
+  buildCommitteeMapsInRegistry(aghCommitteeRegistry, [
+    { name: "Ausschuss für Mobilität und Verkehr", short: "Verkehr", slug: "mobilitaet-und-verkehr" }
+  ], {});
+  const aghFallbackMemberships = parseAghCommitteeMemberships({
+    committees: "Ausschuss für Mobilität und Verkehr",
+    spokesperson_role: "Ausschuss für Mobilität und Verkehr"
+  });
+  assert(Array.isArray(aghFallbackMemberships) && aghFallbackMemberships.length === 1, "Test 13: AGH fallback parsing should create one membership");
+  assert(aghFallbackMemberships[0]?.role === "Sprecher/in", `Test 13: Expected Sprecher/in, got "${aghFallbackMemberships[0]?.role || ""}"`);
+
+  // 14) AGH structured committee parsing should preserve explicit committee roles
+  const aghStructuredMemberships = parseAghCommitteeMemberships({
+    committee_memberships_json: JSON.stringify([
+      { committee: "Ausschuss für Mobilität und Verkehr", committee_role: "vice_chairperson" }
+    ])
+  });
+  assert(Array.isArray(aghStructuredMemberships) && aghStructuredMemberships[0]?.role === "stellv. Ausschussvorsitz", `Test 14: Expected stellv. Ausschussvorsitz, got "${aghStructuredMemberships[0]?.role || ""}"`);
+
+  // 15) Bundestag fallback committee parsing should mark spokesperson committees distinctly
+  buildCommitteeMapsInRegistry(btgCommitteeRegistry, [
+    { name: "Innenausschuss", short: "Innen", slug: "innenausschuss" }
+  ], {});
+  const btgFallbackMemberships = parseBtgCommitteeMemberships({
+    committees: "Innenausschuss",
+    spokesperson_role: "Innenausschuss"
+  });
+  assert(Array.isArray(btgFallbackMemberships) && btgFallbackMemberships.length === 1, "Test 15: BTG fallback parsing should create one membership");
+  assert(btgFallbackMemberships[0]?.role === "Sprecher/in", `Test 15: Expected Sprecher/in, got "${btgFallbackMemberships[0]?.role || ""}"`);
+
+  // 16) Bundestag structured committee parsing should preserve explicit committee roles
+  const btgStructuredMemberships = parseBtgCommitteeMemberships({
+    committee_memberships_json: JSON.stringify([
+      { committee: "Innenausschuss", committee_role: "chairperson" }
+    ])
+  });
+  assert(Array.isArray(btgStructuredMemberships) && btgStructuredMemberships[0]?.role === "Ausschussvorsitz", `Test 16: Expected Ausschussvorsitz, got "${btgStructuredMemberships[0]?.role || ""}"`);
+
   return true;
 }
 
@@ -2495,6 +2813,30 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function normalizePoliticianLinkUrl(value) {
+  const url = String(value || "").trim();
+  if (!/^https?:\/\//i.test(url)) return "";
+  return url;
+}
+
+function getPoliticianLinkUrl(entry) {
+  return normalizePoliticianLinkUrl(
+    entry?.website ||
+    entry?.officialWebsite ||
+    entry?.official_website ||
+    entry?.sourceUrl ||
+    entry?.SourceURL ||
+    ""
+  );
+}
+
+function renderPoliticianNameHtml(entry) {
+  const name = escapeHtml(entry?.name || "");
+  const url = getPoliticianLinkUrl(entry);
+  if (!url) return `<div class="rep-name">${name}</div>`;
+  return `<a class="rep-name rep-name-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${name}</a>`;
+}
+
 /**
  * Strips common academic titles from the start of a name for cleaner alphabetical sorting.
  */
@@ -2541,7 +2883,7 @@ function pushUnique(list, entry) {
 }
 
 function loadBtgCSV() {
-  return new Promise((resolve) => {
+  return loadBtgCommitteeMaps().then(() => new Promise((resolve) => {
     Papa.parse(btgCsvUrl, {
       download: true,
       header: true,
@@ -2558,7 +2900,11 @@ function loadBtgCSV() {
           const wahlkreis = (row.Wahlkreis || row.wahlkreis || "").trim();
           const mandateType = String(row.mandate_type || row.mandate_won || "").toLowerCase();
           const isDirect = mandateType === "constituency" || mandateType === "direct" || mandateType === "direct_mandate" || mandateType === "direkt";
+          const committeeMemberships = parseBtgCommitteeMemberships(row);
           const entry = { name, party, art: isDirect ? "Direkt" : "Liste", wkr, wahlkreis, mandateType };
+          const website = normalizePoliticianLinkUrl(row.official_website || row.website || row.SourceURL || "");
+          if (website) entry.website = website;
+          if (committeeMemberships.length > 0) entry.committee_memberships = committeeMemberships;
           if (!btgByWkr.has(wkr)) btgByWkr.set(wkr, []);
           pushUnique(btgByWkr.get(wkr), entry);
         });
@@ -2574,7 +2920,7 @@ function loadBtgCSV() {
         resolve();
       }
     });
-  });
+  }));
 }
 
 function loadEuCSV() {
@@ -2591,6 +2937,7 @@ function loadEuCSV() {
           const name = (row.MdA_2025 || row.MdB_2025 || row.full_name || row.name || "").trim();
           if (!name) return;
           const party = normalizeParty(row.party_short_name || row.party_name || row.Party || row.Partei || "");
+          const website = normalizePoliticianLinkUrl(row.official_website || row.website || row.SourceURL || "");
           const listLabel = (row.Wahlkreis || row.electoral_list || "").trim();
           const berlinFlag = String(row.berlin_residence || "").trim().toLowerCase();
           const isBerlinRes = ["true", "1", "yes", "ja"].includes(berlinFlag);
@@ -2607,7 +2954,9 @@ function loadEuCSV() {
           }
           if (connection) roleParts.push(connection);
           const role = roleParts.length ? `EU-Parlament (${roleParts.join(" · ")})` : "EU-Parlament";
-          list.push({ name, party, role, art: "Liste" });
+          const entry = { name, party, role, art: "Liste" };
+          if (website) entry.website = website;
+          list.push(entry);
         });
         list.sort((a, b) => stripAcademicTitles(a.name).localeCompare(stripAcademicTitles(b.name), "de"));
         euCitywide = list;
@@ -2835,6 +3184,7 @@ async function loadExecutiveRoles() {
           const partyRaw = String(row.Party || row.party || row.Partei || "").trim();
           const keywordsRaw = row.department_keywords || row.department_keyword || row.DepartmentKeywords || row.DepartmentKeyword || "";
           const departmentKeywords = parseDepartmentKeywords(keywordsRaw);
+          const sourceUrl = normalizePoliticianLinkUrl(row.SourceURL || row.source_url || row.sourceUrl || row.Website || row.website || "");
           const interpreted = interpretDepartment({
             department_keywords: departmentKeywords
           });
@@ -2846,6 +3196,7 @@ async function loadExecutiveRoles() {
             since: String(row.seit || row.Seit || row.since || row.Since || "").trim(),
             department_keywords: interpreted.keywords
           };
+          if (sourceUrl) entry.website = sourceUrl;
           const key = `${bezirk}|${name}|${entry.party}|${roleRaw}`;
           if (seen.has(key)) return;
           seen.add(key);
@@ -2881,6 +3232,7 @@ async function loadSenateExecutiveRoles() {
           const partyRaw = String(row.Party || row.party || row.Partei || "").trim();
           const keywordsRaw = row.department_keywords || row.department_keyword || row.DepartmentKeywords || row.DepartmentKeyword || "";
           const departmentKeywords = parseDepartmentKeywords(keywordsRaw);
+          const sourceUrl = normalizePoliticianLinkUrl(row.SourceURL || row.source_url || row.sourceUrl || row.Website || row.website || "");
           const interpreted = interpretDepartment({
             department_keywords: departmentKeywords
           });
@@ -2893,6 +3245,7 @@ async function loadSenateExecutiveRoles() {
             art: "Senat",
             isExecutive: true
           };
+          if (sourceUrl) entry.website = sourceUrl;
           const key = `${bezirk}|${name}|${entry.party}|${roleRaw}`;
           if (seen.has(key)) return;
           seen.add(key);
@@ -3277,6 +3630,13 @@ function buildSearchContext(options = {}) {
   };
 }
 
+function getDefaultContextForLevel(level) {
+  if (level === "senat") {
+    return buildSearchContext({ level: "senat", citywide: true, bezirkName: "Berlin" });
+  }
+  return null;
+}
+
 function getSearchContextLabel(level, context) {
   if (!context) return "";
   if (level === "abgeordnetenhaus" && context.awk) {
@@ -3399,32 +3759,32 @@ function createPersonSearchResult(level, entry, context, roleLabel) {
   };
 }
 
-function createCommitteeSearchResult(bezirkName, bez, descriptor) {
+function createCommitteeSearchResult(level, context, descriptor) {
   if (!descriptor) return null;
   const primaryTitle = descriptor.short || descriptor.name;
   if (!primaryTitle) return null;
   const title = descriptor.committee ? formatCommitteeShort(descriptor.committee) : primaryTitle;
   const longLabel = descriptor.committee ? formatCommitteeLong(descriptor.committee) : descriptor.name;
-  const bezirkLabel = bezirkName ? (bez ? `Bezirk ${bez} · ${bezirkName}` : bezirkName) : "";
+  const contextLabel = getSearchContextLabel(level, context);
   const subtitleParts = [
-    levelLabels.bezirk,
-    bezirkLabel,
+    levelLabels[level],
+    contextLabel,
     longLabel && longLabel !== title ? longLabel : ""
   ].filter(Boolean);
   return {
-    id: `committee|${bezirkName}|${descriptor.id}`,
+    id: `committee|${level}|${context?.bez || ""}|${context?.awk || ""}|${context?.btgWkr || ""}|${descriptor.id}`,
     kind: "committee",
     kindLabel: "Ausschuss",
-    level: "bezirk",
+    level,
     title,
     queryLabel: descriptor.short || descriptor.name || title,
     subtitle: subtitleParts.join(" · "),
     tokens: descriptor.tokens || [],
     sortLabel: longLabel || primaryTitle,
-    context: buildSearchContext({ level: "bezirk", bez, bezirkName }),
+    context,
     focus: {
       kind: "committee",
-      level: "bezirk",
+      level,
       label: longLabel && longLabel !== title ? `${title} · ${longLabel}` : title,
       tokens: descriptor.tokens || []
     }
@@ -3446,7 +3806,7 @@ function buildSearchIndex() {
         const committeeKey = `committee|${bezirkName}|${descriptor.id}`;
         if (committeeSeen.has(committeeKey)) return;
         committeeSeen.add(committeeKey);
-        addSearchResult(results, seen, createCommitteeSearchResult(bezirkName, bez, descriptor));
+        addSearchResult(results, seen, createCommitteeSearchResult("bezirk", context, descriptor));
       });
     });
   });
@@ -3464,9 +3824,16 @@ function buildSearchIndex() {
     const bez = aghFeature ? normalizeBez(aghFeature.properties?.BEZ) : "";
     const bezirkName = aghFeature?.properties?.name || districtByNumber.get(bez)?.name || "";
     const context = buildSearchContext({ level: "abgeordnetenhaus", bez, bezirkName, awk });
+    const committeeSeen = new Set();
     (entries || []).forEach(entry => {
       const roleLabel = entry?.art === "Direkt" ? "Abgeordnete/r (MdA) · Direktmandat" : "Abgeordnete/r (MdA) · Listenmandat";
       addSearchResult(results, seen, createPersonSearchResult("abgeordnetenhaus", entry, context, roleLabel));
+      collectEntryCommitteeDescriptors(entry).forEach(descriptor => {
+        const committeeKey = `committee|agh|${awk}|${descriptor.id}`;
+        if (committeeSeen.has(committeeKey)) return;
+        committeeSeen.add(committeeKey);
+        addSearchResult(results, seen, createCommitteeSearchResult("abgeordnetenhaus", context, descriptor));
+      });
     });
   });
 
@@ -3494,8 +3861,15 @@ function buildSearchIndex() {
       btgWkr,
       btgName: mapping?.name || ""
     });
+    const committeeSeen = new Set();
     (entries || []).forEach(entry => {
       addSearchResult(results, seen, createPersonSearchResult("bundestag", entry, context, buildBtgMandateLine(entry)));
+      collectEntryCommitteeDescriptors(entry).forEach(descriptor => {
+        const committeeKey = `committee|btg|${btgWkr}|${descriptor.id}`;
+        if (committeeSeen.has(committeeKey)) return;
+        committeeSeen.add(committeeKey);
+        addSearchResult(results, seen, createCommitteeSearchResult("bundestag", context, descriptor));
+      });
     });
   });
 
@@ -3750,8 +4124,8 @@ function renderPanel(context) {
                 const roleLabel = normalizeBvvRole(membership?.role);
                 const committeeShort = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
                 const committeeDisplay = committeeShort ? renderCommitteeAbbrev(committeeShort, membership?.committee) : "";
-                const committeeSuffix = committeeDisplay ? ` · ${committeeDisplay}` : "";
-                metaLines.push(`<div class="rep-role">${roleLabel}${committeeSuffix}</div>`);
+                const line = formatMembershipMetaText(committeeDisplay, roleLabel);
+                if (line) metaLines.push(`<div class="rep-role">${line}</div>`);
               }
             });
           }
@@ -3775,10 +4149,7 @@ function renderPanel(context) {
               if (/fraktionsmitglied/.test(normalizedRole)) return;
               const committeeInfo = item?.committee || (orgText && /ausschuss|unterausschuss|beirat|kommission|aeltestenrat|ältestenrat|vorstand|bezirksverordneten/i.test(orgText) ? resolveCommitteeFromLabels([orgText]) : null);
               const orgDisplay = committeeInfo ? renderCommitteeAbbrev(orgText, committeeInfo) : String(orgText || "").trim();
-              const lineParts = [];
-              if (orgDisplay) lineParts.push(orgDisplay);
-              if (roleText) lineParts.push(roleText);
-              const line = lineParts.join(" · ").trim();
+              const line = formatMembershipMetaText(orgDisplay, roleText);
               if (line) metaLines.push(`<div class="rep-role">${line}</div>`);
             });
           }
@@ -3792,7 +4163,7 @@ function renderPanel(context) {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             ${metaLines.length ? "" : `<div class="rep-role">${displayRole}${sinceText}</div>`}
@@ -3814,7 +4185,7 @@ function renderPanel(context) {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">${entry.role}${sinceText}</div>
@@ -3829,7 +4200,7 @@ function renderPanel(context) {
         const direct = entries.filter(e => e.art === "Direkt").sort((a, b) => stripAcademicTitles(a.name).localeCompare(stripAcademicTitles(b.name), "de"));
         const lists = entries.filter(e => e.art !== "Direkt").sort((a, b) => stripAcademicTitles(a.name).localeCompare(stripAcademicTitles(b.name), "de"));
         const ordered = direct.concat(lists);
-        ordered.forEach(entry => {
+        ordered.forEach((entry, entryIndex) => {
           const isList = entry.art !== "Direkt";
           const partyLabel = normalizePartyLabel(entry.party);
           const role = isList
@@ -3839,13 +4210,27 @@ function renderPanel(context) {
               return parts.join(" · ");
             })()
             : "Abgeordnete/r (MdA) · Direktmandat";
+          const committeeLines = [];
+          if (Array.isArray(entry.committee_memberships)) {
+            entry.committee_memberships.forEach(membership => {
+              const committeeShort = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
+              const committeeDisplay = committeeShort ? renderCommitteeAbbrev(committeeShort, membership?.committee) : "";
+              const line = formatMembershipMetaText(committeeDisplay, membership?.role || "Ausschussmitglied");
+              if (line) committeeLines.push(`<div class="rep-role">${line}</div>`);
+            });
+          }
+          const metaId = `agh-meta-${entry.awk || "agh"}-${entryIndex}`;
+          const metaHtml = committeeLines.length
+            ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">${role}</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${committeeLines.join("")}</div>`
+            : "";
           html += `<div class="rep-card agh-entry${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
-            <div class="rep-role">${role}</div>
+            ${committeeLines.length ? "" : `<div class="rep-role">${role}</div>`}
+            ${metaHtml}
           </div>`;
         });
       }
@@ -3862,7 +4247,7 @@ function renderPanel(context) {
           html += `<div class="rep-card agh-entry">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">${entry.role}${sinceText}</div>
@@ -3874,18 +4259,31 @@ function renderPanel(context) {
       const entries = filterEntriesBySearch(filterEntriesByParty(collectBundestagEntries(context)), lvl);
       if (entries.length > 0) {
         hasRenderedContent = true;
-        entries.forEach(entry => {
+        entries.forEach((entry, entryIndex) => {
           const isList = entry.art !== "Direkt";
           const mandateLine = buildBtgMandateLine(entry);
           const partyLabel = normalizePartyLabel(entry.party);
+          const committeeLines = [];
+          if (Array.isArray(entry.committee_memberships)) {
+            entry.committee_memberships.forEach(membership => {
+              const committeeShort = (membership?.committeeLabel || membership?.committee?.short || membership?.committee?.name || membership?.name || "").trim();
+              const committeeDisplay = committeeShort ? renderCommitteeAbbrev(committeeShort, membership?.committee) : "";
+              const line = formatMembershipMetaText(committeeDisplay, membership?.role || "Ausschussmitglied");
+              if (line) committeeLines.push(`<div class="rep-role">${line}</div>`);
+            });
+          }
+          const metaId = `btg-meta-${entry.wkr || "btg"}-${entryIndex}`;
+          const metaHtml = committeeLines.length
+            ? `<button class="meta-toggle" data-target="${metaId}" type="button" aria-expanded="false"><span class="meta-toggle-arrow">▸</span><span class="meta-toggle-label">Bundestagsabgeordnete/r · ${mandateLine}</span></button><div class="rep-meta" id="${metaId}" style="display:none;">${committeeLines.join("")}</div>`
+            : "";
           html += `<div class="rep-card${isList ? " list-entry" : ""}">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
-            <div class="rep-role">Bundestagsabgeordnete/r</div>
-            <div class="rep-role">${mandateLine}</div>
+            ${committeeLines.length ? "" : `<div class="rep-role">Bundestagsabgeordnete/r</div><div class="rep-role">${mandateLine}</div>`}
+            ${metaHtml}
           </div>`;
         });
       }
@@ -3898,7 +4296,7 @@ function renderPanel(context) {
           html += `<div class="rep-card">
             <div class="rep-level">${label}</div>
             <div class="rep-name-line">
-              <div class="rep-name">${entry.name}</div>
+              ${renderPoliticianNameHtml(entry)}
               <span class="rep-party party-${partyClassName(partyLabel)}">${partyLabel}</span>
             </div>
             <div class="rep-role">${entry.role}</div>
@@ -3928,7 +4326,10 @@ function renderPanel(context) {
 function setLevel(level) {
   currentLevel = level;
   resetMapSelection();
-  if (activeContext) {
+  const defaultContext = getDefaultContextForLevel(level);
+  if (defaultContext) {
+    activeContext = defaultContext;
+  } else if (activeContext) {
     const allowed = activeContext.allowedLevels || getAllowedLevels(activeContext.layerId);
     if (!allowed.includes(currentLevel)) {
       activeContext = null;

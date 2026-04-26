@@ -1,0 +1,170 @@
+[
+  {
+    "name": "1. Untersuchungsausschuss (\"Neukölln II\")",
+    "short": "1UA",
+    "emoji": "🔎",
+    "slug": "untersuchungsausschuss-neukoelln-ii",
+    "category": "sondergremium"
+  },
+  {
+    "name": "2. Untersuchungsausschuss (\"Fördergeld\")",
+    "short": "2UA",
+    "emoji": "🔎",
+    "slug": "untersuchungsausschuss-foerdergeld",
+    "category": "sondergremium"
+  },
+  {
+    "name": "Ausschuss für Arbeit und Soziales",
+    "short": "ArbSoz",
+    "emoji": "🤝",
+    "slug": "arbeit-und-soziales",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Bildung, Jugend und Familie",
+    "short": "BJF",
+    "emoji": "👶",
+    "slug": "bildung-jugend-familie",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Bundes- und Europaangelegenheiten, Medien",
+    "short": "EuMed",
+    "emoji": "🌍",
+    "slug": "bundes-und-europaangelegenheiten-medien",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Digitalisierung und Datenschutz",
+    "short": "DigiDat",
+    "emoji": "💻",
+    "slug": "digitalisierung-und-datenschutz",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Gesundheit und Pflege",
+    "short": "Gesund",
+    "emoji": "🩺",
+    "slug": "gesundheit-und-pflege",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Inneres, Sicherheit und Ordnung",
+    "short": "ISO",
+    "emoji": "🛡️",
+    "slug": "inneres-sicherheit-ordnung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Integration, Frauen und Gleichstellung, Vielfalt und Antidiskriminierung",
+    "short": "Vielf",
+    "emoji": "🏳️‍🌈",
+    "slug": "integration-frauen-gleichstellung-vielfalt-antidiskriminierung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Kultur, Engagement und Demokratieförderung",
+    "short": "Kultur",
+    "emoji": "🎭",
+    "slug": "kultur-engagement-demokratiefoerderung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Mobilität und Verkehr",
+    "short": "Verkehr",
+    "emoji": "🚗",
+    "slug": "mobilitaet-und-verkehr",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Sport",
+    "short": "Sport",
+    "emoji": "⚽",
+    "slug": "sport",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Stadtentwicklung, Bauen und Wohnen",
+    "short": "StadtEntw",
+    "emoji": "🏗️",
+    "slug": "stadtentwicklung-bauen-wohnen",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Umwelt- und Klimaschutz",
+    "short": "Klima",
+    "emoji": "🌱",
+    "slug": "umwelt-und-klimaschutz",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Verfassungs- und Rechtsangelegenheiten, Geschäftsordnung, Verbraucherschutz",
+    "short": "Recht",
+    "emoji": "📜",
+    "slug": "verfassungs-und-rechtsangelegenheiten-geschaeftsordnung-verbraucherschutz",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Verfassungsschutz",
+    "short": "VerfSch",
+    "emoji": "👁️",
+    "slug": "verfassungsschutz",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Wirtschaft, Energie und Betriebe",
+    "short": "Wirt",
+    "emoji": "💼",
+    "slug": "wirtschaft-energie-betriebe",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Ausschuss für Wissenschaft und Forschung",
+    "short": "Wiss",
+    "emoji": "🔬",
+    "slug": "wissenschaft-und-forschung",
+    "category": "fachausschuss"
+  },
+  {
+    "name": "Hauptausschuss",
+    "short": "HA",
+    "emoji": "🧭",
+    "slug": "hauptausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Petitionsausschuss",
+    "short": "Pet",
+    "emoji": "📨",
+    "slug": "petitionsausschuss",
+    "category": "zentrales_gremium"
+  },
+  {
+    "name": "Unterausschuss Beteiligungsmanagement und -controlling",
+    "short": "UABet",
+    "emoji": "🏢",
+    "slug": "unterausschuss-beteiligungsmanagement-controlling",
+    "category": "unterausschuss"
+  },
+  {
+    "name": "Unterausschuss Bezirke, Personal und Verwaltung sowie Produkthaushalt und Personalwirtschaft",
+    "short": "UABPV",
+    "emoji": "👥",
+    "slug": "unterausschuss-bezirke-personal-verwaltung-produkthaushalt-personalwirtschaft",
+    "category": "unterausschuss"
+  },
+  {
+    "name": "Unterausschuss Haushaltskontrolle",
+    "short": "UAHK",
+    "emoji": "💶",
+    "slug": "unterausschuss-haushaltskontrolle",
+    "category": "unterausschuss"
+  },
+  {
+    "name": "Unterausschuss Vermögensverwaltung",
+    "short": "UAVerm",
+    "emoji": "🏦",
+    "slug": "unterausschuss-vermoegensverwaltung",
+    "category": "unterausschuss"
+  }
+]

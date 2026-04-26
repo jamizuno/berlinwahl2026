@@ -560,6 +560,22 @@ h1 {
   margin-bottom: 4px;
 }
 
+.rep-name-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.rep-name-link:hover {
+  color: var(--accent2);
+}
+
+.rep-name-link:focus-visible {
+  outline: 1px solid rgba(91, 143, 212, 0.75);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .rep-name-line {
   display: flex;
   flex-wrap: wrap;

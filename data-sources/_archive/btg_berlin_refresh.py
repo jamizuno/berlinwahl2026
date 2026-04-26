@@ -156,7 +156,7 @@ def extract_wahlkreis_name(label):
 
 def collect_committee_info(candidacy_id):
     if not candidacy_id:
-        return [], []
+        return [], [], []
     payload = safe_request_json(
         "/committee-memberships",
         {"candidacy_mandate": candidacy_id, "pager_limit": 200},
@@ -165,6 +165,7 @@ def collect_committee_info(candidacy_id):
     rows = payload.get("data") or []
     committees = []
     spokesperson = []
+    memberships = []
     for row in rows:
         committee = row.get("committee") or {}
         committee_label = (committee.get("label") or "").strip()
@@ -172,6 +173,12 @@ def collect_committee_info(candidacy_id):
             committees.append(committee_label)
         role = (row.get("committee_role") or "").lower()
         additional = row.get("committee_roles_additional")
+        if committee_label:
+            memberships.append({
+                "committee": committee_label,
+                "committee_role": role,
+                "committee_roles_additional": additional if additional else [],
+            })
         additional_text = ""
         if isinstance(additional, list):
             additional_text = " ".join([str(a) for a in additional])
@@ -183,7 +190,7 @@ def collect_committee_info(candidacy_id):
                 spokesperson.append(committee_label)
     committees = sorted(set([c for c in committees if c]))
     spokesperson = sorted(set([c for c in spokesperson if c]))
-    return committees, spokesperson
+    return committees, spokesperson, memberships
 
 
 def join_list(values):
@@ -263,10 +270,10 @@ def main():
 
         mandate_type = electoral_data.get("mandate_won") or item.get("type") or ""
 
-        committees, spokespersons = committee_cache.get(item.get("id"), (None, None))
+        committees, spokespersons, committee_memberships = committee_cache.get(item.get("id"), (None, None, None))
         if committees is None:
-            committees, spokespersons = collect_committee_info(item.get("id"))
-            committee_cache[item.get("id")] = (committees, spokespersons)
+            committees, spokespersons, committee_memberships = collect_committee_info(item.get("id"))
+            committee_cache[item.get("id")] = (committees, spokespersons, committee_memberships)
 
         full_rows.append({
             "parliament_id": parliament.get("id"),
@@ -312,6 +319,7 @@ def main():
             "mandate_type": mandate_type,
             "committees": join_list(committees),
             "spokesperson_role": join_list(spokespersons),
+            "committee_memberships_json": json.dumps(committee_memberships, ensure_ascii=False, separators=(",", ":")),
             "constituency_office_address": "",
             "email_address": "",
             "sm_facebook": "",
@@ -371,6 +379,7 @@ def main():
         "mandate_type",
         "committees",
         "spokesperson_role",
+        "committee_memberships_json",
         "constituency_office_address",
         "email_address",
         "sm_facebook",
